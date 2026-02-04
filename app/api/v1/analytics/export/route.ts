@@ -109,7 +109,7 @@ async function exportComments(
     orderBy: { createdAt: "desc" },
   });
 
-  return jobs.map((job) => ({
+  return jobs.map((job: typeof jobs[number]) => ({
     id: job.id,
     status: job.status,
     platform: job.targetPlatform,
