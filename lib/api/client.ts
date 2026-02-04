@@ -190,12 +190,17 @@ export const templatesApi = {
     tone: string;
     fomoType?: string;
     postContent?: string;
+    postUrl?: string;
+    templateContent?: string;
+    productName?: string;
+    callToAction?: string;
+    maxLength?: number;
     variations?: number;
   }) =>
-    apiRequest<{ comments: Array<{ content: string; tone: string; confidence: number }> }>(
-      "/comments/generate",
-      { method: "POST", body: data }
-    ),
+    apiRequest<{
+      comments: Array<{ content: string; tone: string; fomoType?: string; confidence: number }>;
+      input: { platform: string; tone: string; fomoType?: string };
+    }>("/comments/generate", { method: "POST", body: data }),
 
   stats: () =>
     apiRequest<{

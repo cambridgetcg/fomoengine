@@ -102,12 +102,16 @@ export const updateTemplateSchema = z.object({
 });
 
 export const generateCommentSchema = z.object({
-    prompt: z.string().min(1).max(1000),
     platform: platformSchema,
     tone: commentToneSchema,
     fomoType: fomoTypeSchema.optional(),
-    targetContext: z.string().max(2000).optional(),
-    count: z.number().int().min(1).max(10).default(3),
+    postContent: z.string().max(2000).optional(),
+    postUrl: z.string().url().optional(),
+    templateContent: z.string().max(2000).optional(),
+    productName: z.string().max(200).optional(),
+    callToAction: z.string().max(500).optional(),
+    maxLength: z.number().int().min(10).max(2000).optional(),
+    variations: z.number().int().min(1).max(10).default(3),
 });
 
 export const scheduleCommentSchema = z.object({
