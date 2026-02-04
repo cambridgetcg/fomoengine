@@ -17,45 +17,44 @@ interface TestimonialProps {
 const testimonials: TestimonialProps[] = [
     {
         image: "https://github.com/shadcn.png",
-        name: "John Doe",
-        userName: "@john_Doe",
-        comment: "This landing page is awesome!",
+        name: "Marketing Team",
+        userName: "@growth_ops",
+        comment: "3x engagement increase in the first month. The AI comments actually get replies and drive conversations.",
     },
     {
         image: "https://github.com/shadcn.png",
-        name: "John Doe 1",
-        userName: "@john_Doe1",
+        name: "Social Lead",
+        userName: "@social_strategy",
         comment:
-            "Lorem ipsum dolor sit amet,empor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud.",
-    },
-
-    {
-        image: "https://github.com/shadcn.png",
-        name: "John Doe 2",
-        userName: "@john_Doe2",
-        comment:
-            "Lorem ipsum dolor sit amet,exercitation. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident.",
+            "Managing 200+ accounts used to be a nightmare. Now it runs on autopilot with better results than manual posting.",
     },
     {
         image: "https://github.com/shadcn.png",
-        name: "John Doe 3",
-        userName: "@john_Doe3",
+        name: "Campaign Manager",
+        userName: "@campaign_mgr",
         comment:
-            "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.",
+            "The FOMO triggers are incredibly effective. Scarcity + urgency messaging drove a 40% conversion lift on our last launch.",
     },
     {
         image: "https://github.com/shadcn.png",
-        name: "John Doe 4",
-        userName: "@john_Doe4",
+        name: "Agency Director",
+        userName: "@agency_growth",
         comment:
-            "Lorem ipsum dolor sit amet, tempor incididunt  aliqua. Ut enim ad minim veniam, quis nostrud.",
+            "Zero account bans in 6 months. The proxy rotation and human-like delays actually work. Finally, safe automation at scale.",
     },
     {
         image: "https://github.com/shadcn.png",
-        name: "John Doe 5",
-        userName: "@john_Doe5",
+        name: "Ads Specialist",
+        userName: "@paid_social",
         comment:
-            "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+            "Unified ads management across platforms saved us hours daily. The budget optimization alone paid for the subscription.",
+    },
+    {
+        image: "https://github.com/shadcn.png",
+        name: "Content Team",
+        userName: "@content_ops",
+        comment:
+            "AI comment templates learn our brand voice. Comments sound authentic because they're contextually generated, not copy-pasted.",
     },
 ];
 
@@ -63,17 +62,17 @@ const Testimonials = () => {
     return (
         <section id="testimonials" className="container py-24 sm:py-32">
             <h2 className="text-3xl md:text-4xl font-bold">
-                Discover Why
+                What
                 <span className="bg-gradient-to-b from-primary/60 to-primary text-transparent bg-clip-text">
                     {" "}
-                    People Love{" "}
+                    Teams{" "}
                 </span>
-                This Landing Page
+                Are Saying
             </h2>
 
             <p className="text-xl text-muted-foreground pt-4 pb-8">
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Non
-                unde error facere hic reiciendis illo
+                Internal teams trust FOMO Engine for scalable engagement
+                that drives real business results.
             </p>
 
             <div className="grid md:grid-cols-2 lg:grid-cols-4 sm:block columns-2 lg:columns-3 lg:gap-6 mx-auto space-y-4 lg:space-y-6">

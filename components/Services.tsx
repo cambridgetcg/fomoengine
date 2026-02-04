@@ -9,27 +9,27 @@ interface ServiceProps {
 
 const serviceList: ServiceProps[] = [
     {
-        title: "Code Collaboration",
+        title: "Comment Campaigns",
         description:
-            "Lorem ipsum dolor sit amet consectetur adipisicing elit. Nisi nesciunt est nostrum omnis ab sapiente.",
+            "Deploy AI-powered commenting at scale. Contextual responses, sentiment matching, and engagement optimization across all platforms.",
         icon: (
-            <Icons.code className="h-6 w-6 dark:text-orange-500 text-blue-500" />
+            <Icons.play className="h-6 w-6 dark:text-orange-500 text-blue-500" />
         ),
     },
     {
-        title: "Project Management",
+        title: "Account Operations",
         description:
-            "Lorem ipsum dolor sit amet consectetur adipisicing elit. Nisi nesciunt est nostrum omnis ab sapiente.",
+            "Manage account pools with proxy rotation, session persistence, and automated warm-up. Keep accounts healthy and active.",
         icon: (
-            <Icons.dashboard className="h-6 w-6 dark:text-orange-500 text-blue-500" />
+            <Icons.accessibility className="h-6 w-6 dark:text-orange-500 text-blue-500" />
         ),
     },
     {
-        title: "Task Automation",
+        title: "Ads Management",
         description:
-            "Lorem ipsum dolor sit amet consectetur adipisicing elit. Nisi nesciunt est nostrum omnis ab sapiente.",
+            "Create and manage ad campaigns across platforms. Budget allocation, targeting optimization, and performance tracking.",
         icon: (
-            <Icons.project className="h-6 w-6 dark:text-orange-500 text-blue-500" />
+            <Icons.people className="h-6 w-6 dark:text-orange-500 text-blue-500" />
         ),
     },
 ];
@@ -41,14 +41,14 @@ const Services = () => {
                 <div>
                     <h2 className="text-3xl md:text-4xl font-bold">
                         <span className="bg-gradient-to-b from-primary/60 to-primary text-transparent bg-clip-text">
-                            Client-Centric{" "}
+                            Core{" "}
                         </span>
-                        Services
+                        Capabilities
                     </h2>
 
                     <p className="text-muted-foreground text-xl mt-4 mb-8 ">
-                        Lorem ipsum dolor sit amet consectetur, adipisicing
-                        elit. Veritatis dolor.
+                        Complete social media automation from account setup to
+                        engagement analytics. Everything runs on autopilot.
                     </p>
 
                     <div className="flex flex-col gap-8">

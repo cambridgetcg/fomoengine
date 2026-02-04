@@ -12,36 +12,35 @@ const Hero = () => {
                 <main className="text-5xl md:text-6xl font-bold">
                     <h1 className="inline">
                         <span className="inline bg-gradient-to-r from-[#F596D3] to-[#D247BF] text-transparent bg-clip-text">
-                            Marketing
+                            FOMO
                         </span>{" "}
-                        template
+                        Engine
                     </h1>{" "}
-                    for{" "}
                     <h2 className="inline">
                         <span className="inline bg-gradient-to-r from-[#61DAFB] via-[#1fc0f1] to-[#03a3d7] text-transparent bg-clip-text">
-                            SaaS
+                            Social Media
                         </span>{" "}
-                        ideas.
+                        Automation
                     </h2>
                 </main>
 
                 <p className="text-xl text-muted-foreground md:w-10/12 mx-auto lg:mx-0">
-                    A production-ready and easy to customize template, making it
-                    the perfect starting point for your own project.
+                    Scale your social presence with AI-powered commenting, multi-account
+                    management, and strategic FOMO triggers. Drive engagement and
+                    conversions across all platforms.
                 </p>
 
                 <div className="space-y-4 md:space-y-0 md:space-x-4">
-                    <Button className="w-full md:w-1/3">Get Started</Button>
+                    <Button className="w-full md:w-1/3">Launch Campaign</Button>
 
                     <Link
-                        href="https://github.com/chrisstef/saas-marketing-template.git"
-                        target="_blank"
+                        href="/demo"
                         className={`w-full md:w-1/3 ${buttonVariants({
                             variant: "outline",
                         })}`}
                     >
-                        GitHub
-                        <Icons.github className="ml-2 h-4 w-4" />
+                        See It Work
+                        <Icons.play className="ml-2 h-4 w-4" />
                     </Link>
                 </div>
             </div>

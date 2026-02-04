@@ -17,6 +17,7 @@ import {
     FaCheck,
     FaCode,
     FaProjectDiagram,
+    FaPlay,
 } from "react-icons/fa";
 import { LuSettings } from "react-icons/lu";
 import { RxDashboard } from "react-icons/rx";
@@ -61,6 +62,7 @@ const icons = {
     gamification: IoGameControllerOutline,
     code: FaCode,
     project: FaProjectDiagram,
+    play: FaPlay,
 };
 
 export const Icons: IconsType = icons;

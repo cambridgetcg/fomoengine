@@ -15,44 +15,44 @@ interface FeatureProps {
 
 const features: FeatureProps[] = [
     {
-        title: "Responsive Design",
+        title: "AI Comment Automation",
         description:
-            "Lorem ipsum dolor sit amet consectetur adipisicing elit. Nisi nesciunt est nostrum omnis ab sapiente.",
+            "Generate contextual, engaging comments that blend naturally into conversations. Sentiment-aware responses that drive replies and engagement.",
         image: "./growth.png",
     },
     {
-        title: "Intuitive user interface",
+        title: "Multi-Account Management",
         description:
-            "Lorem ipsum dolor sit amet consectetur adipisicing elit. Nisi nesciunt est nostrum omnis ab sapiente.",
+            "Manage hundreds of accounts with intelligent proxy rotation, session handling, and warm-up sequences. Stay under the radar at scale.",
         image: "./reflecting.png",
     },
     {
-        title: "AI-Powered insights",
+        title: "FOMO & Urgency Triggers",
         description:
-            "Lorem ipsum dolor sit amet consectetur adipisicing elit. Nisi nesciunt est nostrum omnis ab sapiente.",
+            "Strategic social proof, scarcity signals, and urgency messaging. Create buzz and drive conversions with psychological triggers.",
         image: "./looking-ahead.png",
     },
 ];
 
 const featureList: string[] = [
-    "Dark/Light theme",
-    "Reviews",
-    "Features",
-    "Pricing",
-    "Contact form",
-    "Our team",
-    "Responsive design",
-    "Newsletter",
-    "Minimalist",
+    "Instagram",
+    "TikTok",
+    "Twitter/X",
+    "Facebook",
+    "LinkedIn",
+    "YouTube",
+    "Proxy Rotation",
+    "Comment Templates",
+    "Analytics Dashboard",
 ];
 
 const Features = () => {
     return (
         <section id="features" className="container py-24 sm:py-32 space-y-8">
             <h2 className="text-3xl lg:text-4xl font-bold md:text-center">
-                Many{" "}
+                Powerful{" "}
                 <span className="bg-gradient-to-b from-primary/60 to-primary text-transparent bg-clip-text">
-                    Great Features
+                    Automation Features
                 </span>
             </h2>
 

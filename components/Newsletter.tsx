@@ -15,13 +15,13 @@ const Newsletter = () => {
 
             <div className="container py-24 sm:py-32">
                 <h3 className="text-center text-4xl md:text-5xl font-bold">
-                    Join Our Daily{" "}
+                    Get{" "}
                     <span className="bg-gradient-to-b from-primary/60 to-primary text-transparent bg-clip-text">
-                        Newsletter
+                        Updates
                     </span>
                 </h3>
                 <p className="text-xl text-muted-foreground text-center mt-4 mb-8">
-                    Lorem ipsum dolor sit amet consectetur.
+                    Stay informed about new platform support, automation features, and FOMO strategies.
                 </p>
 
                 <form

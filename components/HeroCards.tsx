@@ -27,77 +27,42 @@ export const HeroCards = () => {
                             alt=""
                             src="https://github.com/shadcn.png"
                         />
-                        <AvatarFallback>JD</AvatarFallback>
+                        <AvatarFallback>GT</AvatarFallback>
                     </Avatar>
 
                     <div className="flex flex-col">
-                        <CardTitle className="text-lg">John Doe</CardTitle>
-                        <CardDescription>@john_doe</CardDescription>
+                        <CardTitle className="text-lg">Growth Team</CardTitle>
+                        <CardDescription>@growth_ops</CardDescription>
                     </div>
                 </CardHeader>
 
-                <CardContent>This landing page is phenomenal!</CardContent>
+                <CardContent>3x engagement increase in just one month. The AI comments actually drive conversations!</CardContent>
             </Card>
 
             {/* Team */}
             <Card className="absolute right-[20px] top-4 w-80 flex flex-col justify-center items-center drop-shadow-xl shadow-black/10 dark:shadow-white/10">
                 <CardHeader className="mt-8 flex justify-center items-center pb-2">
-                    <Image
-                        src="/myavatar.webp"
-                        alt="user avatar"
-                        width={100}
-                        height={100}
-                        className="absolute -top-12 rounded-full w-24 h-24"
-                        priority
-                    />
-                    <CardTitle className="text-center">chrisstef</CardTitle>
+                    <div className="absolute -top-12 rounded-full w-24 h-24 bg-gradient-to-br from-primary/60 to-primary flex items-center justify-center">
+                        <Icons.play className="w-10 h-10 text-white" />
+                    </div>
+                    <CardTitle className="text-center">AI Engine</CardTitle>
                     <CardDescription className="font-normal text-primary">
-                        Frontend Developer
+                        FOMO & Engagement Automation
                     </CardDescription>
                 </CardHeader>
 
                 <CardContent className="text-center pb-2">
                     <p>
-                        I enjoy transforming ideas into functional software that
-                        exceeds expectations.
+                        Contextual comments, urgency triggers, and
+                        social proof at scale.
                     </p>
                 </CardContent>
 
                 <CardFooter>
-                    <div className="space-x-2">
-                        <Link
-                            href="https://www.linkedin.com/"
-                            target="_blank"
-                            className={buttonVariants({
-                                variant: "ghost",
-                                size: "sm",
-                            })}
-                        >
-                            <span className="sr-only">Linkedin icon</span>
-                            <Icons.linkedin className="h-6 w-4" />
-                        </Link>
-                        <Link
-                            href="https://github.com/chrisstef"
-                            target="_blank"
-                            className={buttonVariants({
-                                variant: "ghost",
-                                size: "sm",
-                            })}
-                        >
-                            <span className="sr-only">Github icon</span>
-                            <Icons.github className="h-6 w-4" />
-                        </Link>
-                        <Link
-                            href="https://twitter.com/"
-                            target="_blank"
-                            className={buttonVariants({
-                                variant: "ghost",
-                                size: "sm",
-                            })}
-                        >
-                            <span className="sr-only">X icon</span>
-                            <Icons.twitter className="h-6 w-4" />
-                        </Link>
+                    <div className="flex gap-2">
+                        <Badge variant="secondary">Scarcity</Badge>
+                        <Badge variant="secondary">Urgency</Badge>
+                        <Badge variant="secondary">Proof</Badge>
                     </div>
                 </CardFooter>
             </Card>
@@ -106,7 +71,7 @@ export const HeroCards = () => {
             <Card className="absolute top-[150px] left-[50px] w-72  drop-shadow-xl shadow-black/10 dark:shadow-white/10">
                 <CardHeader>
                     <CardTitle className="flex item-center justify-between">
-                        Free
+                        Growth
                         <Badge
                             variant="secondary"
                             className="text-sm text-primary"
@@ -115,18 +80,17 @@ export const HeroCards = () => {
                         </Badge>
                     </CardTitle>
                     <div>
-                        <span className="text-3xl font-bold">$0</span>
+                        <span className="text-3xl font-bold">$299</span>
                         <span className="text-muted-foreground"> /month</span>
                     </div>
 
                     <CardDescription>
-                        Lorem ipsum dolor sit, amet ipsum consectetur
-                        adipisicing elit.
+                        Scale your social presence with full automation.
                     </CardDescription>
                 </CardHeader>
 
                 <CardContent>
-                    <Button className="w-full">Start Free Trial</Button>
+                    <Button className="w-full">Start Now</Button>
                 </CardContent>
 
                 <hr className="w-4/5 m-auto mb-4" />
@@ -134,9 +98,9 @@ export const HeroCards = () => {
                 <CardFooter className="flex">
                     <div className="space-y-4">
                         {[
-                            "4 Team members",
-                            "4 GB Storage",
-                            "Up to 6 pages",
+                            "100 accounts",
+                            "25K comments/mo",
+                            "All platforms",
                         ].map((benefit: string) => (
                             <div key={benefit} className="flex items-center">
                                 <Icons.check className="text-green-500 w-5 h-5" />
@@ -151,13 +115,13 @@ export const HeroCards = () => {
             <Card className="absolute w-[350px] -right-[10px] bottom-[35px]  drop-shadow-xl shadow-black/10 dark:shadow-white/10">
                 <CardHeader className="space-y-1 flex md:flex-row justify-start items-start gap-4">
                     <div className="mt-1 bg-primary/20 p-3 rounded-2xl">
-                        <Icons.bulb className="h-6 w-6 dark:text-orange-500 text-blue-500" />
+                        <Icons.accessibility className="h-6 w-6 dark:text-orange-500 text-blue-500" />
                     </div>
                     <div>
-                        <CardTitle>Light & dark mode</CardTitle>
+                        <CardTitle>Multi-Platform Support</CardTitle>
                         <CardDescription className="text-md mt-2">
-                            Lorem ipsum dolor sit amet consect adipisicing elit.
-                            Consectetur natusm.
+                            Instagram, TikTok, Twitter/X, Facebook, LinkedIn.
+                            Unified automation across all.
                         </CardDescription>
                     </div>
                 </CardHeader>

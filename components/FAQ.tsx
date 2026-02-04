@@ -13,30 +13,28 @@ interface FAQProps {
 
 const FAQList: FAQProps[] = [
     {
-        question: "Is this template free?",
-        answer: "Yes. It is a free ShadcnUI template.",
+        question: "Which social media platforms are supported?",
+        answer: "We support Instagram, TikTok, Twitter/X, Facebook, LinkedIn, and YouTube. Each platform has optimized automation rules and rate limiting to maintain account safety.",
         value: "item-1",
     },
     {
-        question: "Lorem ipsum dolor sit amet consectetur adipisicing elit?",
-        answer: "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sint labore quidem quam? Consectetur sapiente iste rerum reiciendis animi nihil nostrum sit quo, modi quod.",
+        question: "How does the AI comment generation work?",
+        answer: "Our AI analyzes the target post content, sentiment, and context to generate relevant, natural-sounding comments. You can customize tone, length, and add FOMO triggers to drive engagement.",
         value: "item-2",
     },
     {
-        question:
-            "Lorem ipsum dolor sit amet  Consectetur natus dolores minus quibusdam?",
-        answer: "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Labore qui nostrum reiciendis veritatis necessitatibus maxime quis ipsa vitae cumque quo?",
+        question: "How do you keep accounts safe?",
+        answer: "We use residential proxies with intelligent rotation, human-like delays, session persistence, and warm-up sequences. Our system mimics natural behavior patterns to stay under platform detection.",
         value: "item-3",
     },
     {
-        question: "Lorem ipsum dolor sit amet, consectetur adipisicing elit?",
-        answer: "Lorem ipsum dolor sit amet consectetur, adipisicing elit.",
+        question: "Can I manage multiple accounts per platform?",
+        answer: "Yes! Growth and Enterprise plans support multiple accounts per platform. Each account gets its own proxy, session, and activity schedule to maintain isolation.",
         value: "item-4",
     },
     {
-        question:
-            "Lorem ipsum dolor sit amet consectetur adipisicing elit. Consectetur natus?",
-        answer: "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sint labore quidem quam? Consectetur sapiente iste rerum reiciendis animi nihil nostrum sit quo, modi quod.",
+        question: "What FOMO triggers are available?",
+        answer: "We offer scarcity signals (limited spots), urgency triggers (time-sensitive), social proof (others are joining), and exclusivity messaging. All customizable per campaign.",
         value: "item-5",
     },
 ];

@@ -6,20 +6,20 @@ const Statistics = () => {
 
     const stats: statsProps[] = [
         {
-            quantity: "1.7K+",
-            description: "Users",
+            quantity: "10+",
+            description: "Platforms Supported",
         },
         {
-            quantity: "1.2K+",
-            description: "Subscribers",
+            quantity: "500+",
+            description: "Accounts Managed",
         },
         {
-            quantity: "300",
-            description: "Downloads",
+            quantity: "50K+",
+            description: "Comments/Day",
         },
         {
-            quantity: "4",
-            description: "Products",
+            quantity: "3x",
+            description: "Engagement Boost",
         },
     ];
 

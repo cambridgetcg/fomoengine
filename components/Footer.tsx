@@ -15,22 +15,43 @@ const Footer = () => {
                 </div>
 
                 <div className="flex flex-col gap-2">
-                    <h3 className="font-bold text-lg">Follow Us</h3>
+                    <h3 className="font-bold text-lg">Product</h3>
+                    <div>
+                        <a href="#features" className="opacity-60 hover:opacity-100">
+                            Features
+                        </a>
+                    </div>
+
+                    <div>
+                        <a href="#pricing" className="opacity-60 hover:opacity-100">
+                            Pricing
+                        </a>
+                    </div>
+
+                    <div>
+                        <a href="#faq" className="opacity-60 hover:opacity-100">
+                            FAQ
+                        </a>
+                    </div>
+                </div>
+
+                <div className="flex flex-col gap-2">
+                    <h3 className="font-bold text-lg">Features</h3>
                     <div>
                         <a href="#" className="opacity-60 hover:opacity-100">
-                            Github
+                            Comment Automation
                         </a>
                     </div>
 
                     <div>
                         <a href="#" className="opacity-60 hover:opacity-100">
-                            Twitter
+                            Account Management
                         </a>
                     </div>
 
                     <div>
                         <a href="#" className="opacity-60 hover:opacity-100">
-                            Dribbble
+                            Ads Campaigns
                         </a>
                     </div>
                 </div>
@@ -39,61 +60,40 @@ const Footer = () => {
                     <h3 className="font-bold text-lg">Platforms</h3>
                     <div>
                         <a href="#" className="opacity-60 hover:opacity-100">
-                            Web
+                            Instagram
                         </a>
                     </div>
 
                     <div>
                         <a href="#" className="opacity-60 hover:opacity-100">
-                            Mobile
+                            TikTok
                         </a>
                     </div>
 
                     <div>
                         <a href="#" className="opacity-60 hover:opacity-100">
-                            Desktop
-                        </a>
-                    </div>
-                </div>
-
-                <div className="flex flex-col gap-2">
-                    <h3 className="font-bold text-lg">About</h3>
-                    <div>
-                        <a href="#" className="opacity-60 hover:opacity-100">
-                            Features
-                        </a>
-                    </div>
-
-                    <div>
-                        <a href="#" className="opacity-60 hover:opacity-100">
-                            Pricing
-                        </a>
-                    </div>
-
-                    <div>
-                        <a href="#" className="opacity-60 hover:opacity-100">
-                            FAQ
+                            Twitter/X
                         </a>
                     </div>
                 </div>
 
                 <div className="flex flex-col gap-2">
-                    <h3 className="font-bold text-lg">Community</h3>
+                    <h3 className="font-bold text-lg">Resources</h3>
                     <div>
                         <a href="#" className="opacity-60 hover:opacity-100">
-                            Youtube
+                            Documentation
                         </a>
                     </div>
 
                     <div>
                         <a href="#" className="opacity-60 hover:opacity-100">
-                            Discord
+                            FOMO Playbook
                         </a>
                     </div>
 
                     <div>
                         <a href="#" className="opacity-60 hover:opacity-100">
-                            Twitch
+                            Support
                         </a>
                     </div>
                 </div>
@@ -101,14 +101,7 @@ const Footer = () => {
 
             <section className="container pb-14 text-center">
                 <h3>
-                    &copy; {new Date().getFullYear()} crafted by{" "}
-                    <a
-                        target="_blank"
-                        href="https://github.com/chrisstef"
-                        className="text-primary border-primary border-b-2 hover:border-0"
-                    >
-                        chrisstef
-                    </a>
+                    &copy; {new Date().getFullYear()} FOMO Engine. Social Media Automation.
                 </h3>
             </section>
         </footer>

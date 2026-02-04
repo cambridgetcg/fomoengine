@@ -10,7 +10,7 @@ export const Logo = () => {
                 height={30}
                 className=" w-8 h-8"
             />
-            <p className="text-lg font-extrabold">SaaS Marketing</p>
+            <p className="text-lg font-extrabold">FOMO Engine</p>
         </div>
     );
 };

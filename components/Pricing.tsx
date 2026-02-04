@@ -27,48 +27,48 @@ interface PricingProps {
 
 const pricingList: PricingProps[] = [
     {
-        title: "Free",
+        title: "Starter",
         popular: 0,
-        price: 0,
+        price: 99,
         description:
-            "Lorem ipsum dolor sit, amet ipsum consectetur adipisicing elit.",
+            "Perfect for testing campaigns and small-scale engagement.",
         buttonText: "Get Started",
         benefitList: [
-            "1 Team member",
-            "2 GB Storage",
-            "Up to 4 pages",
-            "Community support",
-            "lorem ipsum dolor",
+            "25 accounts",
+            "5K comments/month",
+            "3 platforms",
+            "Basic analytics",
+            "Email support",
         ],
     },
     {
-        title: "Premium",
+        title: "Growth",
         popular: 1,
-        price: 5,
+        price: 299,
         description:
-            "Lorem ipsum dolor sit, amet ipsum consectetur adipisicing elit.",
-        buttonText: "Start Free Trial",
+            "For teams scaling their social media presence seriously.",
+        buttonText: "Start Now",
         benefitList: [
-            "4 Team members",
-            "4 GB Storage",
-            "Up to 6 pages",
-            "Priority support",
-            "lorem ipsum dolor",
+            "100 accounts",
+            "25K comments/month",
+            "All platforms",
+            "Advanced analytics",
+            "Ads campaign management",
         ],
     },
     {
         title: "Enterprise",
         popular: 0,
-        price: 40,
+        price: 799,
         description:
-            "Lorem ipsum dolor sit, amet ipsum consectetur adipisicing elit.",
+            "Full-scale automation for agencies and large operations.",
         buttonText: "Contact Us",
         benefitList: [
-            "10 Team members",
-            "8 GB Storage",
-            "Up to 10 pages",
+            "Unlimited accounts",
+            "Unlimited comments",
+            "Custom integrations",
+            "Dedicated proxy pool",
             "Priority support",
-            "lorem ipsum dolor",
         ],
     },
 ];
@@ -77,16 +77,16 @@ const Pricing = () => {
     return (
         <section id="pricing" className="container py-24 sm:py-32">
             <h2 className="text-3xl md:text-4xl font-bold text-center">
-                Get
+                Choose Your
                 <span className="bg-gradient-to-b from-primary/60 to-primary text-transparent bg-clip-text">
                     {" "}
-                    Unlimited{" "}
+                    Automation{" "}
                 </span>
-                Access
+                Plan
             </h2>
             <h3 className="text-xl text-center text-muted-foreground pt-4 pb-8">
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Alias
-                reiciendis.
+                Scale from small campaigns to enterprise-level automation.
+                All plans include AI-powered engagement.
             </h3>
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
                 {pricingList.map((pricing: PricingProps) => (

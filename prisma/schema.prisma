@@ -1,0 +1,478 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// ============ ENUMS ============
+
+enum Platform {
+  INSTAGRAM
+  TIKTOK
+  TWITTER
+  FACEBOOK
+  LINKEDIN
+  YOUTUBE
+}
+
+enum AccountStatus {
+  HEALTHY
+  WARMING
+  FLAGGED
+  INACTIVE
+  SUSPENDED
+}
+
+enum WarmupPhase {
+  PENDING
+  ACTIVE
+  COMPLETE
+}
+
+enum CampaignStatus {
+  DRAFT
+  ACTIVE
+  PAUSED
+  COMPLETED
+  ARCHIVED
+}
+
+enum CommentTone {
+  FRIENDLY
+  PROFESSIONAL
+  CASUAL
+  URGENT
+  FOMO
+}
+
+enum CommentJobStatus {
+  PENDING
+  SCHEDULED
+  PROCESSING
+  COMPLETED
+  FAILED
+  CANCELLED
+}
+
+enum FomoTriggerType {
+  SCARCITY
+  URGENCY
+  SOCIAL_PROOF
+  EXCLUSIVITY
+}
+
+enum ProxyStatus {
+  ACTIVE
+  INACTIVE
+  BANNED
+}
+
+// ============ USER & AUTH ============
+
+model User {
+  id            String    @id @default(cuid())
+  email         String    @unique
+  name          String?
+  password      String?
+  avatarUrl     String?
+  emailVerified DateTime?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  organizations OrganizationMember[]
+  accounts      Account[]
+  sessions      Session[]
+
+  @@index([email])
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+  @@index([userId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+// ============ ORGANIZATION ============
+
+model Organization {
+  id        String   @id @default(cuid())
+  name      String
+  slug      String   @unique
+  plan      String   @default("free")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  stripeCustomerId String?
+  billingEmail     String?
+
+  members          OrganizationMember[]
+  socialAccounts   SocialAccount[]
+  campaigns        Campaign[]
+  commentTemplates CommentTemplate[]
+  proxies          Proxy[]
+  dailyAnalytics   DailyAnalytics[]
+
+  @@index([slug])
+}
+
+model OrganizationMember {
+  id             String   @id @default(cuid())
+  role           String   @default("member")
+  userId         String
+  organizationId String
+  createdAt      DateTime @default(now())
+
+  user         User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, organizationId])
+  @@index([organizationId])
+}
+
+// ============ SOCIAL ACCOUNTS ============
+
+model SocialAccount {
+  id             String        @id @default(cuid())
+  organizationId String
+  platform       Platform
+  username       String
+  displayName    String?
+  profileUrl     String?
+  avatarUrl      String?
+  status         AccountStatus @default(WARMING)
+
+  accessToken    String?   @db.Text
+  refreshToken   String?   @db.Text
+  tokenExpiresAt DateTime?
+
+  warmupPhase     WarmupPhase @default(PENDING)
+  warmupProgress  Int         @default(0)
+  warmupStartedAt DateTime?
+
+  healthScore     Int       @default(100)
+  lastHealthCheck DateTime?
+  healthHistory   Json?
+
+  dailyCommentLimit Int       @default(50)
+  commentsToday     Int       @default(0)
+  lastCommentAt     DateTime?
+
+  proxyId String?
+
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+  lastActivityAt DateTime?
+
+  organization Organization       @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  proxy        Proxy?             @relation(fields: [proxyId], references: [id])
+  commentJobs  CommentJob[]
+  analytics    AccountAnalytics[]
+
+  @@unique([organizationId, platform, username])
+  @@index([organizationId])
+  @@index([status])
+  @@index([platform])
+  @@index([proxyId])
+}
+
+model Proxy {
+  id             String      @id @default(cuid())
+  organizationId String
+  provider       String
+  host           String
+  port           Int
+  username       String?
+  password       String?     @db.Text
+  location       String
+  country        String
+  status         ProxyStatus @default(ACTIVE)
+
+  lastCheckAt    DateTime?
+  responseTimeMs Int?
+  failureCount   Int       @default(0)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  organization Organization    @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  accounts     SocialAccount[]
+
+  @@index([organizationId])
+  @@index([status])
+  @@index([location])
+}
+
+// ============ COMMENTS ============
+
+model CommentTemplate {
+  id             String           @id @default(cuid())
+  organizationId String
+  name           String
+  content        String           @db.Text
+  platform       Platform?
+  tone           CommentTone
+  fomoType       FomoTriggerType?
+  isActive       Boolean          @default(true)
+
+  isAiGenerated Boolean @default(false)
+  aiPrompt      String? @db.Text
+  aiVariations  Json?
+
+  timesUsed     Int   @default(0)
+  avgEngagement Float @default(0)
+
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+  lastUsedAt DateTime?
+
+  organization Organization        @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  commentJobs  CommentJob[]
+  analytics    TemplateAnalytics[]
+
+  @@index([organizationId])
+  @@index([platform])
+  @@index([tone])
+  @@index([isActive])
+}
+
+model CommentJob {
+  id             String @id @default(cuid())
+  organizationId String
+  accountId      String
+  templateId     String?
+  campaignId     String?
+
+  targetPlatform Platform
+  targetPostUrl  String           @db.Text
+  targetPostId   String?
+
+  content     String   @db.Text
+  generatedAt DateTime?
+
+  status       CommentJobStatus @default(PENDING)
+  scheduledFor DateTime?
+  processedAt  DateTime?
+
+  commentId    String? @db.Text
+  commentUrl   String? @db.Text
+  errorMessage String? @db.Text
+  retryCount   Int     @default(0)
+  maxRetries   Int     @default(3)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  account    SocialAccount      @relation(fields: [accountId], references: [id], onDelete: Cascade)
+  template   CommentTemplate?   @relation(fields: [templateId], references: [id])
+  campaign   Campaign?          @relation(fields: [campaignId], references: [id])
+  engagement CommentEngagement?
+
+  @@index([organizationId])
+  @@index([accountId])
+  @@index([status])
+  @@index([scheduledFor])
+  @@index([campaignId])
+}
+
+model CommentEngagement {
+  id           String @id @default(cuid())
+  commentJobId String @unique
+
+  likes       Int @default(0)
+  replies     Int @default(0)
+  impressions Int @default(0)
+
+  linkClicks  Int     @default(0)
+  conversions Int     @default(0)
+  revenue     Decimal @default(0) @db.Decimal(10, 2)
+
+  lastUpdated DateTime @default(now())
+
+  commentJob CommentJob @relation(fields: [commentJobId], references: [id], onDelete: Cascade)
+
+  @@index([commentJobId])
+}
+
+// ============ CAMPAIGNS ============
+
+model Campaign {
+  id             String         @id @default(cuid())
+  organizationId String
+  name           String
+  description    String?        @db.Text
+  status         CampaignStatus @default(DRAFT)
+
+  budgetDaily Decimal @db.Decimal(10, 2)
+  budgetTotal Decimal @db.Decimal(10, 2)
+  budgetSpent Decimal @default(0) @db.Decimal(10, 2)
+
+  targetPlatforms Platform[]
+  targetHashtags  String[]
+  targetAccounts  String[]
+  targetKeywords  String[]
+  demographics    Json?
+
+  startDate      DateTime?
+  endDate        DateTime?
+  timezone       String    @default("UTC")
+  scheduleConfig Json?
+
+  impressions Int     @default(0)
+  engagements Int     @default(0)
+  conversions Int     @default(0)
+  cpc         Decimal @default(0) @db.Decimal(10, 4)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  organization Organization        @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  commentJobs  CommentJob[]
+  analytics    CampaignAnalytics[]
+
+  @@index([organizationId])
+  @@index([status])
+  @@index([startDate, endDate])
+}
+
+// ============ ANALYTICS ============
+
+model AccountAnalytics {
+  id        String   @id @default(cuid())
+  accountId String
+  date      DateTime @db.Date
+
+  commentsPosted    Int   @default(0)
+  totalEngagement   Int   @default(0)
+  avgEngagementRate Float @default(0)
+  impressions       Int   @default(0)
+  healthScore       Int   @default(100)
+
+  createdAt DateTime @default(now())
+
+  account SocialAccount @relation(fields: [accountId], references: [id], onDelete: Cascade)
+
+  @@unique([accountId, date])
+  @@index([accountId])
+  @@index([date])
+}
+
+model TemplateAnalytics {
+  id         String   @id @default(cuid())
+  templateId String
+  date       DateTime @db.Date
+
+  timesUsed     Int   @default(0)
+  totalLikes    Int   @default(0)
+  totalReplies  Int   @default(0)
+  avgEngagement Float @default(0)
+  conversions   Int   @default(0)
+
+  createdAt DateTime @default(now())
+
+  template CommentTemplate @relation(fields: [templateId], references: [id], onDelete: Cascade)
+
+  @@unique([templateId, date])
+  @@index([templateId])
+  @@index([date])
+}
+
+model CampaignAnalytics {
+  id         String   @id @default(cuid())
+  campaignId String
+  date       DateTime @db.Date
+
+  commentsPosted Int     @default(0)
+  impressions    Int     @default(0)
+  engagements    Int     @default(0)
+  conversions    Int     @default(0)
+  spend          Decimal @default(0) @db.Decimal(10, 2)
+  cpc            Decimal @default(0) @db.Decimal(10, 4)
+
+  createdAt DateTime @default(now())
+
+  campaign Campaign @relation(fields: [campaignId], references: [id], onDelete: Cascade)
+
+  @@unique([campaignId, date])
+  @@index([campaignId])
+  @@index([date])
+}
+
+model DailyAnalytics {
+  id             String   @id @default(cuid())
+  organizationId String
+  date           DateTime @db.Date
+
+  totalComments     Int     @default(0)
+  totalEngagement   Int     @default(0)
+  avgEngagementRate Float   @default(0)
+  totalConversions  Int     @default(0)
+  totalRevenue      Decimal @default(0) @db.Decimal(10, 2)
+
+  scarcityUses    Int @default(0)
+  urgencyUses     Int @default(0)
+  socialProofUses Int @default(0)
+  exclusivityUses Int @default(0)
+
+  createdAt DateTime @default(now())
+
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  @@unique([organizationId, date])
+  @@index([organizationId])
+  @@index([date])
+}
+
+// ============ JOB QUEUE ============
+
+model JobQueue {
+  id           String    @id @default(cuid())
+  type         String
+  payload      Json
+  priority     Int       @default(0)
+  status       String    @default("pending")
+  attempts     Int       @default(0)
+  maxAttempts  Int       @default(3)
+  scheduledFor DateTime  @default(now())
+  startedAt    DateTime?
+  completedAt  DateTime?
+  errorMessage String?   @db.Text
+  createdAt    DateTime  @default(now())
+
+  @@index([status, scheduledFor])
+  @@index([type])
+}

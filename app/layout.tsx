@@ -6,8 +6,8 @@ import { ThemeProvider } from "@/components/theme-provider";
 const dmsans = DM_Sans({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-    title: "SaaS Marketing Template",
-    description: "Free marketing template for your next big idea",
+    title: "FOMO Engine - Social Media Automation & FOMO Generation",
+    description: "Drive engagement with AI-powered commenting, multi-account management, ads campaigns, and FOMO triggers. Scale your social presence.",
 };
 
 export default function RootLayout({
