@@ -10,6 +10,10 @@ const globalForPrisma = globalThis as unknown as {
 // Check if connecting to RDS (requires SSL)
 const isRds = process.env.DATABASE_URL?.includes("rds.amazonaws.com");
 
+// Serverless (Vercel) needs minimal connections; dev can use more
+const isServerless = process.env.VERCEL === "1" || process.env.AWS_LAMBDA_FUNCTION_NAME;
+const maxConnections = isServerless ? 1 : 3;
+
 function getPool(): Pool {
     if (globalForPrisma.pool) {
         return globalForPrisma.pool;
@@ -18,9 +22,9 @@ function getPool(): Pool {
     const pool = new Pool({
         connectionString: process.env.DATABASE_URL,
         ssl: isRds ? { rejectUnauthorized: false } : false,
-        max: 3, // Keep pool small to prevent exhaustion
-        min: 1,
-        idleTimeoutMillis: 10000, // Release idle connections quickly
+        max: maxConnections,
+        min: 0, // Allow pool to shrink to 0 in serverless
+        idleTimeoutMillis: 5000, // Release idle connections quickly
         connectionTimeoutMillis: 5000,
     });
 
@@ -37,10 +41,8 @@ function createPrismaClient(): PrismaClient {
     });
 }
 
+// Cache prisma client in globalThis for connection reuse across warm starts
 export const prisma = globalForPrisma.prisma ?? createPrismaClient();
-
-if (process.env.NODE_ENV !== "production") {
-    globalForPrisma.prisma = prisma;
-}
+globalForPrisma.prisma = prisma;
 
 export default prisma;
