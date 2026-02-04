@@ -142,7 +142,7 @@ async function exportAccounts(organizationId: string) {
     orderBy: { createdAt: "desc" },
   });
 
-  return accounts.map((account) => ({
+  return accounts.map((account: typeof accounts[number]) => ({
     id: account.id,
     platform: account.platform,
     username: account.username,
@@ -171,7 +171,7 @@ async function exportCampaigns(organizationId: string) {
     orderBy: { createdAt: "desc" },
   });
 
-  return campaigns.map((campaign) => ({
+  return campaigns.map((campaign: typeof campaigns[number]) => ({
     id: campaign.id,
     name: campaign.name,
     status: campaign.status,
@@ -205,7 +205,7 @@ async function exportAnalytics(
     orderBy: { date: "desc" },
   });
 
-  return analytics.map((a) => ({
+  return analytics.map((a: typeof analytics[number]) => ({
     date: a.date.toISOString().split("T")[0],
     totalComments: a.totalComments,
     totalEngagement: a.totalEngagement,
