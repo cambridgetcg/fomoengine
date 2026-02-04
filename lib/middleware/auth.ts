@@ -83,7 +83,7 @@ export function withAuth<T>(
             }
 
             const membership = user.organizations.find(
-                (m) => m.organizationId === orgId
+                (m: typeof user.organizations[number]) => m.organizationId === orgId
             );
 
             if (!membership) {
