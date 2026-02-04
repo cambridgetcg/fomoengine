@@ -7,27 +7,40 @@ const globalForPrisma = globalThis as unknown as {
     pool: Pool | undefined;
 };
 
-function createPrismaClient() {
-    const pool = globalForPrisma.pool ?? new Pool({
-        connectionString: process.env.DATABASE_URL,
-        ssl: process.env.NODE_ENV === "production" || process.env.DATABASE_URL?.includes("rds.amazonaws.com")
-            ? { rejectUnauthorized: false }
-            : false,
-    });
+// Check if connecting to RDS (requires SSL)
+const isRds = process.env.DATABASE_URL?.includes("rds.amazonaws.com");
 
-    if (process.env.NODE_ENV !== "production") {
-        globalForPrisma.pool = pool;
+function getPool(): Pool {
+    if (globalForPrisma.pool) {
+        return globalForPrisma.pool;
     }
 
+    const pool = new Pool({
+        connectionString: process.env.DATABASE_URL,
+        ssl: isRds ? { rejectUnauthorized: false } : false,
+        max: 3, // Keep pool small to prevent exhaustion
+        min: 1,
+        idleTimeoutMillis: 10000, // Release idle connections quickly
+        connectionTimeoutMillis: 5000,
+    });
+
+    globalForPrisma.pool = pool;
+    return pool;
+}
+
+function createPrismaClient(): PrismaClient {
+    const pool = getPool();
     const adapter = new PrismaPg(pool);
     return new PrismaClient({
         adapter,
-        log: process.env.NODE_ENV === "development" ? ["query", "error", "warn"] : ["error"],
+        log: process.env.NODE_ENV === "development" ? ["error", "warn"] : ["error"],
     });
 }
 
 export const prisma = globalForPrisma.prisma ?? createPrismaClient();
 
-if (process.env.NODE_ENV !== "production") globalForPrisma.prisma = prisma;
+if (process.env.NODE_ENV !== "production") {
+    globalForPrisma.prisma = prisma;
+}
 
 export default prisma;
