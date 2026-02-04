@@ -1,7 +1,6 @@
-import { getServerSession } from "next-auth";
+import { auth, currentUser } from "@clerk/nextjs/server";
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
-import { authOptions } from "@/app/api/auth/[...nextauth]/options";
 import { ApiResponse, AuthContext } from "@/lib/types/api";
 
 export type { AuthContext } from "@/lib/types/api";
@@ -27,9 +26,9 @@ export function withAuth<T>(
 ) {
     return async (req: NextRequest, routeContext?: T): Promise<NextResponse> => {
         try {
-            const session = await getServerSession(authOptions);
+            const { userId: clerkUserId } = await auth();
 
-            if (!session?.user?.email) {
+            if (!clerkUserId) {
                 return NextResponse.json<ApiResponse<null>>(
                     {
                         success: false,
@@ -42,14 +41,77 @@ export function withAuth<T>(
                 );
             }
 
-            const user = await prisma.user.findUnique({
-                where: { email: session.user.email },
+            // Get Clerk user for email
+            const clerkUser = await currentUser();
+            const email = clerkUser?.emailAddresses[0]?.emailAddress;
+
+            if (!email) {
+                return NextResponse.json<ApiResponse<null>>(
+                    {
+                        success: false,
+                        error: {
+                            code: "UNAUTHORIZED",
+                            message: "No email found for user",
+                        },
+                    },
+                    { status: 401 }
+                );
+            }
+
+            // Find or create user in database
+            let user = await prisma.user.findUnique({
+                where: { email },
                 include: {
                     organizations: {
                         include: { organization: true },
                     },
                 },
             });
+
+            // Auto-create user if not exists (first login via Clerk)
+            if (!user) {
+                user = await prisma.user.create({
+                    data: {
+                        email,
+                        name: clerkUser?.firstName
+                            ? `${clerkUser.firstName} ${clerkUser.lastName || ""}`.trim()
+                            : email.split("@")[0],
+                        clerkId: clerkUserId,
+                        avatarUrl: clerkUser?.imageUrl,
+                    },
+                    include: {
+                        organizations: {
+                            include: { organization: true },
+                        },
+                    },
+                });
+
+                // Create default organization for new user
+                const org = await prisma.organization.create({
+                    data: {
+                        name: `${user.name}'s Organization`,
+                        slug: `org-${user.id.slice(0, 8)}`,
+                    },
+                });
+
+                await prisma.organizationMember.create({
+                    data: {
+                        userId: user.id,
+                        organizationId: org.id,
+                        role: "OWNER",
+                    },
+                });
+
+                // Refetch user with organizations
+                user = await prisma.user.findUnique({
+                    where: { id: user.id },
+                    include: {
+                        organizations: {
+                            include: { organization: true },
+                        },
+                    },
+                });
+            }
 
             if (!user) {
                 return NextResponse.json<ApiResponse<null>>(
@@ -62,6 +124,14 @@ export function withAuth<T>(
                     },
                     { status: 404 }
                 );
+            }
+
+            // Update clerkId if not set (for existing users)
+            if (!user.clerkId) {
+                await prisma.user.update({
+                    where: { id: user.id },
+                    data: { clerkId: clerkUserId },
+                });
             }
 
             // Get organization from header or default to first
