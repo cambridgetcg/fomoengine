@@ -10,6 +10,9 @@ const globalForPrisma = globalThis as unknown as {
 function createPrismaClient() {
     const pool = globalForPrisma.pool ?? new Pool({
         connectionString: process.env.DATABASE_URL,
+        ssl: process.env.NODE_ENV === "production" || process.env.DATABASE_URL?.includes("rds.amazonaws.com")
+            ? { rejectUnauthorized: false }
+            : false,
     });
 
     if (process.env.NODE_ENV !== "production") {

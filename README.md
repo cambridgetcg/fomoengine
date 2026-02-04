@@ -1,21 +1,25 @@
 # FOMO Engine
 
-**Intelligent social media engagement automation powered by psychological triggers.**
+**Comment automation for SaaS growth, powered by FOMO psychology.**
 
 ## Mission Statement
 
-FOMO Engine exists to democratize high-converting social media engagement strategies. We believe that the psychological principles behind viral marketing—scarcity, urgency, social proof, and exclusivity—should be accessible to businesses of all sizes, not just those with dedicated growth teams.
+FOMO Engine exists to help SaaS founders convert social media attention into signups.
 
-Our mission is to automate authentic, contextually-relevant engagement at scale while maintaining the human touch that builds genuine connections.
+Social platforms are where your prospects live. They scroll past thousands of posts daily. The difference between being ignored and being clicked comes down to psychology—specifically, the fear of missing out.
+
+We automate the hardest part of social selling: showing up consistently with comments that trigger action. Not spam. Not generic replies. Contextual, platform-native comments that leverage scarcity, urgency, social proof, and exclusivity—the four forces that move people from "interesting" to "I need this now."
 
 ## Purpose
 
-FOMO Engine solves the challenge of consistent, high-quality social media engagement by:
+SaaS founders face a brutal reality: social media works, but it doesn't scale. You can't personally comment on every relevant post. You can't maintain dozens of accounts without burning them. You can't A/B test psychological triggers manually.
 
-1. **Automating the mundane** — Comment scheduling, account rotation, and health monitoring run autonomously
-2. **Amplifying effectiveness** — AI-generated comments leverage proven FOMO triggers tailored to each platform
-3. **Protecting investments** — Intelligent warmup sequences and health checks safeguard account longevity
-4. **Measuring impact** — Comprehensive analytics connect engagement activities to business outcomes
+FOMO Engine solves this by:
+
+1. **Automating comment deployment** — AI generates platform-specific comments using proven FOMO triggers (scarcity, urgency, social proof, exclusivity), then posts them through managed account pools
+2. **Protecting account longevity** — Warmup sequences, daily limits, health scoring, and proxy rotation keep accounts alive instead of suspended
+3. **Measuring what matters** — Track conversions, not just likes. Know which FOMO trigger converts best for your SaaS. Attribute signups to specific comments
+4. **Scaling without hiring** — One dashboard manages campaigns across Instagram, Twitter/X, TikTok, Facebook, LinkedIn, and YouTube
 
 ## Core Capabilities
 
