@@ -23,7 +23,9 @@
 import {
   AI_CLASSIFIABLE,
   CATEGORY_BY_ID,
+  PRINCIPLES,
   type CategoryId,
+  type Principle,
   type Severity,
 } from "./taxonomy";
 import { scanWithRules, detectScamComposite } from "./regex.service";
@@ -37,6 +39,10 @@ export type ConfidenceBand = "likely" | "possible";
 export interface Flag {
   categoryId: CategoryId;
   label: string;
+  /** The proven psychological lever this tactic pulls (Cialdini / Kahneman / Thaler). */
+  principle: Principle;
+  /** One plain sentence explaining that lever. */
+  lever: string;
   why: string;
   whatToDo: string;
   citation: string;
@@ -140,6 +146,8 @@ export class DetectionService {
     return {
       categoryId: id,
       label: c.label,
+      principle: c.principle,
+      lever: PRINCIPLES[c.principle].lever,
       why: c.why,
       whatToDo: c.whatToDo,
       citation: c.citation,

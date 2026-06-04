@@ -119,8 +119,12 @@ function FlagCard({ flag }: { flag: Flag }) {
         <strong className="text-base">{flag.label}</strong>
         <span className="text-sm text-neutral-600">· {s.word}</span>
         <span className="text-sm text-neutral-500">· {flag.confidence}</span>
+        <span className="rounded bg-neutral-200/70 px-1.5 py-0.5 text-xs text-neutral-700">
+          lever: {flag.principle}
+        </span>
       </p>
       <p className="mt-1.5 text-neutral-800">{flag.why}</p>
+      <p className="mt-1 text-xs italic text-neutral-500">Why it works on the mind: {flag.lever}</p>
       {flag.evidence && (
         <p className="mt-1.5 text-sm text-neutral-600">
           Found: <q className="italic">{flag.evidence}</q>
