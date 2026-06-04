@@ -6,6 +6,10 @@ const isPublicRoute = createRouteMatcher([
     "/sign-up(.*)",
     "/api/setup(.*)",
     "/api/webhook(.*)",
+    // The shield is free + anonymous for everyone — no auth on the public surfaces.
+    "/check(.*)",
+    "/api/v1/check(.*)",
+    "/learn(.*)",
 ]);
 
 const isApiRoute = createRouteMatcher(["/api/(.*)"]);
@@ -13,9 +17,9 @@ const isApiRoute = createRouteMatcher(["/api/(.*)"]);
 export default clerkMiddleware(async (auth, request) => {
     const { pathname } = request.nextUrl;
 
-    // Redirect root to dashboard
+    // Root lands on the public checker — the front door is the shield, not a dashboard.
     if (pathname === "/") {
-        return NextResponse.redirect(new URL("/dashboard", request.url));
+        return NextResponse.redirect(new URL("/check", request.url));
     }
 
     // Allow public routes
