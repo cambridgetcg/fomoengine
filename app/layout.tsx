@@ -5,10 +5,47 @@ import { ThemeProvider } from "@/components/theme-provider";
 
 const dmsans = DM_Sans({ subsets: ["latin"] });
 
+const SITE = "https://fomoengine-cambridgetcgs-projects.vercel.app";
+const TAGLINE =
+    "Paste any ad, message, or review and see the pressure tactics, the feeling each one is poking, and the plain truth that dissolves it. Free, no login, nothing saved.";
+
 export const metadata: Metadata = {
-    title: "Is this trying to manipulate you?",
-    description:
-        "Paste an ad, message, product page, or review and get a plain-language read on the pressure tactics it uses — free, no login, nothing saved.",
+    metadataBase: new URL(SITE),
+    title: {
+        default: "Is this trying to manipulate you?",
+        template: "%s · the authenticity shield",
+    },
+    description: TAGLINE,
+    applicationName: "the authenticity shield",
+    keywords: [
+        "dark patterns",
+        "manipulation detector",
+        "is this a scam",
+        "scam checker",
+        "phishing checker",
+        "deceptive design",
+        "FOMO",
+        "pressure tactics",
+        "consumer protection",
+    ],
+    authors: [{ name: "Cambridge TCG" }],
+    creator: "Cambridge TCG",
+    alternates: { canonical: "/check" },
+    openGraph: {
+        type: "website",
+        siteName: "the authenticity shield",
+        url: "/check",
+        title: "Is this trying to manipulate you?",
+        description:
+            "See the pressure tactics in any ad, message, or review — the feeling each one pokes, and the truth that dissolves it. Free, nothing saved.",
+    },
+    twitter: {
+        card: "summary_large_image",
+        title: "Is this trying to manipulate you?",
+        description:
+            "See the pressure tactics in any ad, message, or review — the feeling each one pokes, and the truth that dissolves it. Free, nothing saved.",
+    },
+    robots: { index: true, follow: true },
 };
 
 export default function RootLayout({
