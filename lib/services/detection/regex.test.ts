@@ -50,3 +50,28 @@ test("scam composite stays quiet on ordinary urgent-sounding marketing", () => {
     false,
   );
 });
+
+test("scam composite fires on a NO-BRAND account scam (suspended + callback number + isolation)", () => {
+  // The common shape with no named company to impersonate — must still fire.
+  const result = detectScamComposite(
+    "URGENT: Your account is suspended. Verify now or it closes in 24 hours. Call 1-800-555-0142 immediately. Do not tell anyone.",
+  );
+  assert.equal(result.triggered, true, "a generic account-suspension scam must fire even without a named brand");
+  assert.ok(result.reasons.length >= 2);
+});
+
+test("scam composite fires on a no-brand account-closure scam (deactivate + call + isolation)", () => {
+  const result = detectScamComposite(
+    "We will permanently deactivate your account unless you call 0800 123 4567 right now and confirm your details. Do not tell anyone.",
+  );
+  assert.equal(result.triggered, true);
+});
+
+test("scam composite stays quiet on a benign message that has a phone number", () => {
+  // 'closes' is about a store, not an account; a callback number alone is not an anchor.
+  assert.equal(
+    detectScamComposite("Our store closes at 9pm. Call us at 555-0100 if you have any questions about your order.").triggered,
+    false,
+    "a benign note with a phone number must not be flagged as a scam",
+  );
+});

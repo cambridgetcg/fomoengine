@@ -57,13 +57,13 @@ const IMPERSONATION =
   /\b(microsoft|apple|google|amazon|paypal|netflix|the irs|hmrc|your bank|customs|immigration|uscis|social security|government|tech support|support team|account team|security team|the lottery)\b/i;
 
 const THREAT_OR_LOCKOUT =
-  /\b(virus|infected|hacked|compromised|suspended|locked|frozen|unauthorized (login|access|charge)|legal action|arrest|deported|owe|overdue|final notice|verify your (account|identity) (now|immediately))\b/i;
+  /\b(virus|infected|hacked|compromised|suspended|locked|frozen|deactivat\w+|unauthorized (login|access|charge)|legal action|arrest|deported|owe|overdue|final notice|verify your (account|identity) (now|immediately)|(your |the )(account|card|access|profile|membership|payment) (has been |is |will (soon )?be |was )(closed|close[ds]|terminated|restricted|disabled|blocked|put on hold|limited))\b/i;
 
 const ACT_NOW_CONTACT =
-  /\b(call (this number|now|immediately)|dial \+?\d|press \d|click (here|the link) (now|immediately|to (verify|secure|unlock))|send (the )?(code|gift card|crypto|bitcoin|payment)|wire (the )?(money|funds))\b/i;
+  /\b(call (this number|us|back|now|immediately)|(call|dial|text|phone)\s+(?:us\s+)?(?:on\s+|at\s+|back\s+)?(?:\+?\d|\(\d)[\d().\s-]{5,}\d|press \d|click (here|the link)|send (the )?(code|gift card|crypto|bitcoin|payment)|wire (the )?(money|funds))\b/i;
 
 const ISOLATION =
-  /\b(don'?t tell (anyone|your family|the bank)|keep this (between us|confidential|private|a secret)|this is (our|a) secret|only you|the (bonus|withdrawal|offer) (window|closes|expires) in \d)\b/i;
+  /\b((do not|don'?t|dont|never)\s+(tell|share (this|it) with|inform|contact)\s+(anyone|your family|the bank|the police|a soul|family|us)|tell no one|keep this (between us|confidential|private|to yourself|a secret)|this is (our|a) secret|act alone|only you|the (bonus|withdrawal|offer) (window|closes|expires) in \d)\b/i;
 
 export interface ScamComposite {
   triggered: boolean;
