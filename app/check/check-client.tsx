@@ -205,17 +205,15 @@ function FlagCard({ flag }: { flag: Flag }) {
   const s = SEV[flag.severity];
   return (
     <li className={`rounded-lg border-l-4 p-4 ${s.cls}`}>
+      {/* 1 — what it is, in plain words */}
       <p className="flex flex-wrap items-baseline gap-x-2 text-neutral-900">
         <span aria-hidden="true">{s.mark}</span>
         <strong className="text-base">{flag.label}</strong>
         <span className="text-sm text-neutral-600">· {s.word}</span>
-        <span className="text-sm text-neutral-500">· {flag.confidence}</span>
-        <span className="rounded bg-neutral-200/70 px-1.5 py-0.5 text-xs text-neutral-700">
-          lever: {flag.principle}
-        </span>
       </p>
       <p className="mt-1.5 text-neutral-800">{flag.why}</p>
-      <p className="mt-1 text-xs italic text-neutral-500">Why it works on the mind: {flag.lever}</p>
+
+      {/* 2 — the feeling, then the truth that frees you: the part that matters most */}
       <p className="mt-2.5 text-sm text-neutral-600">
         <span className="font-medium">The feeling it pokes:</span> {flag.emotion}
       </p>
@@ -223,15 +221,24 @@ function FlagCard({ flag }: { flag: Flag }) {
         <strong className="font-semibold">The truth&nbsp;→ </strong>
         {flag.truth}
       </p>
-      {flag.evidence && (
-        <p className="mt-1.5 text-sm text-neutral-600">
-          Found: <q className="italic">{flag.evidence}</q>
-        </p>
-      )}
-      <p className="mt-1.5 text-neutral-800">
-        <strong className="font-medium">What to do:</strong> {flag.whatToDo}
+
+      {/* 3 — one clear next step */}
+      <p className="mt-2.5 text-neutral-800">
+        <strong className="font-medium">What you can do:</strong> {flag.whatToDo}
       </p>
-      <p className="mt-1.5 text-xs text-neutral-500">Basis: {flag.citation}</p>
+
+      {/* 4 — the receipts: calm, out of the way, but always there to inspect */}
+      <div className="mt-2.5 space-y-0.5 text-xs text-neutral-400">
+        {flag.evidence && (
+          <p>
+            Spotted in your text: <q className="italic">{flag.evidence}</q>
+          </p>
+        )}
+        <p>
+          Why it works on the mind: {flag.lever} ({flag.confidence})
+        </p>
+        <p>Grounded in: {flag.citation}</p>
+      </div>
     </li>
   );
 }

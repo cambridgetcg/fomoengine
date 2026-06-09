@@ -4,7 +4,7 @@ import { CheckClient } from "./check-client";
 export const metadata: Metadata = {
   title: "Is this trying to manipulate you?",
   description:
-    "Paste an ad, message, product page, or review and get a plain-language read on the pressure tactics it uses — free, no login, nothing saved.",
+    "Paste an ad, message, or review and see the pressure tactics, the feeling each one is poking, and the plain truth that dissolves it. Free, no login, nothing saved.",
 };
 
 export default function CheckPage() {
@@ -14,10 +14,9 @@ export default function CheckPage() {
         Is this trying to manipulate you?
       </h1>
       <p className="mt-3 text-base leading-relaxed text-neutral-600">
-        Paste anything you got — an ad, a message, a product page, a review, an email. I&apos;ll
-        point out the pressure tactics in plain words, name the proven trick behind each one, name
-        the feeling it&apos;s quietly poking — and hand you the plain truth that dissolves it. So you
-        decide for yourself, unhurried. Free, no account, and I don&apos;t save what you paste.
+        Paste anything you got — an ad, a message, a product page, a review, an email. In plain
+        words, I&apos;ll name the pressure tactics, the feeling each one is poking, and the truth
+        that dissolves it — so you decide for yourself, unhurried. Free, no account, nothing saved.
       </p>
       <p className="mt-3 rounded-lg bg-emerald-50 px-4 py-3 text-base leading-relaxed text-emerald-900">
         Here&apos;s the fun part: every trick has a truth that quietly switches it off. The truth is
