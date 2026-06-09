@@ -1,0 +1,28 @@
+name: shield-guardrail
+
+# PLEDGE.md promises the free path can never be gated or degraded, and says that
+# promise is enforced by free-tier.guardrail.test.ts "which fails CI if a change
+# would gate or degrade the free path." This workflow IS that CI: it runs the full
+# suite (including the guardrail) + a typecheck on every push to main and every PR,
+# so the pledge is a true mechanical gate, not a slogan. An anti-manipulation tool
+# must not ship an unverifiable safety claim about itself.
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  guardrail:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: typecheck
+        run: npx tsc --noEmit
+      - name: shield guardrail + full suite
+        run: npm test

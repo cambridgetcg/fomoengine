@@ -23,6 +23,7 @@
 import {
   AI_CLASSIFIABLE,
   CATEGORY_BY_ID,
+  EMOTIONAL_TRUTH,
   PRINCIPLES,
   type CategoryId,
   type Principle,
@@ -31,10 +32,24 @@ import {
 import { scanWithRules, detectScamComposite } from "./regex.service";
 
 const MAX_CHARS = 20000;
+// Free / anonymous: the fast, cheap models. Paid tiers: a stronger model for the
+// nuanced classification pass. Both are env-overridable so model choice isn't hardcoded.
 const OPENAI_MODEL = "gpt-4o-mini";
+const OPENAI_MODEL_PAID = process.env.OPENAI_MODEL_PAID || "gpt-4o";
 const ANTHROPIC_MODEL = "claude-3-haiku-20240307";
+const ANTHROPIC_MODEL_PAID = process.env.ANTHROPIC_MODEL_PAID || "claude-3-5-sonnet-latest";
 
 export type ConfidenceBand = "likely" | "possible";
+
+/**
+ * Which model tier classifies the text. Paid swaps in a stronger model; it is
+ * strictly ADDITIVE — the deterministic rules pass and the scam-composite tier
+ * always run regardless of tier, so a free result is never worse than today's.
+ */
+export type AnalyzeTier = "free" | "paid";
+export interface AnalyzeOptions {
+  tier?: AnalyzeTier;
+}
 
 export interface Flag {
   categoryId: CategoryId;
@@ -45,6 +60,10 @@ export interface Flag {
   lever: string;
   why: string;
   whatToDo: string;
+  /** The feeling this tactic hijacks — named kindly; the person is never the problem. */
+  emotion: string;
+  /** The honest, freeing truth that dissolves that feeling and hands clarity back. */
+  truth: string;
   citation: string;
   severity: Severity;
   /** The exact quoted span that triggered the flag, or null if AI-inferred without a clean span. */
@@ -80,9 +99,10 @@ const DISCLAIMER =
   "I read only the words you pasted — I did not visit any website. I name patterns that are consistent with manipulation; I do not claim any specific person, product, or review is fraudulent. You decide.";
 
 export class DetectionService {
-  async analyze(rawText: string): Promise<AnalysisResult> {
+  async analyze(rawText: string, options: AnalyzeOptions = {}): Promise<AnalysisResult> {
     const text = rawText.slice(0, MAX_CHARS);
     const provider = this.getAIProvider();
+    const model = this.modelFor(provider, options.tier ?? "free");
 
     // 1. Deterministic pass — always runs, even with no AI key.
     const ruleFlags = scanWithRules(text);
@@ -95,7 +115,7 @@ export class DetectionService {
     let aiUsed = false;
     if (provider !== "fallback") {
       try {
-        const aiFlags = await this.classifyWithAI(provider, text);
+        const aiFlags = await this.classifyWithAI(provider, text, model);
         aiUsed = true;
         for (const af of aiFlags) {
           const id = af.category_id as CategoryId;
@@ -130,7 +150,7 @@ export class DetectionService {
       flags,
       summary: this.buildSummary(flags, composite.triggered),
       scamWarning: composite.triggered,
-      checkedBy: this.describeCheckedBy(provider, aiUsed),
+      checkedBy: this.describeCheckedBy(provider, aiUsed, model),
       disclaimer: DISCLAIMER,
       inputChars: text.length,
     };
@@ -143,6 +163,7 @@ export class DetectionService {
     source: Flag["source"],
   ): Flag {
     const c = CATEGORY_BY_ID[id];
+    const et = EMOTIONAL_TRUTH[id];
     return {
       categoryId: id,
       label: c.label,
@@ -150,6 +171,8 @@ export class DetectionService {
       lever: PRINCIPLES[c.principle].lever,
       why: c.why,
       whatToDo: c.whatToDo,
+      emotion: et.emotion,
+      truth: et.truth,
       citation: c.citation,
       severity: c.severity,
       evidence,
@@ -177,11 +200,22 @@ export class DetectionService {
     return `This uses ${n} pressure tactics worth knowing about. You still get to decide, unhurried.`;
   }
 
-  private describeCheckedBy(provider: Provider, aiUsed: boolean): string {
+  private describeCheckedBy(provider: Provider, aiUsed: boolean, model: string): string {
     if (provider === "fallback" || !aiUsed) {
       return "Checked by: plain rules only (no AI model configured). It still works — just less nuanced.";
     }
-    return `Checked by: plain rules + an AI reader (${provider === "openai" ? OPENAI_MODEL : ANTHROPIC_MODEL}).`;
+    return `Checked by: plain rules + an AI reader (${model}).`;
+  }
+
+  /**
+   * Pick the classification model. Paid tiers get the stronger model; everyone
+   * else gets the fast, cheap one. The deterministic rules + scam-composite passes
+   * are tier-independent, so the free result is never degraded by this choice.
+   */
+  private modelFor(provider: Provider, tier: AnalyzeTier): string {
+    if (provider === "openai") return tier === "paid" ? OPENAI_MODEL_PAID : OPENAI_MODEL;
+    if (provider === "anthropic") return tier === "paid" ? ANTHROPIC_MODEL_PAID : ANTHROPIC_MODEL;
+    return OPENAI_MODEL;
   }
 
   private getAIProvider(): Provider {
@@ -207,9 +241,10 @@ export class DetectionService {
     return { system, user };
   }
 
-  private async classifyWithAI(provider: Provider, text: string): Promise<RawAiFlag[]> {
+  private async classifyWithAI(provider: Provider, text: string, model: string): Promise<RawAiFlag[]> {
     const { system, user } = this.buildPrompt(text);
-    const json = provider === "openai" ? await this.callOpenAI(system, user) : await this.callAnthropic(system, user);
+    const json =
+      provider === "openai" ? await this.callOpenAI(system, user, model) : await this.callAnthropic(system, user, model);
     return this.parseFlags(json);
   }
 
@@ -228,7 +263,7 @@ export class DetectionService {
     }
   }
 
-  private async callOpenAI(system: string, user: string): Promise<string> {
+  private async callOpenAI(system: string, user: string, model: string): Promise<string> {
     const response = await fetch("https://api.openai.com/v1/chat/completions", {
       method: "POST",
       headers: {
@@ -236,7 +271,7 @@ export class DetectionService {
         Authorization: `Bearer ${process.env.OPENAI_API_KEY}`,
       },
       body: JSON.stringify({
-        model: OPENAI_MODEL,
+        model,
         messages: [
           { role: "system", content: system },
           { role: "user", content: user },
@@ -251,7 +286,7 @@ export class DetectionService {
     return data.choices?.[0]?.message?.content ?? "";
   }
 
-  private async callAnthropic(system: string, user: string): Promise<string> {
+  private async callAnthropic(system: string, user: string, model: string): Promise<string> {
     const response = await fetch("https://api.anthropic.com/v1/messages", {
       method: "POST",
       headers: {
@@ -260,7 +295,7 @@ export class DetectionService {
         "anthropic-version": "2023-06-01",
       },
       body: JSON.stringify({
-        model: ANTHROPIC_MODEL,
+        model,
         max_tokens: 800,
         temperature: 0,
         system,

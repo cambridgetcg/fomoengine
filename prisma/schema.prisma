@@ -436,3 +436,44 @@ model JobQueue {
   @@index([status, scheduledFor])
   @@index([type])
 }
+
+// ============ PUBLIC METERED API ============
+// Intentionally decoupled from User / Organization / Clerk: the public shield API
+// is anonymous-first. A key only ADDS quota + the stronger model — it can never
+// gate or degrade the free anonymous path. We store sha256(secret), never the
+// secret itself; the raw key is shown once, at mint time.
+
+enum ApiTier {
+  FREE
+  STARTER
+  PRO
+}
+
+model ApiKey {
+  id           String    @id @default(cuid())
+  name         String // human label, e.g. "Acme prod"
+  keyHash      String    @unique // sha256(secret); the raw secret is never stored
+  prefix       String // first chars for display, e.g. "sk_live_a1b2"
+  tier         ApiTier   @default(FREE) // safest default; provisioning sets the real tier from PLANS
+  monthlyQuota Int       @default(1000) // most-restrictive default; never silently grant a generous quota
+  revokedAt    DateTime?
+  lastUsedAt   DateTime?
+  createdAt    DateTime  @default(now())
+
+  usage ApiUsage[]
+
+  @@index([keyHash])
+}
+
+model ApiUsage {
+  id        String   @id @default(cuid())
+  apiKeyId  String
+  yearMonth String // calendar-month bucket, e.g. "2026-06"
+  count     Int      @default(0)
+  updatedAt DateTime @updatedAt
+
+  apiKey ApiKey @relation(fields: [apiKeyId], references: [id], onDelete: Cascade)
+
+  @@unique([apiKeyId, yearMonth])
+  @@index([apiKeyId])
+}

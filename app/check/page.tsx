@@ -15,9 +15,14 @@ export default function CheckPage() {
       </h1>
       <p className="mt-3 text-base leading-relaxed text-neutral-600">
         Paste anything you got — an ad, a message, a product page, a review, an email. I&apos;ll
-        point out the pressure tactics in plain words, name the proven trick behind each one, and
-        tell you what to do — so you can decide for yourself, unhurried. Free, no account, and I
-        don&apos;t save what you paste.
+        point out the pressure tactics in plain words, name the proven trick behind each one, name
+        the feeling it&apos;s quietly poking — and hand you the plain truth that dissolves it. So you
+        decide for yourself, unhurried. Free, no account, and I don&apos;t save what you paste.
+      </p>
+      <p className="mt-3 rounded-lg bg-emerald-50 px-4 py-3 text-base leading-relaxed text-emerald-900">
+        Here&apos;s the fun part: every trick has a truth that quietly switches it off. The truth is
+        always on your side — it hands back your time, your money, and your calm — and honestly, once
+        you start seeing through this stuff, it&apos;s kind of a thrill. 🛡️
       </p>
 
       <div className="mt-8">
@@ -40,7 +45,8 @@ export default function CheckPage() {
             <span className="text-neutral-700">
               <strong className="font-medium text-neutral-900">I name each pressure tactic</strong>{" "}
               and the proven mind-trick behind it (a fake countdown, &ldquo;only 2 left,&rdquo; a
-              guilt-trip &ldquo;no&rdquo; button), in plain words, with what to do about it.
+              guilt-trip &ldquo;no&rdquo; button) — plus the feeling it&apos;s poking and the plain
+              truth that dissolves it, with what to do.
             </span>
           </li>
           <li className="flex gap-3">
@@ -70,7 +76,8 @@ export default function CheckPage() {
 { "text": "Only 2 left! Offer ends in 04:59…" }
 
 → { "flags": [ { "label", "principle", "lever",
-                 "why", "whatToDo", "confidence",
+                 "why", "emotion", "truth",
+                 "whatToDo", "confidence",
                  "evidence", "citation" } ], … }`}</code>
         </pre>
       </section>

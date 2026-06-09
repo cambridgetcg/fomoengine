@@ -2,12 +2,20 @@
 
 import { useState } from "react";
 import type { AnalysisResult, Flag } from "@/lib/services/detection/detection.service";
+import { annotate, hasHighlights } from "@/lib/services/detection/annotate";
 
 /** Severity shown so it's perceivable WITHOUT color (mark + word), not by color alone. */
 const SEV = {
   danger: { word: "Scam pattern", mark: "⚠", cls: "border-red-600 bg-red-50" },
   caution: { word: "Pressure tactic", mark: "▲", cls: "border-amber-500 bg-amber-50" },
   info: { word: "Worth noticing", mark: "•", cls: "border-neutral-400 bg-neutral-50" },
+} as const;
+
+/** Inline-highlight styling per severity — underline + tint so it reads without color too. */
+const MARK = {
+  danger: "bg-red-100 underline decoration-red-600 decoration-2 underline-offset-2",
+  caution: "bg-amber-100 underline decoration-amber-500 decoration-2 underline-offset-2",
+  info: "bg-neutral-200 underline decoration-neutral-400 decoration-2 underline-offset-2",
 } as const;
 
 /** One-click examples so anyone can see what the tool does, instantly — no need to go find text. */
@@ -29,6 +37,8 @@ const EXAMPLES: { label: string; text: string }[] = [
 export function CheckClient() {
   const [text, setText] = useState("");
   const [result, setResult] = useState<AnalysisResult | null>(null);
+  /** The exact text that produced `result` — so editing the box doesn't desync the highlights. */
+  const [checkedText, setCheckedText] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -46,7 +56,10 @@ export function CheckClient() {
       });
       const json = await res.json();
       if (!json.success) setError(json.error?.message ?? "Something went wrong.");
-      else setResult(json.data as AnalysisResult);
+      else {
+        setResult(json.data as AnalysisResult);
+        setCheckedText(body);
+      }
     } catch {
       setError("Couldn't reach the checker. Check your connection and try again.");
     } finally {
@@ -118,18 +131,20 @@ export function CheckClient() {
             {error}
           </p>
         )}
-        {result && <Results result={result} />}
+        {result && <Results result={result} checkedText={checkedText} />}
       </div>
     </div>
   );
 }
 
-function Results({ result }: { result: AnalysisResult }) {
+function Results({ result, checkedText }: { result: AnalysisResult; checkedText: string }) {
   return (
     <section aria-label="What I found">
       <h2 className={`text-lg font-semibold ${result.scamWarning ? "text-red-700" : "text-neutral-900"}`}>
         {result.summary}
       </h2>
+
+      <AnnotatedText text={checkedText} flags={result.flags} />
 
       {result.flags.length > 0 && (
         <ul className="mt-4 space-y-3">
@@ -144,6 +159,45 @@ function Results({ result }: { result: AnalysisResult }) {
         <p>{result.disclaimer}</p>
       </div>
     </section>
+  );
+}
+
+/**
+ * The pasted text, replayed with each manipulative span highlighted in place — so
+ * you see the tactic in your own words, not just in a list. Rendered as React nodes
+ * (never innerHTML), so highlighting untrusted pasted text can't inject markup.
+ */
+function AnnotatedText({ text, flags }: { text: string; flags: Flag[] }) {
+  const segments = annotate(text, flags);
+  if (!hasHighlights(segments)) return null; // nothing to point at — don't show an empty panel
+
+  const marked = segments.filter((s) => s.flag);
+  return (
+    <details className="mt-4 rounded-lg border border-neutral-200 bg-white" open>
+      <summary className="cursor-pointer select-none px-4 py-2.5 text-sm font-medium text-neutral-700 marker:text-neutral-400">
+        See the {marked.length === 1 ? "tactic" : `${marked.length} tactics`} in the text
+      </summary>
+      <p className="whitespace-pre-wrap break-words px-4 pb-4 text-[0.95rem] leading-7 text-neutral-800">
+        {segments.map((s, i) =>
+          s.flag ? (
+            <mark
+              key={i}
+              className={`rounded-sm px-0.5 text-neutral-900 ${MARK[s.flag.severity]}`}
+              aria-label={`${s.flag.label}: ${s.flag.lever}`}
+              title={`${SEV[s.flag.severity].word}: ${s.flag.label}`}
+            >
+              {s.text}
+            </mark>
+          ) : (
+            <span key={i}>{s.text}</span>
+          ),
+        )}
+      </p>
+      <p className="px-4 pb-3 text-xs text-neutral-500">
+        Highlights mark the exact words that triggered each flag. Some tactics are about the whole
+        message, not one phrase — those appear in the list below without a highlight.
+      </p>
+    </details>
   );
 }
 
@@ -162,6 +216,13 @@ function FlagCard({ flag }: { flag: Flag }) {
       </p>
       <p className="mt-1.5 text-neutral-800">{flag.why}</p>
       <p className="mt-1 text-xs italic text-neutral-500">Why it works on the mind: {flag.lever}</p>
+      <p className="mt-2.5 text-sm text-neutral-600">
+        <span className="font-medium">The feeling it pokes:</span> {flag.emotion}
+      </p>
+      <p className="mt-1.5 rounded-md border-l-2 border-emerald-500 bg-emerald-50 px-3 py-2 text-[0.95rem] text-emerald-900">
+        <strong className="font-semibold">The truth&nbsp;→ </strong>
+        {flag.truth}
+      </p>
       {flag.evidence && (
         <p className="mt-1.5 text-sm text-neutral-600">
           Found: <q className="italic">{flag.evidence}</q>

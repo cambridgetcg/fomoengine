@@ -241,7 +241,7 @@ export const DETECTION_CATEGORIES: DetectionCategory[] = [
     principle: "Default effect",
     why: "A 'free' start quietly defaults into recurring charges, betting inertia keeps you paying after you've forgotten.",
     whatToDo: "Before a free trial, find out exactly when and how much you'll be charged and how to cancel. If cancelling is hidden, walk away.",
-    citation: "Brignull (Forced Continuity); FTC Click-to-Cancel Rule; EU DSA",
+    citation: "Brignull (Forced Continuity); FTC click-to-cancel enforcement (specific Rule vacated 2025; pursued as deceptive conduct); EU DSA",
     severity: "caution",
     regexSignals: [
       { re: /\bfree trial\b/i, label: "free-trial hook" },
@@ -306,3 +306,78 @@ export const CATEGORY_BY_ID: Record<CategoryId, DetectionCategory> = DETECTION_C
 
 /** Categories the AI classifier labels (everything except the composite, which we compute). */
 export const AI_CLASSIFIABLE = DETECTION_CATEGORIES.filter((c) => c.id !== "scam_composite");
+
+/**
+ * The truth of emotions.
+ *
+ * Every manipulation is an attack on a feeling. Naming the tactic tells you the
+ * trick; naming the feeling — and then telling the plain truth that dissolves it —
+ * gives you your clarity back. That handover is the whole point of the shield.
+ *
+ * Voice rules (this is the soul of the product, so they are strict):
+ *  - `emotion` names the feeling being hijacked, kindly. The person is never the
+ *    problem — the feeling was engineered into them on purpose.
+ *  - `truth` is honest, accurate, and FREEING. The truth is a relief, not a lecture:
+ *    it hands back time, money, agency, or calm, and it's allowed to be a little fun.
+ *  - It must itself be free of the manipulation it describes — no fear-mongering, no
+ *    shaming the reader for being targeted, no overclaim. (The scam truth stays warm
+ *    and serious, never flippant — but still empowering, never frightening for its
+ *    own sake.)
+ *
+ * Record<CategoryId, …> means a new category cannot ship without its truth — the
+ * compiler enforces it, and free-tier.guardrail.test.ts asserts none is empty.
+ */
+export const EMOTIONAL_TRUTH: Record<CategoryId, { emotion: string; truth: string }> = {
+  manufactured_urgency: {
+    emotion: "Manufactured panic — the jolt that you'll lose out if you pause.",
+    truth: "Breathe — you just got your time back. A real, fair offer is still there after you sleep on it. The ticking clock is the product, not the deal.",
+  },
+  fake_scarcity: {
+    emotion: "FOMO — the itch that it's vanishing before you can decide.",
+    truth: "Here's the relief: scarcity you can't verify usually isn't real. That “Only 2 left!” has said 2 for months. Decide as if the number weren't there — because it kind of isn't.",
+  },
+  false_exclusivity: {
+    emotion: "The little glow of being “specially chosen.”",
+    truth: "Fun fact: that “exclusive, just for you” landed in a million inboxes. You don't have to be flattered into yes — judge the thing on its own merits, and enjoy seeing through the wink.",
+  },
+  fake_social_proof: {
+    emotion: "Herd-pull — everyone's doing it, so what's wrong with you?",
+    truth: "Other people's choices aren't evidence about YOUR fit. “50,000 sold” describes a crowd, not you. Your own taste is allowed to win.",
+  },
+  confirmshaming: {
+    emotion: "A flash of guilt for daring to say no.",
+    truth: "“No thanks” is a complete sentence. That guilt-trip is a literal designed button, not your conscience. Declining isn't rude — it's just a normal Tuesday.",
+  },
+  drip_pricing: {
+    emotion: "The sting of a “deal” slipping away as the total quietly climbs.",
+    truth: "The all-in price is the only real price. A low headline with fees bolted on later isn't a bargain you're losing — it's the true cost, shown late on purpose. Now you can compare honestly.",
+  },
+  preselection: {
+    emotion: "The small drag of un-choosing what someone chose for you.",
+    truth: "Pre-ticked means picked FOR you, not BY you. Untick everything and start from a blank slate — that empty box is yours, and it feels surprisingly good.",
+  },
+  sneaking: {
+    emotion: "The quiet unease that something slipped into your cart.",
+    truth: "Trust that unease — it's right. Anything you didn't deliberately add doesn't belong there. Clearing it out is just you taking the wheel back.",
+  },
+  forced_continuity: {
+    emotion: "The fog of “I'll cancel later” — which they're betting you won't.",
+    truth: "A “free” trial that wants your card is a paid plan with a delay. Set the cancel reminder NOW, before the warm fuzzies fade. Future-you will high-five you.",
+  },
+  obstruction: {
+    emotion: "The quiet dread of how hard leaving is going to be.",
+    truth: "If they hid the exit, that's your answer. Find the cancel button BEFORE you join — an honest service makes leaving as easy as joining. You're always allowed to walk.",
+  },
+  disguised_ads: {
+    emotion: "Borrowed trust — it's wearing the outfit of a real recommendation.",
+    truth: "An ad in a journalist's clothes is still an ad. The moment you ask “who paid for this?” the spell breaks — and you get to weigh it for what it actually is.",
+  },
+  misdirection: {
+    emotion: "Overwhelm — too much noise, so just grab the highlighted button.",
+    truth: "Confusion can be the strategy: tire you out so you take the shiny default. Slowing down isn't slow — it's you refusing to be rushed into someone else's choice.",
+  },
+  scam_composite: {
+    emotion: "Engineered panic — fear, a ticking clock, and “tell no one,” all at once.",
+    truth: "This is the big one, and the truth is your shield: real banks, real police, and real family NEVER rush you, isolate you, or ask for gift cards or codes. The panic IS the scam. One slow breath, one trusted person, and one call back on a number you find yourself — that's all it takes to beat it.",
+  },
+};
