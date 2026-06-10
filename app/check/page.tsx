@@ -9,9 +9,35 @@ export const metadata: Metadata = {
 
 const GROUNDING = ["Cialdini", "Kahneman & Tversky", "Brignull's deceptive.design", "FTC", "EU DSA"];
 
+// Structured data → rich results in search ("free", category, features).
+const JSON_LD = {
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  name: "the authenticity shield",
+  url: "https://fomoengine-cambridgetcgs-projects.vercel.app/check",
+  applicationCategory: "SecurityApplication",
+  operatingSystem: "Any",
+  description:
+    "Paste any ad, message, or review and see the pressure tactics in it — the feeling each one pokes and the truth that dissolves it. Free, no login, nothing saved.",
+  offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
+  isAccessibleForFree: true,
+  featureList: [
+    "Names manipulation and dark-pattern tactics in plain words",
+    "Explains the feeling each tactic pokes and the truth that dissolves it",
+    "Highlights the exact triggering words in your text",
+    "Catches known scam patterns",
+    "Free JSON API for developers and AI agents",
+  ],
+  creator: { "@type": "Organization", name: "Cambridge TCG" },
+};
+
 export default function CheckPage() {
   return (
     <main className="min-h-screen bg-neutral-50">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(JSON_LD) }}
+      />
       {/* ── Hero ─────────────────────────────────────────────────────────── */}
       <section className="relative overflow-hidden border-b border-neutral-200 bg-white">
         <div
