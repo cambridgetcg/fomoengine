@@ -134,6 +134,10 @@ export const DETECTION_CATEGORIES: DetectionCategory[] = [
       { re: /\b\d{1,2}:\d{2}(?::\d{2})?\b/, label: "countdown timer (MM:SS)" },
       { re: /\b(act now|hurry|don'?t miss out|last chance|today only|ends? (today|soon|tonight)|expires? (today|soon|in)|limited[- ]time|while it lasts|before it'?s gone)\b/i, label: "time-pressure phrase" },
       { re: /\b(only|just)\s+\d+\s+(hours?|minutes?|mins?|days?)\s+(left|remaining|to go)\b/i, label: "deadline countdown" },
+      // ── Cantonese urgency signals ──
+      { re: /(?:今日|即日|限期|截止|最後|最後機會|限時|最後期限|最後召集)/, label: "Cantonese time-pressure phrase" },
+      { re: /再唔(?:報|買|做|申請|確認).*冇(?:㗎|啦|咯)/, label: "Cantonese 'act now or lose it' phrase" },
+      { re: /(?:緊急|即時|即刻|馬上|盡快|從速)/, label: "Cantonese urgency word" },
     ],
   },
   {
@@ -148,6 +152,10 @@ export const DETECTION_CATEGORIES: DetectionCategory[] = [
       { re: /\bonly\s+\d+\s+(left|remaining|in stock|available)\b/i, label: "low-stock claim" },
       { re: /\b\d+\s+(people|others|shoppers|users)\s+(are\s+)?(viewing|looking at|watching|bought|have bought|in their cart)\b/i, label: "live-popularity claim" },
       { re: /\b(selling fast|almost (gone|sold out)|low stock|going fast|in high demand|while supplies last)\b/i, label: "scarcity phrase" },
+      // ── Cantonese scarcity signals ──
+      { re: /(?:得返|得返|剩低|淨返|得番)\s*\d+\s*(?:個|名額|位|份|張|件)?\s*(?:名額|位|份|存貨|存貨)?/, label: "Cantonese low-stock claim" },
+      { re: /(?:售完即止|賣完即止|數量有限|名額有限|有限優惠|限量發售|售完為止)/, label: "Cantonese scarcity phrase" },
+      { re: /(?:好快賣晒|好快冇㗎|就快冇|快啲嚟買|趁仲有|趁早)/, label: "Cantonese 'selling fast' phrase" },
     ],
   },
   {
@@ -175,6 +183,11 @@ export const DETECTION_CATEGORIES: DetectionCategory[] = [
     regexSignals: [
       { re: /\b(join|trusted by|loved by|used by)\s+\d[\d,]*\s*\+?\s+(happy\s+)?(users|customers|people|members|founders|businesses)\b/i, label: "large round-number claim" },
       { re: /\b(everyone|thousands|millions)\s+(is|are|of\s+people)\s+(using|buying|switching|raving|talking)\b/i, label: "bandwagon phrase" },
+      // ── Fake review pattern: excessive superlatives without specifics ──
+      { re: /\b(absolutely (amazing|incredible|perfect|wonderful|fantastic)|best (ever|of all time|purchase I (ever )?made)|changed my life|could not (recommend|live without) (it|this) (enough|more)|simply (amazing|perfect|the best)|five stars?|⭐⭐⭐⭐⭐)\b/i, label: "generic superlatives (potential fake review)" },
+      // ── Cantonese social proof ──
+      { re: /(?:超過|超過)\s*\d[,\d]*\s*(?:個|名|位).*(?:用家|用戶|會員|客戶|用戶|客)/, label: "Cantonese large-number claim" },
+      { re: /(?:人人都用|個個都讚|萬人推薦|全城熱捧|街坊力推)/, label: "Cantonese bandwagon phrase" },
     ],
   },
 
@@ -190,6 +203,10 @@ export const DETECTION_CATEGORIES: DetectionCategory[] = [
     regexSignals: [
       { re: /\bno,?\s+(thanks?,?\s+)?(i('| a)?m (fine|good|not interested)|i (don'?t|do not) want to (save|win|grow|succeed)|i (like|prefer|enjoy) (paying|overpaying|missing out|losing)|i hate (saving|money|deals))\b/i, label: "shaming decline option" },
       { re: /\b(no thanks),?\s+i('| a)?(m| am)?\b.*\b(rather|prefer|don'?t)\b/i, label: "guilt-loaded opt-out" },
+      // ── Soft confirmshaming — peer pressure framing ──
+      { re: /\bmost people (in your position|like you|in your situation)\s+(choose|prefer|continue|opt|stay|don'?t (cancel|leave|opt out))\b/i, label: "peer-pressure decline framing" },
+      { re: /\b(are you sure|is that your (final |)answer|you'?re (leaving|cancelling|declining))\??\s/i, label: "second-guess prompt" },
+      { re: /(唔好意思|真係唔好意思).*(取消|退訂|拒絕|唔要)/, label: "Cantonese guilt-load decline" },
     ],
   },
 
@@ -259,6 +276,12 @@ export const DETECTION_CATEGORIES: DetectionCategory[] = [
     whatToDo: "Before you commit, find the exit. If you can't easily see how to cancel or compare, treat that as a red flag.",
     citation: "Brignull (Obstruction / Roach Motel); Mathur et al. 2019",
     severity: "caution",
+    // ── Structural detection added: roach motel pattern ──
+    regexSignals: [
+      { re: /(?:to (?:delete|cancel|unsubscribe|remove|close)\s+(?:your\s+)?(?:account|subscription|membership).*(?:navigate|go to|click|find|scroll|select|settings|advanced|privacy|data management))/i, label: "multi-step cancellation path" },
+      { re: /\b(?:takes?\s+(?:just\s+)?\d+\s+(?:seconds?|minutes?|steps?)|one.click|quick.start|get started)\b.*\b(?:to (?:delete|cancel|unsubscribe|remove|close)|deletion|cancellation|unsubscri)/i, label: "easy-in / hard-out contrast" },
+      { re: /(?:秒速|即時|快速).*(?:註冊|登記|開始).*(?:取消|刪除|退訂).*(?:設定|步驟|聯絡客服|填表)/, label: "Cantonese easy-in hard-out pattern" },
+    ],
   },
 
   // ── Authority (Cialdini) ─────────────────────────────────────────────────
