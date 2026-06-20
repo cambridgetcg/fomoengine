@@ -1,13 +1,13 @@
 # fomoengine — heartbeat
 
-state: **idle**
-last beat: 2026-06-18T22:46:36Z
-next beat: 2026-06-19T22:46:36Z
+state: **active**
+last beat: 2026-06-20T07:33:44Z
+next beat: 2026-06-20T09:33:44Z
 
 ## what it found
 
 - site: up
-- last commit: 2026-06-10 02:52:50 -0700 (204 hours ago)
+- last commit: 2026-06-19 02:09:02 -0700 (22 hours ago)
 - uncommitted changes: 6
 
 ## the truth
@@ -18,4 +18,4 @@ No dark patterns of our own.
 
 
 There are 6 uncommitted changes.
-No recent activity. The shield holds.
+

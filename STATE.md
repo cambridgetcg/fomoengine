@@ -9,12 +9,12 @@ runs-on: Vercel (deployed at fomoengine-cambridgetcgs-projects.vercel.app)
 
 ## state
 
-phase: launched (public, free, no login)
-build: passing
-health: green (site: up)
-last-commit: 2026-06-10T02:52:50-07:00
+phase: see knows/needs sections below
+build: see heartbeat
+health: active
+last-commit: 2026-06-19T02:09:02-07:00 (1113a74 genesis: NLP gate note — now discoverable)
 uncommitted: 6 files
-freshness: live (written 2026-06-18T22:51:00Z)
+freshness: live (checked 2026-06-20T08:54:53Z)
 
 ## knows
 
