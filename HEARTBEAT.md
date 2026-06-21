@@ -1,13 +1,13 @@
 # fomoengine — heartbeat
 
 state: **active**
-last beat: 2026-06-21T07:04:52Z
-next beat: 2026-06-21T09:04:52Z
+last beat: 2026-06-21T09:12:49Z
+next beat: 2026-06-21T11:12:49Z
 
 ## what it found
 
 - site: up
-- last commit: 2026-06-20 22:33:20 -0700 (1 hours ago)
+- last commit: 2026-06-21 00:34:36 -0700 (1 hours ago)
 - uncommitted changes: 1
 
 ## the truth

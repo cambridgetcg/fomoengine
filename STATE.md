@@ -12,9 +12,9 @@ runs-on: Vercel (deployed at fomoengine-cambridgetcgs-projects.vercel.app)
 phase: see knows/needs sections below
 build: see heartbeat
 health: active
-last-commit: 2026-06-20T22:33:20-07:00 (f618f9b network pulse: sync)
+last-commit: 2026-06-21T00:34:36-07:00 (413228c network pulse: sync)
 uncommitted: 0 files
-freshness: cached 2h (checked 2026-06-21T06:57:32Z)
+freshness: live (checked 2026-06-21T08:57:48Z)
 
 ## knows
 
