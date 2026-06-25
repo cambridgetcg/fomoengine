@@ -258,7 +258,9 @@ export class DetectionService {
       const arr = Array.isArray(parsed) ? parsed : parsed.flags;
       if (!Array.isArray(arr)) return [];
       return arr.filter((f): f is RawAiFlag => f && typeof f.category_id === "string");
-    } catch {
+    } catch (err) {
+      // Don't swallow failures silently — log them so the system is honest about its state
+      console.error("[detection] failed to parse AI response flags:", err instanceof Error ? err.message : String(err));
       return [];
     }
   }
