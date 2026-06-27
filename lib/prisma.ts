@@ -34,16 +34,25 @@ function getPool(): Pool {
                     path.join(process.cwd(), "node_modules", "aws-rds-ca-bundle", "rds-combined-ca-bundle.pem"),
                     "/opt/aws/rds-combined-ca-bundle.pem",
                 ];
-                const caPath = candidates.find((p) => { try { return fs.existsSync(p); } catch { return false; } });
+                let caPath: string | null = null;
+                for (const p of candidates) {
+                    try {
+                        if (fs.existsSync(p)) { caPath = p; break; }
+                    } catch (err) {
+                        console.warn(`[prisma] CA bundle check failed for ${p}:`, err instanceof Error ? err.message : String(err));
+                    }
+                }
                 if (caPath) {
                     return { ca: fs.readFileSync(caPath), rejectUnauthorized: true };
                 }
-                // No CA bundle found — log loudly, don't lie silently
-                console.warn("[prisma] WARNING: RDS connection without CA bundle — TLS verification would be incomplete. Install aws-rds-ca-bundle to enable proper verification.");
-                // In development, allow but warn. In production, fail rather than allow silent MITM.
-                return process.env.NODE_ENV === "production"
-                    ? { rejectUnauthorized: true }
-                    : { rejectUnauthorized: false };
+                // No CA bundle found — be honest about it
+                if (process.env.NODE_ENV === "production") {
+                    // In production, refuse to connect without proper TLS — don't lie
+                    throw new Error("[prisma] RDS connection requires CA bundle in production. Install aws-rds-ca-bundle: npm i aws-rds-ca-bundle");
+                }
+                // Dev only: connect without SSL rather than pretending to have it
+                console.warn("[prisma] WARNING: RDS connection without TLS verification in development. Install aws-rds-ca-bundle for proper verification.");
+                return false;
             })()
             : false,
         max: maxConnections,
