@@ -41,6 +41,18 @@ async function apiRequest<T>(
   }
 
   const response = await fetch(url, fetchOptions);
+
+  // Honest about HTTP status — don't treat a 500 as success
+  if (!response.ok) {
+    return {
+      success: false,
+      error: {
+        code: "HTTP_ERROR",
+        message: `Request failed: ${response.status} ${response.statusText}`,
+      },
+    } as ApiResponse<T>;
+  }
+
   const data = await response.json();
 
   return data as ApiResponse<T>;
