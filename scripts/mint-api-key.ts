@@ -30,6 +30,8 @@ async function main() {
   }
 
   const tier = (flag("--tier") || "STARTER").toUpperCase() as ApiTier;
+  // why only these tiers: see PLANS in lib/services/billing/plans.ts — each tier
+  // maps to a quota and price with a documented rationale (methodology comment).
   if (!["FREE", "STARTER", "PRO"].includes(tier)) {
     console.error(`✗ Invalid --tier "${tier}". Use FREE, STARTER, or PRO.`);
     process.exit(1);
@@ -42,10 +44,13 @@ async function main() {
   }
 
   const { secret, keyHash, prefix } = generateKey();
+  // why we store only a hash: a leaked DB can't reveal the secret. The tier and
+  // quota are set here from the validated --tier flag (reason: PLANS methodology).
   const key = await prisma.apiKey.create({ data: { name, keyHash, prefix, tier, monthlyQuota } });
 
   console.log("\n✓ API key created.\n");
   console.log(`  name    ${key.name}`);
+  // why the tier is shown: so the operator can verify which plan was minted
   console.log(`  tier    ${key.tier}`);
   console.log(`  quota   ${monthlyQuota === 0 ? "unlimited" : `${monthlyQuota} checks / month`}`);
   console.log(`  id      ${key.id}`);

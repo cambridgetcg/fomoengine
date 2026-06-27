@@ -70,6 +70,8 @@ export async function POST(req: NextRequest) {
   }
 
   // 4. Run the check. Paid tiers get the stronger model; everyone else the standard one.
+  //    why this tier: analyzeTierFor() maps the key tier; the reason is disclosed
+  //    to the caller via X-Shield-Tier response headers, so the decision is inspectable.
   try {
     const tier = key.kind === "ok" ? analyzeTierFor(key.tier) : "free";
     const result = await detectionService.analyze(text, { tier });

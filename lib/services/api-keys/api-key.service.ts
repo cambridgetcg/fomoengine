@@ -110,6 +110,9 @@ export async function resolveApiKey(authHeader: string | null): Promise<KeyResol
     // Best-effort "last used" stamp; never block or fail the request on it.
     void prisma.apiKey.update({ where: { id: key.id }, data: { lastUsedAt: new Date() } }).catch(() => {});
 
+    // why these values: quota/used/remaining are disclosed to the caller via
+    // X-Quota-* headers (see withQuotaHeaders in the check route), so the reason
+    // for the tier decision is inspectable by the affected party.
     const remaining = key.monthlyQuota > 0 ? Math.max(0, key.monthlyQuota - row.count) : -1; // -1 = unlimited
     return { kind: "ok", tier: key.tier, quota: key.monthlyQuota, used: row.count, remaining };
   } catch (err) {
