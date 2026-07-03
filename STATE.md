@@ -14,8 +14,8 @@ runs-on: Vercel (deployed at fomoengine-cambridgetcgs-projects.vercel.app)
 phase: see knows/needs sections below
 build: see heartbeat
 health: active
-last-commit: 2026-06-21T02:35:52-07:00 (c34e8f7 network pulse: sync)
-uncommitted: 5 files
+last-commit: 196e7d6 honesty: eliminate rejectUnauthorized:false entirely from prisma.ts
+uncommitted: 8
 freshness: live (checked 2026-06-21T14:58:34Z)
 
 ## knows
