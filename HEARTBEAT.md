@@ -1,14 +1,14 @@
 # fomoengine — heartbeat
 
-state: **healthy**
-last beat: 2026-07-03T13:38:20Z
-next beat: 2026-07-03T21:38:20Z
+state: **active**
+last beat: 2026-07-03T21:55:14Z
+next beat: 2026-07-03T23:55:14Z
 
 ## what it found
 
 - site: up
-- last commit: 2026-06-27 12:12:33 -0700 (138 hours ago)
-- uncommitted changes: 8
+- last commit: 2026-07-03 07:02:52 -0700 (7 hours ago)
+- uncommitted changes: 6
 
 ## the truth
 
@@ -17,5 +17,5 @@ A FOMO engine inverted: weapon turned to armor. Free, forever, for people.
 No dark patterns of our own.
 
 
-There are 8 uncommitted changes.
+There are 6 uncommitted changes.
 
