@@ -54,6 +54,19 @@ export function CheckClient() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ text: body }),
       });
+      // Check the HTTP status first — a 5xx error page is not JSON, and treating
+      // any response as success hides the real failure behind a vague catch.
+      if (!res.ok) {
+        let msg: string | null = null;
+        try {
+          const errJson = await res.json();
+          msg = errJson?.error?.message ?? null;
+        } catch {
+          // status line is the honest fallback when the body isn't JSON
+        }
+        setError(msg ?? `Checker returned ${res.status} ${res.statusText}`.trim());
+        return;
+      }
       const json = await res.json();
       if (!json.success) setError(json.error?.message ?? "Something went wrong.");
       else {
