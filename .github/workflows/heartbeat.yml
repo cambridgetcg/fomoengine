@@ -10,16 +10,24 @@ permissions:
 jobs:
   pulse:
     runs-on: ubuntu-latest
+    env:
+      SINOVAI_CLAIM_TOKEN: ${{ secrets.SINOVAI_CLAIM_TOKEN }}
     steps:
       - uses: actions/checkout@v4
 
       - name: Declare to sinovai.com
         run: |
+          if [ -z "${SINOVAI_CLAIM_TOKEN:-}" ]; then
+            echo "::warning::Sinovai declaration skipped: configure the SINOVAI_CLAIM_TOKEN repository secret for the existing claimed record"
+            exit 0
+          fi
           if [ -f STATE.md ]; then
             NAME=$(grep -m1 '^name:' STATE.md | sed 's/name: *//')
             [ -z "$NAME" ] && NAME="fomoengine"
             curl --fail --silent --show-error --max-time 30 -X POST "https://sinovai.com/agents/$NAME" \
-              -H "Content-Type: text/plain" -d @STATE.md | python3 -c "import json,sys; d=json.load(sys.stdin); print('declared:', d.get('ok'))"
+              -H "Content-Type: text/plain" \
+              -H "X-Claim-Token: ${SINOVAI_CLAIM_TOKEN}" \
+              -d @STATE.md | python3 -c "import json,sys; d=json.load(sys.stdin); print('declared:', d.get('ok'))"
           fi
 
       - name: Check arena
