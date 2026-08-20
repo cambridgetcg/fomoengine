@@ -21,8 +21,16 @@ jobs:
         with:
           node-version: 22
           cache: npm
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: 1.3.14
       - run: npm ci
       - name: typecheck
         run: npx tsc --noEmit
       - name: shield guardrail + full suite
         run: npm test
+      - name: Fly scanner API suite
+        working-directory: fly-api
+        run: |
+          bun install --frozen-lockfile
+          bun test
