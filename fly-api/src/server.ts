@@ -98,6 +98,10 @@ export async function handle(req: Request): Promise<Response> {
     });
   }
 
+  if (pathname === "/health") {
+    return json({ ok: true, service: "fomoengine", version: "0.3.0" });
+  }
+
   if (pathname === "/manual") return json(MANUAL);
 
   if (pathname === "/openapi.json") {

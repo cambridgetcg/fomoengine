@@ -57,6 +57,9 @@ export function openapiDocument() {
       "/manual": {
         get: { summary: "The FOMOENGINE framework as data (free forever)", responses: { "200": { description: "stages, tells, countermeasures, evidence" } } },
       },
+      "/health": {
+        get: { summary: "Liveness check", responses: { "200": { description: "process is serving requests" } } },
+      },
       "/honeypot": {
         get: { summary: "A deliberately dark-patterned test page (free forever)", responses: { "200": { description: "should score ~100" } } },
       },
