@@ -8,9 +8,9 @@ export function openapiDocument() {
     openapi: "3.0.3",
     info: {
       title: "fomoscan",
-      version: "0.3.0",
+      version: "0.3.1",
       description:
-        "Deterministic FOMO/manipulation detector: scans a page, HTML, or text for engineered fear-of-missing-out mechanics, staged per the FOMOENGINE loop with FTC-taxonomy receipts. Scans also carry a `rhetoric` block (rhetorlint/0.1 spec): rhetorical tells in the words — agentless passives, hedges, universal absolutes — reported alongside the FOMO score, never folded into it. `rhetoric` reads a declared bounded prefix on very large documents and is null only if the rhetoric analyzer itself fails (the scan is still delivered). Free doors: /manual (the framework as data) and /honeypot (a test page that should score ~100)." +
+        "Deterministic FOMO/manipulation detector: scans submitted HTML or text for engineered fear-of-missing-out mechanics, staged per the FOMOENGINE loop with FTC-taxonomy receipts. Remote URL retrieval is paused: this service does not make server-side requests to untrusted destinations. JSON request bodies are limited to 2,000,000 bytes. Scans also carry a `rhetoric` block (rhetorlint/0.1 spec): rhetorical tells in the words — agentless passives, hedges, universal absolutes — reported alongside the FOMO score, never folded into it. `rhetoric` reads a declared bounded prefix on very large documents and is null only if the rhetoric analyzer itself fails (the scan is still delivered). Free doors: /manual (the framework as data) and /honeypot (a test page that should score ~100)." +
         (x402.enabled
           ? ` /scan is x402-paid (${x402.price} USDC on Solana via PAYMENT-SIGNATURE header); a failed scan is never charged.`
           : ""),
@@ -19,19 +19,14 @@ export function openapiDocument() {
     paths: {
       "/scan": {
         get: {
-          summary: "Scan a URL for FOMO-manipulation mechanics",
-          parameters: [
-            { name: "url", in: "query", required: true, schema: { type: "string", format: "uri" } },
-          ],
+          summary: "Remote URL retrieval is paused",
+          deprecated: true,
           responses: {
-            "200": { description: "Staged diagnosis with receipts", content: { "application/json": {} } },
-            "402": { description: "x402 payment required (challenge in PAYMENT-REQUIRED header)" },
-            "400": { description: "missing/invalid input — never charged" },
-            "502": { description: "upstream fetch failed — never charged" },
+            "400": { description: "submit HTML or text directly with POST /scan; never charged" },
           },
         },
         post: {
-          summary: "Scan a URL, raw HTML, or plain text",
+          summary: "Scan submitted raw HTML or plain text",
           requestBody: {
             required: true,
             content: {
@@ -39,7 +34,6 @@ export function openapiDocument() {
                 schema: {
                   type: "object",
                   properties: {
-                    url: { type: "string", format: "uri" },
                     html: { type: "string" },
                     text: { type: "string" },
                   },
@@ -49,8 +43,11 @@ export function openapiDocument() {
           },
           responses: {
             "200": { description: "Staged diagnosis with receipts", content: { "application/json": {} } },
-            "402": { description: "x402 payment required (challenge in PAYMENT-REQUIRED header)" },
+            ...(x402.enabled
+              ? { "402": { description: "x402 payment required (challenge in PAYMENT-REQUIRED header)" } }
+              : {}),
             "400": { description: "missing/invalid input — never charged" },
+            "413": { description: "JSON request body exceeds 2,000,000 bytes — never charged" },
           },
         },
       },

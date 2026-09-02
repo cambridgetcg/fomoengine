@@ -4,8 +4,9 @@
  * and settles (it fronts all network fees — we only hold a receiving address).
  *
  * House rules, in order of importance:
- *  1. The gate exists only when X402_PAYTO is set. Unset ⇒ the door is free
- *     (public-good default; enabling is a deliberate operator act).
+ *  1. The gate exists only when X402_PAYTO is set and X402_ENABLED is not
+ *     false. Unset or explicitly disabled ⇒ the door is free (public-good
+ *     default; enabling is a deliberate operator act).
  *  2. If the facilitator is down or hanging, the door falls OPEN, never
  *     closed — an outage may cost us revenue; it must never cost a guest
  *     the answer. A health probe (3s timeout, 60s cache) covers the
@@ -36,9 +37,10 @@ const INIT_RETRY_MS = 60_000;
 
 export function x402Config() {
   const payTo = (process.env.X402_PAYTO ?? "").trim();
+  const configuredOn = (process.env.X402_ENABLED ?? "true").trim().toLowerCase() !== "false";
   return {
     payTo,
-    enabled: payTo.length > 0,
+    enabled: configuredOn && payTo.length > 0,
     network: process.env.X402_NETWORK ?? SOLANA_MAINNET,
     price: process.env.X402_PRICE ?? "$0.01",
     facilitator: process.env.X402_FACILITATOR ?? "https://facilitator.payai.network",
@@ -100,7 +102,7 @@ async function gateServer(): Promise<x402HTTPResourceServer | null> {
         },
       }),
     };
-    const server = new x402HTTPResourceServer(core, { "GET /scan": route, "POST /scan": route });
+    const server = new x402HTTPResourceServer(core, { "POST /scan": route });
     await withTimeout(server.initialize(), GATE_TIMEOUT_MS, "facilitator initialize");
     cached = { key, server };
     initFailedAt = 0;
@@ -183,12 +185,16 @@ function claimSignature(sig: string): boolean {
   return true;
 }
 
+function releaseSignature(sig: string | null): void {
+  if (sig) seenSignatures.delete(sig);
+}
+
 export type Gate =
   | { kind: "open" }
   | { kind: "deny"; response: Response }
   | { kind: "paid"; finalize: (res: Response) => Promise<Response> };
 
-/** Decide the fate of a /scan request. Call BEFORE consuming the request body. */
+/** Decide the fate of a validated /scan request. The adapter never reads its body. */
 export async function gateScan(req: Request): Promise<Gate> {
   const cfg = x402Config();
   if (!cfg.enabled) return { kind: "open" };
@@ -222,18 +228,28 @@ export async function gateScan(req: Request): Promise<Gate> {
       "payment verification",
     );
   } catch (e) {
+    releaseSignature(signature);
     console.error(`x402 verification failed open: ${String((e as Error).message ?? e)}`);
     return { kind: "open" }; // rule 2: a hung/broken verify path never blocks the guest
   }
 
-  if (result.type === "no-payment-required") return { kind: "open" };
-  if (result.type === "payment-error") return { kind: "deny", response: toResponse(result.response) };
+  if (result.type === "no-payment-required") {
+    releaseSignature(signature);
+    return { kind: "open" };
+  }
+  if (result.type === "payment-error") {
+    releaseSignature(signature);
+    return { kind: "deny", response: toResponse(result.response) };
+  }
 
   const verified = result;
   return {
     kind: "paid",
     finalize: async (res) => {
-      if (res.status >= 400) return res; // rule 4: a failed answer is never charged
+      if (res.status >= 400) {
+        releaseSignature(signature);
+        return res; // rule 4: a failed answer is never charged
+      }
       try {
         const settled = await withTimeout(
           server.processSettlement(

@@ -4,8 +4,17 @@ import { HONEYPOT_HTML } from "./honeypot.ts";
 import { gateScan, x402Config } from "./payment.ts";
 
 const PORT = Number(process.env.PORT ?? 4242);
-const FETCH_TIMEOUT_MS = 12_000;
-const MAX_BODY = 2_000_000; // 2 MB of HTML is plenty
+const MAX_REQUEST_BYTES = 2_000_000;
+
+class InputError extends Error {
+  constructor(
+    message: string,
+    readonly status = 400,
+  ) {
+    super(message);
+    this.name = "InputError";
+  }
+}
 
 const json = (data: unknown, status = 200) =>
   new Response(JSON.stringify(data, null, 2), {
@@ -13,50 +22,101 @@ const json = (data: unknown, status = 200) =>
     headers: {
       "content-type": "application/json; charset=utf-8",
       "access-control-allow-origin": "*",
-      "access-control-expose-headers": "payment-response, payment-required",
+      "access-control-expose-headers": "payment-response, payment-required, payment-settlement",
     },
   });
 
-// Obvious internal targets are refused; scans are for the public web.
-const PRIVATE_HOST = /^(localhost|0\.0\.0\.0|127\.|10\.|192\.168\.|172\.(1[6-9]|2\d|3[01])\.|169\.254\.|\[::1?\]|.*\.(internal|local))/i;
+async function readJsonObject(req: Request): Promise<Record<string, unknown>> {
+  const declaredLength = req.headers.get("content-length");
+  if (declaredLength !== null) {
+    const length = Number(declaredLength);
+    if (!Number.isSafeInteger(length) || length < 0) {
+      throw new InputError("invalid content-length");
+    }
+    if (length > MAX_REQUEST_BYTES) {
+      throw new InputError(`request body exceeds ${MAX_REQUEST_BYTES} bytes`, 413);
+    }
+  }
 
-async function fetchPage(url: string): Promise<string> {
-  const u = new URL(url);
-  if (!/^https?:$/.test(u.protocol)) throw new Error("only http(s) URLs");
-  if (PRIVATE_HOST.test(u.hostname)) throw new Error("private/internal hosts are not scannable");
-  const res = await fetch(u, {
-    redirect: "follow",
-    signal: AbortSignal.timeout(FETCH_TIMEOUT_MS),
-    headers: {
-      "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0 Safari/537.36 fomoscan/0.1",
-      accept: "text/html,application/xhtml+xml",
-    },
-  });
-  if (!res.ok) throw new Error(`upstream ${res.status}`);
-  const body = await res.text();
-  return body.slice(0, MAX_BODY);
+  if (!req.body) throw new InputError("provide a JSON request body");
+
+  const reader = req.body.getReader();
+  const chunks: Uint8Array[] = [];
+  let total = 0;
+  try {
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) break;
+      total += value.byteLength;
+      if (total > MAX_REQUEST_BYTES) {
+        await reader.cancel();
+        throw new InputError(`request body exceeds ${MAX_REQUEST_BYTES} bytes`, 413);
+      }
+      chunks.push(value);
+    }
+  } finally {
+    reader.releaseLock();
+  }
+
+  const bytes = new Uint8Array(total);
+  let offset = 0;
+  for (const chunk of chunks) {
+    bytes.set(chunk, offset);
+    offset += chunk.byteLength;
+  }
+
+  let parsed: unknown;
+  try {
+    parsed = JSON.parse(new TextDecoder().decode(bytes));
+  } catch {
+    throw new InputError("request body must be valid JSON");
+  }
+  if (!parsed || typeof parsed !== "object" || Array.isArray(parsed)) {
+    throw new InputError("request body must be a JSON object");
+  }
+  return parsed as Record<string, unknown>;
 }
 
-async function scanRoute(req: Request): Promise<Response> {
+type ScanInput = { kind: "html" | "text"; value: string };
+
+async function readScanInput(req: Request): Promise<ScanInput> {
+  const body = await readJsonObject(req);
+  if (Object.hasOwn(body, "url")) {
+    throw new InputError(
+      "remote URL retrieval is paused; submit HTML or text directly — the service does not make server-side requests to untrusted destinations",
+    );
+  }
+  if (Object.hasOwn(body, "html") && typeof body.html !== "string") {
+    throw new InputError("html must be a string");
+  }
+  if (Object.hasOwn(body, "text") && typeof body.text !== "string") {
+    throw new InputError("text must be a string");
+  }
+  if (typeof body.html === "string") return { kind: "html", value: body.html };
+  if (typeof body.text === "string") return { kind: "text", value: body.text };
+  throw new InputError("provide html or text");
+}
+
+function scanInput(input: ScanInput): Response {
   try {
-    let url: string | undefined, html: string | undefined, text: string | undefined;
-    if (req.method === "POST") {
-      const body = (await req.json()) as Record<string, string>;
-      ({ url, html, text } = body);
-    } else {
-      url = new URL(req.url).searchParams.get("url") ?? undefined;
-    }
-    if (url) {
-      const page = await fetchPage(url);
-      return json({ input: { url }, ...scan(page, { html: true }) });
-    }
-    if (html) return json({ input: { html: `${html.length} chars` }, ...scan(html, { html: true }) });
-    if (text) return json({ input: { text: `${text.length} chars` }, ...scan(text, { html: false }) });
-    return json({ error: "provide url, html, or text" }, 400);
+    return json({
+      input: { [input.kind]: `${input.value.length} chars` },
+      ...scan(input.value, { html: input.kind === "html" }),
+    });
   } catch (e) {
-    return json({ error: String((e as Error).message ?? e) }, 502);
+    console.error(`scan failed: ${String((e as Error).message ?? e)}`);
+    return json({ error: "scan failed" }, 500);
   }
 }
+
+const remoteRetrievalPaused = () =>
+  json(
+    {
+      error: "remote URL retrieval is paused; submit HTML or text directly with POST /scan",
+      reason: "the service does not make server-side requests to untrusted destinations",
+    },
+    400,
+  );
 
 export async function handle(req: Request): Promise<Response> {
   const { pathname } = new URL(req.url);
@@ -67,7 +127,7 @@ export async function handle(req: Request): Promise<Response> {
         "access-control-allow-origin": "*",
         "access-control-allow-methods": "GET,POST,OPTIONS",
         "access-control-allow-headers": "content-type, payment-signature",
-        "access-control-expose-headers": "payment-response, payment-required",
+        "access-control-expose-headers": "payment-response, payment-required, payment-settlement",
       },
     });
 
@@ -76,8 +136,8 @@ export async function handle(req: Request): Promise<Response> {
     return json({
       service: "fomoengine",
       endpoints: {
-        "POST /scan": "{ url } or { html } or { text } → staged FOMO diagnosis with receipts + a rhetorlint rhetoric block (nullable — see /openapi.json)",
-        "GET /scan?url=…": "same, via query param",
+        "POST /scan": "{ html } or { text } → staged FOMO diagnosis with receipts + a rhetorlint rhetoric block (nullable — see /openapi.json)",
+        "GET /scan?url=…": "paused: the service does not retrieve untrusted remote URLs",
         "GET /manual": "the FOMOENGINE framework as data (stages, tells, countermeasures, evidence)",
         "GET /honeypot": "a deliberately dark-patterned page for testing (should score ~100)",
         "GET /openapi.json": "machine-readable door plan (OpenAPI 3)",
@@ -99,7 +159,7 @@ export async function handle(req: Request): Promise<Response> {
   }
 
   if (pathname === "/health") {
-    return json({ ok: true, service: "fomoengine", version: "0.3.0" });
+    return json({ ok: true, service: "fomoengine", version: "0.3.1" });
   }
 
   if (pathname === "/manual") return json(MANUAL);
@@ -113,13 +173,22 @@ export async function handle(req: Request): Promise<Response> {
     return new Response(HONEYPOT_HTML, { headers: { "content-type": "text/html; charset=utf-8" } });
 
   if (pathname === "/scan") {
-    // only the methods the payment gate knows exist here — no side doors
     if (req.method !== "GET" && req.method !== "POST")
       return json({ error: "method not allowed" }, 405);
-    // the gate must decide before the request body is consumed
+    // URL retrieval is paused and GET cannot produce a chargeable scan.
+    if (req.method === "GET") return remoteRetrievalPaused();
+    // Bound and validate input before asking anyone to authorize payment.
+    let input: ScanInput;
+    try {
+      input = await readScanInput(req);
+    } catch (e) {
+      if (e instanceof InputError) return json({ error: e.message }, e.status);
+      console.error(`input validation failed: ${String((e as Error).message ?? e)}`);
+      return json({ error: "input validation failed" }, 500);
+    }
     const gate = await gateScan(req);
     if (gate.kind === "deny") return gate.response;
-    const res = await scanRoute(req);
+    const res = scanInput(input);
     return gate.kind === "paid" ? gate.finalize(res) : res;
   }
 
