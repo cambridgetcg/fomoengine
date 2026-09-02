@@ -58,6 +58,13 @@ curl -s https://YOUR_HOST/api/v1/check \
     ],
     "checkedBy": "Checked by: plain rules + an AI reader (gpt-4o-mini).",
     "disclaimer": "I read only the words you pasted — I did not visit any website…",
+    "ruleset": {
+      "id": "authenticity-shield",
+      "version": "2026-09-02.1",
+      "snapshotDate": "2026-09-02",
+      "citationStatus": "reference-labels",
+      "citationNotice": "Citations are research leads and source labels, not live legal authority…"
+    },
     "inputChars": 48
   }
 }
@@ -65,6 +72,9 @@ curl -s https://YOUR_HOST/api/v1/check \
 
 The user-facing `why` / `whatToDo` / `citation` come from a vetted taxonomy, never
 free-form model text — so the API can't improvise something defamatory or alarmist.
+`ruleset.version` identifies the detector snapshot, not the present legal validity
+of every source label. Consumers of the API must verify current primary sources
+before relying on a citation for legal or compliance decisions.
 
 ## Quota headers (authenticated requests)
 

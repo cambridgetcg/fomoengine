@@ -113,12 +113,41 @@ async function gateServer(): Promise<x402HTTPResourceServer | null> {
   }
 }
 
+export function publicRequestUrl(req: Request, url: URL): string {
+  const configuredOrigin = (process.env.X402_PUBLIC_ORIGIN ?? "").trim();
+  if (configuredOrigin) {
+    const origin = new URL(configuredOrigin);
+    if (
+      !/^https?:$/.test(origin.protocol) ||
+      origin.username ||
+      origin.password ||
+      origin.pathname !== "/" ||
+      origin.search ||
+      origin.hash
+    ) {
+      throw new Error("X402_PUBLIC_ORIGIN must be a bare http(s) origin");
+    }
+    return new URL(`${url.pathname}${url.search}`, origin).toString();
+  }
+
+  // Fly terminates TLS before Bun receives the request. Preserve the public
+  // scheme when an explicit origin has not been configured.
+  const forwardedProto =
+    req.headers.get("fly-forwarded-proto") ?? req.headers.get("x-forwarded-proto");
+  if (forwardedProto === "https:" || forwardedProto === "https") {
+    const publicUrl = new URL(url);
+    publicUrl.protocol = "https:";
+    return publicUrl.toString();
+  }
+  return url.toString();
+}
+
 function adapterFor(req: Request, url: URL): HTTPAdapter {
   return {
     getHeader: (name) => req.headers.get(name) ?? undefined,
     getMethod: () => req.method,
     getPath: () => url.pathname,
-    getUrl: () => url.toString(),
+    getUrl: () => publicRequestUrl(req, url),
     getAcceptHeader: () => req.headers.get("accept") ?? "",
     getUserAgent: () => req.headers.get("user-agent") ?? "",
     getQueryParams: () => Object.fromEntries(url.searchParams),

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { CheckClient } from "./check-client";
 
 export const metadata: Metadata = {
@@ -157,6 +158,13 @@ export default function CheckPage() {
             watch for.
           </p>
           <p className="mt-3 font-medium text-neutral-600">Free, forever, for people. 🛡️</p>
+          <p className="mt-3">
+            Checking copy your organization controls?{" "}
+            <Link href="/audit" className="font-medium text-neutral-700 underline underline-offset-2">
+              See the bounded business self-audit
+            </Link>
+            .
+          </p>
         </div>
       </footer>
     </main>

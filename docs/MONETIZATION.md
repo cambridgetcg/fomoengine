@@ -25,12 +25,14 @@ assumptions — recorded honestly below.
 1. **Metered developer API** — _shipped (this module)._ Keys, monthly quota,
    metering, tier-based model routing on the existing `/api/v1/check`. The free
    anonymous path is untouched and DB-free.
-2. **Compliance self-audit + citation-backed report** — next. Batch scan + a
-   timestamped PDF/CSV ("scanned on DATE against ruleset vX") for businesses
-   auditing their _own_ copy. **Hard prerequisite:** a versioned, dated citation
-   engine — today the taxonomy's `citation` is a static string and even cites the
-   _vacated_ FTC click-to-cancel rule as if live. Frame value on the underlying
-   illegality of the conduct, never a single rule that can be struck down.
+2. **Copy Pressure Audit** — the bounded $99 design-partner offer and browser-only,
+   metadata-only request draft now live at `/audit` in this source tree. Every
+   checker result carries a dated ruleset snapshot and honestly marks the current
+   citations as reference labels, not live legal authority. Automated batch scan,
+   report rendering, and a primary-source citation registry are **not shipped**.
+   Those remain prerequisites before describing the artifact as citation-verified;
+   frame value on inspectable findings, never on a certification claim or a single
+   rule that can be struck down.
 3. Then, building on those: agency white-label report, CI/CD dark-pattern linter,
    an "agent shield" pre-filter for LLM apps, and (paid-only, separate disclaimer)
    URL/email/screenshot ingestion.
@@ -74,6 +76,13 @@ tax across 170+ jurisdictions.
 4. Point the provider's webhook at `POST /api/v1/billing/webhook`. Until then it
    returns **501** on purpose — an unwired endpoint should never look "done."
 5. Build key **delivery** (a small dashboard or an email with the one-time secret).
+
+The design-partner audit deliberately does not reuse this unfinished subscription
+webhook. Its intake page takes no payment: it prepares an email locally, then asks
+the operator to confirm scope and provide a verified one-off payment route. Set
+`NEXT_PUBLIC_AUDIT_CONTACT_EMAIL` only to a public business inbox; it is compiled
+into client-side code and is not a secret. If unset, the page uses the public
+operator inbox declared on `cambridgetcg.com/manifest`.
 
 ## The guardrail (don't skip this)
 

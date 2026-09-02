@@ -170,6 +170,10 @@ function Results({ result, checkedText }: { result: AnalysisResult; checkedText:
       <div className="mt-6 space-y-1 border-t border-neutral-200 pt-4 text-sm text-neutral-500">
         <p>{result.checkedBy}</p>
         <p>{result.disclaimer}</p>
+        <p>
+          Ruleset: {result.ruleset.id}/{result.ruleset.version} · snapshot {result.ruleset.snapshotDate}
+        </p>
+        <p>{result.ruleset.citationNotice}</p>
       </div>
     </section>
   );

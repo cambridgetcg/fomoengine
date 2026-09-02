@@ -10,7 +10,9 @@ deployment wrapper was reconstructed from the image runtime and Fly Machine
 configuration; it pins the observed Bun 1.3.14 runtime by OCI digest.
 
 The only Fly secret used by this service is `X402_PAYTO`. Its absence makes
-`/scan` free by design. Values are never stored in this repository.
+`/scan` free by design. Values are never stored in this repository. The
+non-secret `X402_PUBLIC_ORIGIN` is pinned in `fly.toml` so payment challenges
+name the public HTTPS resource rather than Fly's internal HTTP request URL.
 
 ## Verify
 

@@ -30,6 +30,7 @@ import {
   type Severity,
 } from "./taxonomy";
 import { scanWithRules, detectScamComposite } from "./regex.service";
+import { RULESET_DISCLOSURE, type RulesetDisclosure } from "./ruleset";
 
 const MAX_CHARS = 20000;
 // Free / anonymous: the fast, cheap models. Paid tiers: a stronger model for the
@@ -83,6 +84,8 @@ export interface AnalysisResult {
   checkedBy: string;
   /** The standing disclaimer shown with every result. */
   disclaimer: string;
+  /** Version and citation limitations for this exact detector snapshot. */
+  ruleset: RulesetDisclosure;
   inputChars: number;
 }
 
@@ -152,6 +155,7 @@ export class DetectionService {
       scamWarning: composite.triggered,
       checkedBy: this.describeCheckedBy(provider, aiUsed, model),
       disclaimer: DISCLAIMER,
+      ruleset: RULESET_DISCLOSURE,
       inputChars: text.length,
     };
   }

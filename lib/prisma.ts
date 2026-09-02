@@ -37,13 +37,13 @@ function getPool(): Pool {
                 let caPath: string | null = null;
                 for (const p of candidates) {
                     try {
-                        if (fs.existsSync(p)) { caPath = p; break; }
+                        if (fs.existsSync(/* turbopackIgnore: true */ p)) { caPath = p; break; }
                     } catch (err) {
                         console.warn(`[prisma] CA bundle check failed for ${p}:`, err instanceof Error ? err.message : String(err));
                     }
                 }
                 if (caPath) {
-                    return { ca: fs.readFileSync(caPath), rejectUnauthorized: true };
+                    return { ca: fs.readFileSync(/* turbopackIgnore: true */ caPath), rejectUnauthorized: true };
                 }
                 // No CA bundle found — be honest about it
                 if (process.env.NODE_ENV === "production") {

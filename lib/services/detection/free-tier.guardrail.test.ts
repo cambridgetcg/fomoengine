@@ -49,3 +49,11 @@ test("the no-storage / no-visiting disclaimer survives on every tier", async () 
   assert.match(r.disclaimer, /did not visit any website/i);
   assert.match(r.disclaimer, /you decide/i);
 });
+
+test("ruleset version and citation limitations are disclosed on the free result", async () => {
+  const r = await detectionService.analyze(AD, { tier: "free" });
+  assert.match(r.ruleset.version, /^\d{4}-\d{2}-\d{2}\.\d+$/);
+  assert.equal(r.ruleset.citationStatus, "reference-labels");
+  assert.match(r.ruleset.citationNotice, /not live legal authority/i);
+  assert.match(r.ruleset.citationNotice, /verify current primary sources/i);
+});

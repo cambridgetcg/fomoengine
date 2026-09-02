@@ -44,9 +44,22 @@ curl -s https://YOUR_HOST/api/v1/check \
 
 Returns `{ success, data: { flags: [{ label, principle, lever, why, emotion, truth, whatToDo, evidence, confidence, citation }], summary, scamWarning, … } }`. A paid tier adds quota + a stronger model — strictly *additive*, the free result is never degraded. Full docs: [`docs/API.md`](./docs/API.md).
 
+## For businesses checking their own copy
+
+The separate [`/audit`](./app/audit/page.tsx) route describes a bounded **$99 USD
+design-partner Copy Pressure Audit**. It produces a metadata-only request draft in
+the browser; the site does not submit or store the form. Set the deliberately public
+`NEXT_PUBLIC_AUDIT_CONTACT_EMAIL` to enable its “Open email draft” action. There is
+no checkout on the page: scope, handling, delivery timing, and a verified payment
+route are confirmed before payment.
+
+The audit is a versioned review artifact, not legal advice, regulatory
+certification, a fraud verdict, or a promise of improved conversion. The consumer
+checker remains complete, free, and unmetered.
+
 ## Tech
 
-Next.js 14 (App Router) · TypeScript · Tailwind + shadcn/ui · optional Postgres/Prisma (for API keys only — the public checker needs neither a DB nor auth) · deployed on Vercel.
+Next.js 16 (App Router) · TypeScript · Tailwind + shadcn/ui · optional Postgres/Prisma (for API keys only — the public checker needs neither a DB nor auth) · deployed on Vercel with Node.js 22.x.
 
 ## Run it locally
 
