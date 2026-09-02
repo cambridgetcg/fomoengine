@@ -23,6 +23,12 @@ destinations. `GET /scan?url=…` and a `url` property return a non-chargeable
 400 response. All input is bounded and validated before an enabled payment
 gate may return a challenge.
 
+`GET /audit` is a self-contained HTML fallback for the manual **$99 USD Copy
+Pressure Audit** design-partner offer. It has no form, tracking, data capture,
+external asset, or client-side script. Its request link opens a draft addressed
+to `contact@cambridgetcg.com`; nothing is submitted to this service. The page
+links separately to the free live checker at `https://fomoengine.io/check`.
+
 ## Verify
 
 ```sh
@@ -36,6 +42,7 @@ docker buildx build --load -t fomoengine-fly:test .
 ```sh
 fly deploy --config fly.toml --ha=false
 curl --fail https://fomoengine.fly.dev/health
+curl --fail https://fomoengine.fly.dev/audit
 ```
 
 The Fly service check proves only that the running process answers `/health`.

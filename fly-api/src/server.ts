@@ -2,6 +2,7 @@ import { scan } from "./detect.ts";
 import { MANUAL } from "./manual.ts";
 import { HONEYPOT_HTML } from "./honeypot.ts";
 import { gateScan, x402Config } from "./payment.ts";
+import { auditPage } from "./audit.ts";
 
 const PORT = Number(process.env.PORT ?? 4242);
 const MAX_REQUEST_BYTES = 2_000_000;
@@ -140,6 +141,7 @@ export async function handle(req: Request): Promise<Response> {
         "GET /scan?url=…": "paused: the service does not retrieve untrusted remote URLs",
         "GET /manual": "the FOMOENGINE framework as data (stages, tells, countermeasures, evidence)",
         "GET /honeypot": "a deliberately dark-patterned page for testing (should score ~100)",
+        "GET /audit": "the static $99 Copy Pressure Audit design-partner offer (no tracking or data capture)",
         "GET /openapi.json": "machine-readable door plan (OpenAPI 3)",
       },
       pricing: x402.enabled
@@ -150,7 +152,7 @@ export async function handle(req: Request): Promise<Response> {
             asset: "USDC",
             network: x402.network,
             payTo: x402.payTo,
-            free: ["/", "/manual", "/honeypot"],
+            free: ["/", "/manual", "/honeypot", "/audit"],
             note: "a failed scan is never charged; manual and honeypot stay free forever",
           }
         : { note: "all doors currently free", protocol: "x402-ready" },
@@ -167,6 +169,11 @@ export async function handle(req: Request): Promise<Response> {
   if (pathname === "/openapi.json") {
     const { openapiDocument } = await import("./openapi.ts");
     return json(openapiDocument());
+  }
+
+  if (pathname === "/audit") {
+    if (req.method !== "GET") return json({ error: "method not allowed" }, 405);
+    return auditPage();
   }
 
   if (pathname === "/honeypot")

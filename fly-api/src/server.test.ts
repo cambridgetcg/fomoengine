@@ -34,6 +34,49 @@ describe("public service contract", () => {
     expect((await response.json()).name).toBe("FOMOENGINE");
   });
 
+  test("serves the bounded audit fallback without tracking or data capture", async () => {
+    const response = await handle(new Request("http://localhost/audit"));
+    expect(response.status).toBe(200);
+    expect(response.headers.get("content-type")).toContain("text/html");
+    expect(response.headers.get("content-security-policy")).toContain("script-src 'none'");
+    expect(response.headers.get("content-security-policy")).toContain("default-src 'none'");
+
+    const body = await response.text();
+    expect(body).toContain("$99 USD");
+    expect(body).toContain("Up to 3 surfaces total and 5,000 words combined.");
+    expect(body).toContain("What the dated report includes");
+    expect(body).toContain("One correction/challenge pass.");
+    expect(body).toContain("within 14 days");
+    expect(body).toContain("Manual design-partner offer");
+    expect(body).toContain("not legal advice, legal certification, regulatory certification");
+    expect(body).toContain("No tracking or data capture");
+    expect(body).toContain("mailto:contact@cambridgetcg.com");
+    expect(body).toContain("Operator: Yu");
+    expect(body).toContain("Cambridge, UK");
+    expect(body).toContain('href="https://fomoengine.io/check"');
+    expect(body).not.toContain("<script");
+    expect(body).not.toContain("<form");
+    expect(body).not.toContain("<img");
+    expect(body).not.toContain('rel="stylesheet"');
+  });
+
+  test("documents the audit fallback in the index and OpenAPI", async () => {
+    const indexResponse = await handle(new Request("http://localhost/"));
+    const index = await indexResponse.json();
+    expect(index.endpoints["GET /audit"]).toContain("$99 Copy Pressure Audit");
+
+    const openapiResponse = await handle(new Request("http://localhost/openapi.json"));
+    const document = await openapiResponse.json();
+    expect(document.paths["/audit"].get.responses["200"].content["text/html"]).toEqual({});
+  });
+
+  test("does not accept audit submissions", async () => {
+    const response = await handle(
+      new Request("http://localhost/audit", { method: "POST", body: "private copy" }),
+    );
+    expect(response.status).toBe(405);
+  });
+
   test("scans deterministic text when the optional payment gate is disabled", async () => {
     const response = await handle(
       new Request("http://localhost/scan", {

@@ -60,6 +60,18 @@ export function openapiDocument() {
       "/honeypot": {
         get: { summary: "A deliberately dark-patterned test page (free forever)", responses: { "200": { description: "should score ~100" } } },
       },
+      "/audit": {
+        get: {
+          summary: "Static $99 Copy Pressure Audit design-partner offer",
+          description: "Accessible HTML with no tracking, form, data capture, external asset, or client-side script.",
+          responses: {
+            "200": {
+              description: "Bounded offer and mailto request path",
+              content: { "text/html": {} },
+            },
+          },
+        },
+      },
       "/": {
         get: { summary: "Service index incl. live x402 pricing", responses: { "200": { description: "index" } } },
       },
