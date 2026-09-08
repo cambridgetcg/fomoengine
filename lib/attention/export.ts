@@ -31,8 +31,21 @@ export function parseWorkspace(text: string): WorkspaceResult<WorkspaceDraft> {
   return { ok: true, value: parsed.data.draft };
 }
 
-// Markdown 只係可編輯純文字，唔喺網頁轉 HTML；亦唔自動打開用戶寫入嘅連結。
-export function renderBriefMarkdown(brief: GeneratedBrief): string {
+export type BriefMarkdownContent = Omit<GeneratedBrief, "input" | "sourceIds"> & { sourceIds: readonly string[] };
+export interface CitationSnapshot {
+  readonly id: string;
+  readonly title: string;
+  readonly url: string;
+  readonly publishedAt: string | null;
+  readonly reviewedAt: string;
+  readonly retrievalLimitations: string;
+}
+
+// Markdown 只係可編輯純文字，唔喺網頁轉 HTML；來源只讀明確傳入嘅快照。
+export function renderBriefArtifactMarkdown(snapshot: { brief: BriefMarkdownContent; sources: readonly CitationSnapshot[] }): string {
+  const { brief, sources } = snapshot;
+  const sourceById = new Map(sources.map((source) => [source.id, source]));
+  if (sourceById.size !== sources.length) throw new Error("來源快照唔可以有重複 ID。");
   return [
     `# ${brief.title}`,
     "Deterministic, research-informed planning template. Not AI analysis, verified evidence, a prediction or publication-ready copy.",
@@ -48,10 +61,16 @@ export function renderBriefMarkdown(brief: GeneratedBrief): string {
     `## Confounders\n${brief.confounders.map((line) => `- ${line}`).join("\n")}`,
     `## Experiment limits\n${brief.experiment.limitations.map((line) => `- ${line}`).join("\n")}`,
     `## Research references\n${brief.sourceIds.map((id) => {
-      const source = SOURCE_BY_ID[id];
+      const source = sourceById.get(id);
+      if (!source) throw new Error("Brief 引用咗快照入面冇嘅來源。");
       return `- ${source.title} — ${source.url}\n  Published: ${source.publishedAt ?? "not stated"}; editorial review: ${source.reviewedAt}. ${source.retrievalLimitations}`;
     }).join("\n")}`,
   ].join("\n\n");
+}
+
+// 舊 workspace 入口仍然用當前 catalogue；artifact 入口唔會行呢條路。
+export function renderBriefMarkdown(brief: GeneratedBrief): string {
+  return renderBriefArtifactMarkdown({ brief, sources: [...new Set(brief.sourceIds)].map((id) => SOURCE_BY_ID[id]) });
 }
 
 export function exportMarkdown(draft: WorkspaceDraft): WorkspaceResult<string> {

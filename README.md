@@ -13,6 +13,19 @@
 
 研究係背景，唔係 proprietary weights：官方披露、實驗、觀察同假設分開；arousal null replication、舊平台文件同存取受限來源照樣明示。Trend 0–100 唔係絕對量，非隨機比較唔宣告因果、significance 或 winner。
 
+## 共用 Attention Layer
+
+同一套核心提供 versioned HTTP 接口，畀 agenttool 同其他 KINGDOM／普通工程明確選用。Production origin 係 `https://fomoengine.io`；API 部署、SDK package 發布同全域採用係獨立狀態，應以各自嘅 live readback／release receipts 核實，唔單憑網站或 source 存在判定。
+
+- `GET /api/v1/attention-lab/catalogue`：機制、surface、claims、sources 同版本。
+- `POST /api/v1/attention-lab/briefs`：完整策略＋control/treatment＋可攜引用快照＋Markdown。
+- `POST /api/v1/attention-lab/comparisons`：明確 metric／plan／counts 嘅描述性比較，未知唔補零。
+- `GET /api/v1/attention-lab/openapi.json`：raw OpenAPI document。
+
+API／SDK 呼叫會將 caller 選取欄位送去配置 origin；**現有 browser Lab／Trends 冇改成遠端運算**。新 API 唔接 DB／model／URL fetch，唔保存 app content records、唔記 request body；hosting metadata retention 另有界線。SDK 唔轉送 agenttool bearer／cookies，亦唔自動掃 repo、發文或上傳草稿。
+
+[契約與本地採用例子](./docs/ATTENTION-LAYER.md) · [無 agenttool 依賴嘅 HTTP consumer](./examples/attention-lab.mjs) · [portable Skill source](./skills/attention-lab/SKILL.md) · [producer card](./kingdom.yaml)。Skill／card 存在唔代表已安裝、已註冊、健康或有操作權。
+
 ## 原有 authenticity shield
 
 **Paste any text — an ad, a message, a review, a scammy "your account is suspended" SMS — and see the manipulation tactics in it, in plain words.** Free, no login, nothing saved.

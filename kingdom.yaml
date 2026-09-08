@@ -1,0 +1,8 @@
+name: fomoengine
+kind: service
+layer: commerce
+owner_sister: none
+domain: commerce
+state: active
+purpose: 理解注意力機制，提供附來源嘅策略與實驗工具。
+dependsOn: []
