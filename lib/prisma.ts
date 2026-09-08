@@ -28,8 +28,9 @@ function getPool(): Pool {
             ? (() => {
                 const fs = require("fs");
                 const path = require("path");
-                // AWS publishes the RDS CA bundle via the aws-rds-ca-bundle npm package
+                // AWS 官方公開 CA 隨部署打包；保留既有外置路徑作兼容。
                 const candidates = [
+                    path.join(process.cwd(), "lib", "certs", "aws-rds-global-bundle.pem"),
                     path.join(__dirname, "..", "node_modules", "aws-rds-ca-bundle", "rds-combined-ca-bundle.pem"),
                     path.join(process.cwd(), "node_modules", "aws-rds-ca-bundle", "rds-combined-ca-bundle.pem"),
                     "/opt/aws/rds-combined-ca-bundle.pem",
@@ -48,10 +49,10 @@ function getPool(): Pool {
                 // No CA bundle found — be honest about it
                 if (process.env.NODE_ENV === "production") {
                     // In production, refuse to connect without proper TLS — don't lie
-                    throw new Error("[prisma] RDS connection requires CA bundle in production. Install aws-rds-ca-bundle: npm i aws-rds-ca-bundle");
+                    throw new Error("[prisma] RDS connection requires CA bundle in production. Include lib/certs/aws-rds-global-bundle.pem in the deployment.");
                 }
                 // Dev only: connect without SSL rather than pretending to have it
-                console.warn("[prisma] WARNING: RDS connection without TLS verification in development. Install aws-rds-ca-bundle for proper verification.");
+                console.warn("[prisma] WARNING: RDS connection without TLS verification in development. Restore lib/certs/aws-rds-global-bundle.pem for proper verification.");
                 return false;
             })()
             : false,

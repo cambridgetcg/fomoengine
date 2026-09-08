@@ -21,6 +21,8 @@
 # misc
 .DS_Store
 *.pem
+# 只追蹤 AWS 公開根 CA；其他 PEM／private keys 繼續忽略。
+!/lib/certs/aws-rds-global-bundle.pem
 
 # debug
 npm-debug.log*
