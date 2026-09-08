@@ -1,12 +1,12 @@
-import type { Metadata } from "next";
 import Link from "next/link";
+import { pageMetadata, SITE_URL } from "@/lib/site";
 import { CheckClient } from "./check-client";
 
-export const metadata: Metadata = {
-  title: "Is this trying to manipulate you?",
-  description:
-    "Paste an ad, message, or review and see the pressure tactics, the feeling each one is poking, and the plain truth that dissolves it. Free, no login, nothing saved.",
-};
+export const metadata = pageMetadata(
+  "Is this trying to manipulate you?",
+  "Check pasted text for pressure tactics, inspect the evidence, and decide for yourself. Free, no login, no application storage of your text.",
+  "/check",
+);
 
 const GROUNDING = ["Cialdini", "Kahneman & Tversky", "Brignull's deceptive.design", "FTC", "EU DSA"];
 
@@ -15,7 +15,7 @@ const JSON_LD = {
   "@context": "https://schema.org",
   "@type": "WebApplication",
   name: "the authenticity shield",
-  url: "https://fomoengine-cambridgetcgs-projects.vercel.app/check",
+  url: `${SITE_URL}/check`,
   applicationCategory: "SecurityApplication",
   operatingSystem: "Any",
   description:
@@ -115,6 +115,11 @@ export default function CheckPage() {
             We read only the words you paste — never a website, no tracking, nothing stored. We name
             patterns <em>consistent with</em> manipulation; we never call a specific person or product
             fraudulent. You decide.
+          </p>
+          <p className="mt-4 text-sm leading-relaxed text-emerald-900">
+            These are the detector&apos;s reference labels, not a live legal-research feed.{" "}
+            <Link href="/methodology" className="underline underline-offset-2">Read the methodology</Link>
+            {" "}and <Link href="/privacy" className="underline underline-offset-2">how the text check handles data</Link>.
           </p>
           <div className="mt-4 flex flex-wrap justify-center gap-2">
             {GROUNDING.map((g) => (

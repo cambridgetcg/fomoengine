@@ -1,8 +1,23 @@
-# the authenticity shield
+# FOMOengine — Attention Lab
+
+理解注意力點樣被捕捉，再將理解變成自己可驗證嘅策略：**Understand → Decode → Apply → Test**。
+
+- `/atlas`：六個機制嘅研究、反證、例子同適用限制，唔係六條保證增長公式。
+- `/platforms`：按 platform × surface 拆解公開訊號；marketing/email 明確係策略渠道，唔扮 ranking algorithm。
+- `/lab`：為 social、SEO、email 同 offer 建可編輯 brief，設計單變數 A/B，比較手動記錄嘅結果。
+- `/trends`：手動來源與需求背景筆記，接到同一份 brief；唔係即時 trend feed。
+- `/check`：原有免費 authenticity shield，接上機制解說，唔削弱 safety result。
+- `/sources`、`/methodology`、`/privacy`：逐項來源、證據界線同資料處理。
+
+新工作台用 deterministic templates，唔需要登入、AI key 或 DB。狀態默認只喺記憶體，跨 client navigation 保留、reload 清空；明確 Save/Load/Delete 先讀寫本機 browser draft。JSON 匯入會驗 schema/version，Markdown/JSON 匯出由用戶自己保管。新 Lab/Trends 唔發內容到 server；checker 仍會把 pasted text 交現有 API，optional AI provider 另見私隱頁。唔做自動發文、暗中爬站或帳號接駁。
+
+研究係背景，唔係 proprietary weights：官方披露、實驗、觀察同假設分開；arousal null replication、舊平台文件同存取受限來源照樣明示。Trend 0–100 唔係絕對量，非隨機比較唔宣告因果、significance 或 winner。
+
+## 原有 authenticity shield
 
 **Paste any text — an ad, a message, a review, a scammy "your account is suspended" SMS — and see the manipulation tactics in it, in plain words.** Free, no login, nothing saved.
 
-→ **[Try it](https://fomoengine-cambridgetcgs-projects.vercel.app/check)**
+→ **[Try it](https://fomoengine.io/check)**
 
 For each pressure tactic it finds, the shield names:
 
@@ -64,10 +79,24 @@ Next.js 16 (App Router) · TypeScript · Tailwind + shadcn/ui · optional Postgr
 ## Run it locally
 
 ```bash
-npm install
-npm run dev          # the public checker works immediately, no env needed
-npm test             # detection + guardrail tests
+# Node.js 22.x
+npm ci
+npm run dev
+npm test
+npx tsc --noEmit
+npm run lint
+npm run build
 ```
+
+新工作台同匿名 checker 唔需要環境秘密。請勿為本地 smoke test 搬入 production keys。`fly-api/` 保留原有 Bun 1.3.14 測試流程，唔需要改 x402 或外部服務設定。
+
+Browser smoke 使用 Playwright，會自行啟動一個無 AI key／DB 嘅 production server 喺 `127.0.0.1:3187`，唔重用其他人嘅服務。先 `npm run build`，再 `npm run test:e2e`；需要 Playwright Chromium，或以 `PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH` 指定已安裝 Chrome。Mac 例子：
+
+```bash
+PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH="/Applications/Google Chrome.app/Contents/MacOS/Google Chrome" npm run test:e2e
+```
+
+Smoke 只用 synthetic 內容；screenshots/traces 喺已忽略嘅 `test-results/`，唔入 Git。
 
 Optional env (`.env`): `OPENAI_API_KEY` or `ANTHROPIC_API_KEY` to enable the AI pass; `DATABASE_URL` only if you're issuing metered API keys.
 

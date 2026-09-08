@@ -1,6 +1,8 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
+import { mechanismForCategory } from "@/lib/attention/detector-links";
 import type { AnalysisResult, Flag } from "@/lib/services/detection/detection.service";
 import { annotate, hasHighlights } from "@/lib/services/detection/annotate";
 
@@ -115,7 +117,7 @@ export function CheckClient() {
           {loading ? "Reading…" : "Check it"}
         </button>
         <p id="paste-help" className="text-sm text-neutral-500">
-          Press {modifierLabel()}+Enter. Nothing you paste is saved.
+          Press Ctrl+Enter or ⌘+Enter. Nothing you paste is saved.
         </p>
       </div>
 
@@ -157,12 +159,16 @@ function Results({ result, checkedText }: { result: AnalysisResult; checkedText:
         {result.summary}
       </h2>
 
+      <p className="mt-2 text-sm leading-relaxed text-neutral-600">
+        These are textual cues, not verified intent, fraud, or a reading of your emotions.
+        The checker does not detect every mechanism in the Atlas.
+      </p>
       <AnnotatedText text={checkedText} flags={result.flags} />
 
       {result.flags.length > 0 && (
         <ul className="mt-4 space-y-3">
           {result.flags.map((f) => (
-            <FlagCard key={f.categoryId} flag={f} />
+            <FlagCard key={f.categoryId} flag={f} allowExperiment={!result.scamWarning} />
           ))}
         </ul>
       )}
@@ -218,8 +224,9 @@ function AnnotatedText({ text, flags }: { text: string; flags: Flag[] }) {
   );
 }
 
-function FlagCard({ flag }: { flag: Flag }) {
+function FlagCard({ flag, allowExperiment }: { flag: Flag; allowExperiment: boolean }) {
   const s = SEV[flag.severity];
+  const mechanismId = mechanismForCategory(flag.categoryId);
   return (
     <li className={`rounded-lg border-l-4 p-4 ${s.cls}`}>
       {/* 1 — what it is, in plain words */}
@@ -232,7 +239,7 @@ function FlagCard({ flag }: { flag: Flag }) {
 
       {/* 2 — the feeling, then the truth that frees you: the part that matters most */}
       <p className="mt-2.5 text-sm text-neutral-600">
-        <span className="font-medium">The feeling it pokes:</span> {flag.emotion}
+        <span className="font-medium">A possible feeling this tactic appeals to:</span> {flag.emotion}
       </p>
       <p className="mt-1.5 rounded-md border-l-2 border-emerald-500 bg-emerald-50 px-3 py-2 text-[0.95rem] text-emerald-900">
         <strong className="font-semibold">The truth&nbsp;→ </strong>
@@ -256,11 +263,18 @@ function FlagCard({ flag }: { flag: Flag }) {
         </p>
         <p>Grounded in: {flag.citation}</p>
       </div>
+      {mechanismId && (
+        <div className="mt-4 flex flex-wrap gap-x-5 gap-y-2 border-t border-neutral-300 pt-3 text-sm font-medium text-neutral-800">
+          <Link href={`/atlas/${mechanismId}`} className="underline underline-offset-4 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4">
+            Understand this mechanism
+          </Link>
+          {allowExperiment && (
+            <Link href={`/lab?mechanism=${mechanismId}`} className="underline underline-offset-4 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4">
+              Build an honest experiment
+            </Link>
+          )}
+        </div>
+      )}
     </li>
   );
-}
-
-function modifierLabel(): string {
-  if (typeof navigator !== "undefined" && /Mac|iPhone|iPad/.test(navigator.platform)) return "⌘";
-  return "Ctrl";
 }

@@ -1,65 +1,43 @@
 import type { Metadata } from "next";
-import { DM_Sans } from "next/font/google";
+import { DM_Sans, Fraunces } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
+import { SiteShell } from "@/components/attention/site-shell";
+import { WorkspaceProvider } from "@/components/attention/workspace-provider";
+import { SITE_URL } from "@/lib/site";
 
-const dmsans = DM_Sans({ subsets: ["latin"] });
+const dmsans = DM_Sans({ subsets: ["latin"], variable: "--font-body" });
+const fraunces = Fraunces({ subsets: ["latin"], variable: "--font-editorial", display: "swap" });
 
-const SITE = "https://fomoengine-cambridgetcgs-projects.vercel.app";
-const TAGLINE =
-    "Paste any ad, message, or review and see the pressure tactics, the feeling each one is poking, and the plain truth that dissolves it. Free, no login, nothing saved.";
+const DESCRIPTION = "Understand how emotion, platform signals and creative choices shape attention. Explore the research, decode pressure tactics and design your own honest experiments.";
 
 export const metadata: Metadata = {
-    metadataBase: new URL(SITE),
-    title: {
-        default: "Is this trying to manipulate you?",
-        template: "%s · the authenticity shield",
-    },
-    description: TAGLINE,
-    applicationName: "the authenticity shield",
-    keywords: [
-        "dark patterns",
-        "manipulation detector",
-        "is this a scam",
-        "scam checker",
-        "phishing checker",
-        "deceptive design",
-        "FOMO",
-        "pressure tactics",
-        "consumer protection",
-    ],
-    authors: [{ name: "Cambridge TCG" }],
-    creator: "Cambridge TCG",
-    alternates: { canonical: "/check" },
-    openGraph: {
-        type: "website",
-        siteName: "the authenticity shield",
-        url: "/check",
-        title: "Is this trying to manipulate you?",
-        description:
-            "See the pressure tactics in any ad, message, or review — the feeling each one pokes, and the truth that dissolves it. Free, nothing saved.",
-    },
-    twitter: {
-        card: "summary_large_image",
-        title: "Is this trying to manipulate you?",
-        description:
-            "See the pressure tactics in any ad, message, or review — the feeling each one pokes, and the truth that dissolves it. Free, nothing saved.",
-    },
-    robots: { index: true, follow: true },
+  metadataBase: new URL(SITE_URL),
+  title: { default: "FOMOengine — The Attention Lab", template: "%s · FOMOengine" },
+  description: DESCRIPTION,
+  applicationName: "FOMOengine",
+  authors: [{ name: "Cambridge TCG" }],
+  creator: "Cambridge TCG",
+  openGraph: {
+    type: "website",
+    siteName: "FOMOengine",
+    title: "FOMOengine — The Attention Lab",
+    description: DESCRIPTION,
+  },
+  twitter: { card: "summary_large_image", title: "FOMOengine — The Attention Lab", description: DESCRIPTION },
+  robots: { index: true, follow: true },
 };
 
-export default function RootLayout({
-    children,
-}: {
-    children: React.ReactNode;
-}) {
-    return (
-        <html lang="en" suppressHydrationWarning>
-            <body className={dmsans.className}>
-                <ThemeProvider attribute="class" defaultTheme="light" enableSystem>
-                    {children}
-                </ThemeProvider>
-            </body>
-        </html>
-    );
+export default function RootLayout({ children }: { children: React.ReactNode }) {
+  return (
+    <html lang="en" suppressHydrationWarning>
+      <body className={`${dmsans.className} ${dmsans.variable} ${fraunces.variable}`}>
+        <ThemeProvider attribute="class" defaultTheme="light" enableSystem>
+          <WorkspaceProvider>
+            <SiteShell>{children}</SiteShell>
+          </WorkspaceProvider>
+        </ThemeProvider>
+      </body>
+    </html>
+  );
 }

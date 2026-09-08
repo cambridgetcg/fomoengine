@@ -1,98 +1,31 @@
 import { ImageResponse } from "next/og";
 
-// Site-wide social preview. Renders the card every share/Slack/iMessage/Discord
-// unfurl shows — so the link sells itself. Text + CSS only (no emoji → no tofu).
-export const alt = "Is this trying to manipulate you? — the authenticity shield";
+export const alt = "FOMOengine — The Attention Lab. Understand the pull. Design with care. Research, not a growth promise.";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
 export default function Image() {
   return new ImageResponse(
-    (
-      <div
-        style={{
-          height: "100%",
-          width: "100%",
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "space-between",
-          backgroundColor: "#ffffff",
-          padding: "72px",
-        }}
-      >
-        {/* brand */}
-        <div style={{ display: "flex", alignItems: "center" }}>
-          <div
-            style={{
-              display: "flex",
-              width: "56px",
-              height: "56px",
-              borderRadius: "16px",
-              backgroundColor: "#059669",
-              marginRight: "20px",
-            }}
-          />
-          <div style={{ display: "flex", fontSize: "28px", color: "#6b7280", fontWeight: 600 }}>
-            the authenticity shield
-          </div>
+    <div style={{ height: "100%", width: "100%", display: "flex", flexDirection: "column", backgroundColor: "#f4f0e8", color: "#1f231f", padding: "46px 62px" }}>
+      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", paddingBottom: 27, borderBottom: "1px solid #cecac0" }}>
+        <div style={{ display: "flex", alignItems: "center", gap: 13 }}><div style={{ display: "flex", width: 29, height: 29, border: "1px solid #b93622", borderRadius: "50%", alignItems: "center", justifyContent: "center", color: "#b93622", fontSize: 28 }}>+</div><span style={{ fontSize: 29, letterSpacing: "-1.5px", fontWeight: 700 }}>FOMOengine</span></div>
+        <span style={{ fontSize: 14, color: "#65665c", letterSpacing: "2px" }}>THE ATTENTION LAB</span>
+      </div>
+      <div style={{ display: "flex", flex: 1, alignItems: "center", gap: 70 }}>
+        <div style={{ display: "flex", flexDirection: "column", width: 650 }}>
+          <span style={{ fontSize: 12, letterSpacing: "2px", color: "#65665c", marginBottom: 23 }}>RESEARCH / CREATIVE PRACTICE / INFORMED CHOICE</span>
+          <span style={{ display: "flex", fontSize: 75, letterSpacing: "-4px", lineHeight: 1.07, fontWeight: 400 }}>Understand the pull.</span>
+          <span style={{ display: "flex", fontSize: 75, letterSpacing: "-4px", lineHeight: 1.07, color: "#b93622", fontWeight: 400 }}>Design with care.</span>
+          <span style={{ fontSize: 22, lineHeight: 1.5, marginTop: 26, maxWidth: 580, color: "#65665c" }}>Explore the mechanisms of attention. Turn a claim into an honest experiment.</span>
         </div>
-
-        {/* headline */}
-        <div style={{ display: "flex", flexDirection: "column" }}>
-          <div
-            style={{
-              display: "flex",
-              fontSize: "78px",
-              fontWeight: 800,
-              color: "#111827",
-              lineHeight: 1.04,
-              letterSpacing: "-0.03em",
-            }}
-          >
-            Is this trying to manipulate you?
-          </div>
-          <div
-            style={{
-              display: "flex",
-              marginTop: "28px",
-              fontSize: "34px",
-              color: "#4b5563",
-              lineHeight: 1.35,
-              maxWidth: "1000px",
-            }}
-          >
-            Paste any ad, message, or review. See the trick, the feeling it pokes, and the truth that
-            dissolves it.
-          </div>
-        </div>
-
-        {/* footer */}
-        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-          <div style={{ display: "flex" }}>
-            {["Free", "No login", "Nothing saved"].map((t) => (
-              <div
-                key={t}
-                style={{
-                  display: "flex",
-                  fontSize: "24px",
-                  color: "#065f46",
-                  backgroundColor: "#ecfdf5",
-                  border: "2px solid #a7f3d0",
-                  borderRadius: "999px",
-                  padding: "8px 22px",
-                  marginRight: "14px",
-                }}
-              >
-                {t}
-              </div>
-            ))}
-          </div>
-          <div style={{ display: "flex", fontSize: "22px", color: "#9ca3af" }}>
-            Cialdini · Kahneman · Brignull · FTC · EU DSA
-          </div>
+        <div style={{ display: "flex", flexDirection: "column", width: 276, background: "#eae5da", border: "1px solid #b8b6a9", padding: "28px 24px", transform: "rotate(-3deg)" }}>
+          <span style={{ fontSize: 11, letterSpacing: "1px", color: "#65665c", marginBottom: 25 }}>FIELD NOTES / NOT A FORMULA</span>
+          {["01  Understand", "02  Decode", "03  Apply & test"].map((label) => <span key={label} style={{ display: "flex", fontSize: 23, padding: "17px 0", borderBottom: "1px solid #cecac0" }}>{label}</span>)}
+          <span style={{ fontSize: 14, lineHeight: 1.6, marginTop: 22, color: "#b93622" }}>Keep the evidence.<br />Keep the uncertainty.</span>
         </div>
       </div>
-    ),
+      <div style={{ display: "flex", justifyContent: "space-between", borderTop: "1px solid #cecac0", paddingTop: 22, color: "#65665c", fontSize: 13 }}><span>ATLAS · PLATFORMS · LAB · TRENDS · FREE CHECKER</span><span>fomoengine.io</span></div>
+    </div>,
     { ...size },
   );
 }

@@ -1,15 +1,14 @@
-import type { Metadata } from "next";
 import Link from "next/link";
+import { pageMetadata } from "@/lib/site";
 import { AuditRequestForm } from "./audit-request-form";
 import { DESIGN_PARTNER_AUDIT } from "@/lib/services/audit/offer";
 import { RULESET_DISCLOSURE } from "@/lib/services/detection/ruleset";
 
-export const metadata: Metadata = {
-  title: "Copy Pressure Audit for businesses",
-  description:
-    "A bounded, versioned self-audit for organizations checking copy they control. $99 USD design-partner price; not legal certification.",
-  alternates: { canonical: "/audit" },
-};
+export const metadata = pageMetadata(
+  "Copy Pressure Audit for businesses",
+  "A bounded, versioned self-audit for organizations checking copy they control. $99 USD design-partner price; not legal certification.",
+  "/audit",
+);
 
 function configuredContactEmail(): string | null {
   const value = process.env.NEXT_PUBLIC_AUDIT_CONTACT_EMAIL?.trim();
