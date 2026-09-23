@@ -25,7 +25,7 @@ curl -s https://YOUR_HOST/api/v1/check \
 ### Authenticated (with an API key)
 
 Send your key as a Bearer token. A key meters your usage against a monthly quota,
-and on a paid tier routes to a stronger model for sharper nuance.
+and preserves the recorded model route for existing keys. New paid enrolment is retired.
 
 ```bash
 curl -s https://YOUR_HOST/api/v1/check \
@@ -118,12 +118,12 @@ anonymous tier.
 
 ## Getting a key
 
-Until self-serve billing is live, mint a key from the CLI:
+For a free key with an explicit resource limit, use the CLI:
 
 ```bash
-npx tsx scripts/mint-api-key.ts "Acme prod" --tier STARTER
+npx tsx scripts/mint-api-key.ts "Acme prod" --tier FREE
 # prints the secret ONCE — copy it now
 ```
 
 This needs `DATABASE_URL` set (a Postgres connection string). See
-[MONETIZATION.md](./MONETIZATION.md) for how paid plans and payment rails fit in.
+[MONETIZATION.md](./MONETIZATION.md) for the retirement of commercial plans.

@@ -1,13 +1,6 @@
-/**
- * POST /api/v1/billing/webhook — provision / revoke API keys from billing events.
- *
- * STUB until a provider is configured: with no provider wired, this returns a
- * generic 501 (no config details leaked to unauthenticated probes — the wiring
- * lives in docs/MONETIZATION.md). Once you implement getConfiguredProvider(), a
- * paid event maps to a Plan (tier + quota) and a cancellation revokes the key.
- *
- * Before shipping real provisioning, persist + check the provider's event id for
- * idempotency so a replayed signed event is a no-op.
+/** Existing billing-event adapter stub. No provider has been configured.
+ * New paid enrolment is retired. Do not wire this into a new sales flow.
+ * Historic key/plan interpretation remains for existing-record recovery.
  */
 import { NextRequest } from "next/server";
 import { getConfiguredProvider } from "@/lib/services/billing/provider";
@@ -29,8 +22,6 @@ export async function POST(req: NextRequest) {
   }
 
   const plan = planForProviderPlanId(event.providerPlanId);
-  // TODO (next build): idempotency-check the provider event id, then provision/revoke
-  // an ApiKey for event.customerEmail at plan.tier / plan.monthlyQuota, and deliver
-  // the one-time secret out-of-band (dashboard or email).
+  // No new paid key is provisioned. Existing-event mapping is retained.
   return jsonOk({ received: event.type, mappedTier: plan?.tier ?? null });
 }

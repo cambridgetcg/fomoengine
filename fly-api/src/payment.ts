@@ -1,22 +1,9 @@
-/** payment.ts — the x402 gate on the paid door (/scan).
- *
- * USDC on Solana via the official @x402/* SDK; the PayAI facilitator verifies
- * and settles (it fronts all network fees — we only hold a receiving address).
- *
- * House rules, in order of importance:
- *  1. The gate exists only when X402_PAYTO is set and X402_ENABLED is not
- *     false. Unset or explicitly disabled ⇒ the door is free (public-good
- *     default; enabling is a deliberate operator act).
- *  2. If the facilitator is down or hanging, the door falls OPEN, never
- *     closed — an outage may cost us revenue; it must never cost a guest
- *     the answer. A health probe (3s timeout, 60s cache) covers the
- *     warm-cache case; hard timeouts cover hangs mid-request.
- *  3. Never charge-and-withhold. A definitive settlement failure (the
- *     facilitator says no) withholds the answer — nobody was charged. An
- *     AMBIGUOUS settlement (timeout, unparseable response after a 200) may
- *     have charged the buyer, so the answer is delivered with a
- *     `payment-settlement: unknown` header instead of being withheld.
- *  4. A failed scan (4xx/5xx) is never charged.
+/** New x402 scan purchases are retired as of 2026-09-23.
+ * x402Config().enabled is unconditionally false, including when legacy env
+ * flags remain set. gateScan returns before facilitator initialization,
+ * verification or settlement. The historical settlement implementation stays
+ * below for inspection; it is not an instruction or switch to reopen sales.
+ * Existing provider/chain receipts and any recovery obligations remain intact.
  */
 import {
   HTTPFacilitatorClient,
@@ -37,10 +24,10 @@ const INIT_RETRY_MS = 60_000;
 
 export function x402Config() {
   const payTo = (process.env.X402_PAYTO ?? "").trim();
-  const configuredOn = (process.env.X402_ENABLED ?? "true").trim().toLowerCase() !== "false";
   return {
     payTo,
-    enabled: configuredOn && payTo.length > 0,
+    enabled: false,
+    retired: true,
     network: process.env.X402_NETWORK ?? SOLANA_MAINNET,
     price: process.env.X402_PRICE ?? "$0.01",
     facilitator: process.env.X402_FACILITATOR ?? "https://facilitator.payai.network",
@@ -91,14 +78,14 @@ async function gateServer(): Promise<x402HTTPResourceServer | null> {
         contentType: "application/json",
         body: {
           error: "payment required",
-          hint: "retry with an x402 PAYMENT-SIGNATURE header; free doors: GET /manual, GET /honeypot",
+          hint: "New paid scans are retired; use the public scan without a payment signature.",
         },
       }),
       settlementFailedResponseBody: () => ({
         contentType: "application/json",
         body: {
           error: "payment settlement failed — you were NOT charged",
-          hint: "the facilitator declined settlement (expired or unfundable payment?); sign a fresh payment and retry",
+          hint: "New payments are retired. Investigate the existing receipt; do not sign a fresh payment.",
         },
       }),
     };

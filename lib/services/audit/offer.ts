@@ -1,11 +1,10 @@
 import { z } from "zod";
-import { RULESET_DISCLOSURE } from "@/lib/services/detection/ruleset";
 
 export const DESIGN_PARTNER_AUDIT = Object.freeze({
   id: "copy-pressure-audit-design-partner",
   name: "Copy Pressure Audit",
-  priceUsd: 99,
-  priceLabel: "$99 USD",
+  acceptingRequests: false,
+  status: "retired",
   maximumSurfaces: 3,
   maximumWords: 5000,
   recheckDays: 14,
@@ -39,33 +38,10 @@ export const auditRequestSchema = z
 
 export type AuditRequest = z.infer<typeof auditRequestSchema>;
 
-export function buildAuditRequestText(request: AuditRequest): string {
-  const name = request.requesterName || "Not provided";
-  return [
-    `${DESIGN_PARTNER_AUDIT.name} — design-partner request`,
-    `Offer: ${DESIGN_PARTNER_AUDIT.priceLabel} after written scope acceptance; no payment has been taken.`,
-    `Ruleset snapshot: ${RULESET_DISCLOSURE.id}/${RULESET_DISCLOSURE.version} (${RULESET_DISCLOSURE.snapshotDate}).`,
-    "",
-    `Name: ${name}`,
-    `Organization or project: ${request.organization}`,
-    "Public URLs or surface names:",
-    request.surfaces,
-    "",
-    "Goal:",
-    request.goal,
-    "",
-    "Requester confirms:",
-    "- I control this copy or have permission to request its audit.",
-    "- This request contains no private copy, credentials, customer records, or other personal data.",
-    "",
-    "Please confirm scope, delivery timing, the privacy route for any non-public material, and a verified payment link before work begins.",
-  ].join("\n");
+export function buildAuditRequestText(_request: AuditRequest): never {
+  throw new Error("Paid audit requests are retired. Use the public checker for self-guided exploration.");
 }
 
-export function buildAuditMailto(contactEmail: string, requestText: string): string {
-  const params = new URLSearchParams({
-    subject: `${DESIGN_PARTNER_AUDIT.name} — design-partner request`,
-    body: requestText,
-  });
-  return `mailto:${encodeURIComponent(contactEmail)}?${params.toString()}`;
+export function buildAuditMailto(_contactEmail: string, _requestText: string): never {
+  throw new Error("Paid audit requests are retired. No new service request or payment route is created.");
 }

@@ -1,12 +1,6 @@
-/**
- * Provider-agnostic billing seam.
- *
- * Implement ONE of these for whichever rail you pick (Paddle / Polar / Stripe).
- * The webhook route stays identical across providers — only verifyAndParse changes.
- *
- * Until BILLING_PROVIDER (and that provider's webhook secret) are configured,
- * getConfiguredProvider() returns null and the webhook route answers 501, so an
- * unwired billing endpoint is obviously a stub rather than a silent no-op.
+/** Historical billing event seam. New paid enrolment and checkout are retired.
+ * No provider is configured. Retained types describe earlier records, not an
+ * instruction to activate sales. See docs/MONETIZATION.md.
  */
 export type BillingEventType = "subscription.activated" | "subscription.updated" | "subscription.canceled";
 
@@ -24,16 +18,7 @@ export interface BillingProvider {
   verifyAndParse(rawBody: string, headers: Headers): Promise<BillingEvent | null>;
 }
 
-/**
- * Return the configured provider, or null if billing isn't wired yet.
- *
- * To enable, set BILLING_PROVIDER and implement the matching branch, e.g.:
- *
- *   if (process.env.BILLING_PROVIDER === "paddle")
- *     return new PaddleProvider(process.env.PADDLE_WEBHOOK_SECRET!);
- *
- * See docs/MONETIZATION.md for the recommended rail (a merchant-of-record).
- */
+/** Retired, unconfigured provider seam; never creates a new purchase. */
 export function getConfiguredProvider(): BillingProvider | null {
   return null;
 }

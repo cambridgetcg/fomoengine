@@ -1,7 +1,7 @@
 /**
  * Mint a public-API key.
  *
- *   npx tsx scripts/mint-api-key.ts "Acme prod" --tier STARTER [--quota 10000]
+ *   npx tsx scripts/mint-api-key.ts "Local exploration" [--quota 1000]
  *
  * The secret is printed ONCE and is never stored in raw form — copy it immediately.
  * We persist only sha256(secret), so a leaked database can't reveal anyone's key.
@@ -10,6 +10,7 @@ import "dotenv/config";
 import { prisma } from "@/lib/prisma";
 import { generateKey } from "@/lib/services/api-keys/api-key.service";
 import type { ApiTier } from "@prisma/client";
+import { newEnrollmentAllowed } from "@/lib/services/billing/plans";
 
 const DEFAULT_QUOTA: Record<ApiTier, number> = { FREE: 1000, STARTER: 10000, PRO: 100000 };
 
@@ -21,7 +22,7 @@ function flag(name: string): string | undefined {
 async function main() {
   const name = process.argv[2] && !process.argv[2].startsWith("--") ? process.argv[2] : undefined;
   if (!name) {
-    console.error('Usage: npx tsx scripts/mint-api-key.ts "<name>" [--tier FREE|STARTER|PRO] [--quota <n>]');
+    console.error('Usage: npx tsx scripts/mint-api-key.ts "<name>" [--tier FREE] [--quota <n>]');
     process.exit(1);
   }
   if (!process.env.DATABASE_URL) {
@@ -29,11 +30,11 @@ async function main() {
     process.exit(1);
   }
 
-  const tier = (flag("--tier") || "STARTER").toUpperCase() as ApiTier;
+  const tier = (flag("--tier") || "FREE").toUpperCase() as ApiTier;
   // why only these tiers: see PLANS in lib/services/billing/plans.ts — each tier
   // maps to a quota and price with a documented rationale (methodology comment).
-  if (!["FREE", "STARTER", "PRO"].includes(tier)) {
-    console.error(`✗ Invalid --tier "${tier}". Use FREE, STARTER, or PRO.`);
+  if (!newEnrollmentAllowed(tier)) {
+    console.error("New paid enrolment is retired. New keys use FREE; existing keys are unchanged.");
     process.exit(1);
   }
   const quotaArg = flag("--quota");

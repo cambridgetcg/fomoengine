@@ -1,12 +1,14 @@
-/**
- * Plans = the single source of truth for tier → quota → price.
- *
- * Provider-agnostic on purpose: the payment provider (Paddle / Polar / Stripe)
- * owns the *charging*; this file owns what a paid plan *grants*. Map your
- * provider's price IDs to these plans via env so no provider id is hardcoded.
+/** Historical tier, quota and price records for existing API keys.
+ * New paid enrolment is retired. These values preserve previous plan meaning;
+ * they are not a price list or instructions to configure a payment provider.
  */
 import type { ApiTier } from "@prisma/client";
 import type { AnalyzeTier } from "@/lib/services/detection/detection.service";
+
+/** New paid enrolment is retired. Existing tier records remain readable. */
+export function newEnrollmentAllowed(tier: string): boolean {
+  return tier === "FREE";
+}
 
 /**
  * The single home for "which API tiers get the stronger model." Lives next to the
@@ -27,7 +29,7 @@ export interface Plan {
 }
 
 /**
- * Pricing methodology (why these numbers, so the decision is inspectable):
+ * Historical pricing rationale, retained only to interpret earlier records:
  *   free     1k checks/mo  $0   — anonymous, no DB, rate-limited per IP. Exists so
  *                               the scam alert is reachable to anyone, not gated.
  *   starter  10k checks/mo $29  — ~3.3× free volume; covers LLM cost + margin for a
@@ -45,8 +47,8 @@ export const PLANS: Record<string, Plan> = {
 };
 
 /**
- * Resolve a provider's price/plan id to one of our Plans. Configure the mapping
- * with env vars (e.g. BILLING_PLAN_ID_STARTER=pri_abc123) so provider ids never
+ * Interpret an existing provider event using the historical plan mapping
+ * from retained env vars (e.g. BILLING_PLAN_ID_STARTER) so provider ids never
  * leak into source. Falls back to treating the id as an internal plan key.
  */
 export function planForProviderPlanId(providerPlanId: string): Plan | undefined {

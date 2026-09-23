@@ -1,7 +1,7 @@
 import { scan } from "./detect.ts";
 import { MANUAL } from "./manual.ts";
 import { HONEYPOT_HTML } from "./honeypot.ts";
-import { gateScan, x402Config } from "./payment.ts";
+import { gateScan } from "./payment.ts";
 import { auditPage } from "./audit.ts";
 
 const PORT = Number(process.env.PORT ?? 4242);
@@ -133,7 +133,6 @@ export async function handle(req: Request): Promise<Response> {
     });
 
   if (pathname === "/") {
-    const x402 = x402Config();
     return json({
       service: "fomoengine",
       endpoints: {
@@ -141,21 +140,15 @@ export async function handle(req: Request): Promise<Response> {
         "GET /scan?url=…": "paused: the service does not retrieve untrusted remote URLs",
         "GET /manual": "the FOMOENGINE framework as data (stages, tells, countermeasures, evidence)",
         "GET /honeypot": "a deliberately dark-patterned page for testing (should score ~100)",
-        "GET /audit": "the static $99 Copy Pressure Audit design-partner offer (no tracking or data capture)",
+        "GET /audit": "self-guided exploration; the paid audit offer is retired",
         "GET /openapi.json": "machine-readable door plan (OpenAPI 3)",
       },
-      pricing: x402.enabled
-        ? {
-            protocol: "x402",
-            paid: ["/scan"],
-            price: x402.price,
-            asset: "USDC",
-            network: x402.network,
-            payTo: x402.payTo,
-            free: ["/", "/manual", "/honeypot", "/audit"],
-            note: "a failed scan is never charged; manual and honeypot stay free forever",
-          }
-        : { note: "all doors currently free", protocol: "x402-ready" },
+      pricing: {
+        note: "New paid scans and audit requests are retired. All current scan doors are free.",
+        purchases: "retired",
+        paid: [],
+        free: ["/", "/scan", "/manual", "/honeypot", "/audit"],
+      },
       artifact: MANUAL.artifact,
     });
   }
@@ -184,7 +177,7 @@ export async function handle(req: Request): Promise<Response> {
       return json({ error: "method not allowed" }, 405);
     // URL retrieval is paused and GET cannot produce a chargeable scan.
     if (req.method === "GET") return remoteRetrievalPaused();
-    // Bound and validate input before asking anyone to authorize payment.
+    // Bound and validate input before scanning; no new payment is authorized.
     let input: ScanInput;
     try {
       input = await readScanInput(req);

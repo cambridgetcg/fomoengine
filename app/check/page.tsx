@@ -166,7 +166,7 @@ export default function CheckPage() {
           <p className="mt-3">
             Checking copy your organization controls?{" "}
             <Link href="/audit" className="font-medium text-neutral-700 underline underline-offset-2">
-              See the bounded business self-audit
+              Explore a self-guided review
             </Link>
             .
           </p>

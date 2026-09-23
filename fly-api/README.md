@@ -2,7 +2,7 @@
 
 This directory is the reproducible source for the `fomoengine` Fly service:
 the deterministic `/scan` API, its public framework doors, and the optional
-x402 payment gate. It is separate from the repository's Next.js/Vercel shield.
+retired x402 payment gate. It is separate from the repository's Next.js/Vercel shield.
 
 The initial source was recovered byte-for-byte from Fly release 5's running
 image on 2026-08-20. Commit `550649c` preserves that exact baseline. The
@@ -20,14 +20,14 @@ challenges name the public HTTPS resource rather than Fly's internal HTTP URL.
 with a 2,000,000-byte request limit. Remote URL retrieval is deliberately
 paused: the service does not make server-side requests to untrusted
 destinations. `GET /scan?url=…` and a `url` property return a non-chargeable
-400 response. All input is bounded and validated before an enabled payment
-gate may return a challenge.
+400 response. All input is bounded and validated before scanning. New paid scans are
+unconditionally retired in source, even if old x402 environment values remain.
+No new facilitator verification or settlement is called. Earlier provider/chain
+receipts remain historical records; retirement does not erase an obligation.
 
-`GET /audit` is a self-contained HTML fallback for the manual **$99 USD Copy
-Pressure Audit** design-partner offer. It has no form, tracking, data capture,
-external asset, or client-side script. Its request link opens a draft addressed
-to `contact@cambridgetcg.com`; nothing is submitted to this service. The page
-links separately to the free live checker at `https://fomoengine.io/check`.
+`GET /audit` is a script-free self-guided review page. The paid audit offer,
+request link and delivery promise are retired; earlier-request support remains.
+The free checker is `https://fomoengine.io/check`.
 
 ## Verify
 

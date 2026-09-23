@@ -52,7 +52,7 @@ export function SiteShell({ children }: { children: ReactNode }) {
               <Link href="/methodology">Methodology</Link>
               <Link href="/sources">Sources</Link>
               <Link href="/privacy">Privacy & storage</Link>
-              <Link href="/audit">Request an audit <span aria-hidden="true">↗</span></Link>
+              <Link href="/audit">Self-guided review <span aria-hidden="true">↗</span></Link>
             </nav>
           </div>
           <div className="attention-footer-bottom attention-kicker">

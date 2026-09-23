@@ -100,7 +100,7 @@ export async function resolveApiKey(authHeader: string | null): Promise<KeyResol
       return {
         kind: "error",
         code: "QUOTA_EXCEEDED",
-        message: "You've used your full monthly quota. It resets on the 1st (UTC) — or upgrade your plan for more.",
+        message: "You've used your full monthly quota. It resets on the 1st (UTC). New paid upgrades are retired; existing key settings remain unchanged.",
         status: 429,
         quota: key.monthlyQuota,
         used: key.monthlyQuota,

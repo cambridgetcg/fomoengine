@@ -70,20 +70,17 @@ curl -s https://YOUR_HOST/api/v1/check \
   -d '{"text":"Only 2 left! Offer ends in 04:59."}'
 ```
 
-Returns `{ success, data: { flags: [{ label, principle, lever, why, emotion, truth, whatToDo, evidence, confidence, citation }], summary, scamWarning, … } }`. A paid tier adds quota + a stronger model — strictly *additive*, the free result is never degraded. Full docs: [`docs/API.md`](./docs/API.md).
+Returns `{ success, data: { flags: [{ label, principle, lever, why, emotion, truth, whatToDo, evidence, confidence, citation }], summary, scamWarning, … } }`. New paid tiers are retired. Existing key configuration is retained for continuity; technical limits are not an upsell. Full docs: [`docs/API.md`](./docs/API.md).
 
-## For businesses checking their own copy
+## Understanding without commercial pressure
 
-The separate [`/audit`](./app/audit/page.tsx) route describes a bounded **$99 USD
-design-partner Copy Pressure Audit**. It produces a metadata-only request draft in
-the browser; the site does not submit or store the form. Set the deliberately public
-`NEXT_PUBLIC_AUDIT_CONTACT_EMAIL` to enable its “Open email draft” action. There is
-no checkout on the page: scope, handling, delivery timing, and a verified payment
-route are confirmed before payment.
-
-The audit is a versioned review artifact, not legal advice, regulatory
-certification, a fraud verdict, or a promise of improved conversion. The consumer
-checker remains complete, free, and unmetered.
+Understanding is sufficient. There are no KPIs, revenue requirements, paid
+launch plans, or growth obligations. The former paid audit at [`/audit`](./app/audit/page.tsx)
+is retired; the page now points to self-guided tools and creates no service request.
+New paid API sign-ups and checkout are retired. Existing records and obligations
+remain intact. The unused commercial demo components have been removed; their
+earlier source remains in Git history. The separate Fly scan also retires new x402
+payments and its paid audit fallback. See [PLEDGE.md](PLEDGE.md) and [the retirement decision](docs/MONETIZATION.md).
 
 ## Tech
 

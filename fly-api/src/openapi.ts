@@ -1,19 +1,14 @@
 /** openapi.ts — the machine-readable door plan, served at /openapi.json.
  *  Kept by hand and deliberately small; the truth is the handler in server.ts. */
-import { x402Config } from "./payment.ts";
 
 export function openapiDocument() {
-  const x402 = x402Config();
   return {
     openapi: "3.0.3",
     info: {
       title: "fomoscan",
       version: "0.3.1",
       description:
-        "Deterministic FOMO/manipulation detector: scans submitted HTML or text for engineered fear-of-missing-out mechanics, staged per the FOMOENGINE loop with FTC-taxonomy receipts. Remote URL retrieval is paused: this service does not make server-side requests to untrusted destinations. JSON request bodies are limited to 2,000,000 bytes. Scans also carry a `rhetoric` block (rhetorlint/0.1 spec): rhetorical tells in the words — agentless passives, hedges, universal absolutes — reported alongside the FOMO score, never folded into it. `rhetoric` reads a declared bounded prefix on very large documents and is null only if the rhetoric analyzer itself fails (the scan is still delivered). Free doors: /manual (the framework as data) and /honeypot (a test page that should score ~100)." +
-        (x402.enabled
-          ? ` /scan is x402-paid (${x402.price} USDC on Solana via PAYMENT-SIGNATURE header); a failed scan is never charged.`
-          : ""),
+        "Deterministic FOMO/manipulation detector: scans submitted HTML or text for engineered fear-of-missing-out mechanics, staged per the FOMOENGINE loop with FTC-taxonomy receipts. Remote URL retrieval is paused: this service does not make server-side requests to untrusted destinations. JSON request bodies are limited to 2,000,000 bytes. Scans also carry a `rhetoric` block (rhetorlint/0.1 spec): rhetorical tells in the words — agentless passives, hedges, universal absolutes — reported alongside the FOMO score, never folded into it. `rhetoric` reads a declared bounded prefix on very large documents and is null only if the rhetoric analyzer itself fails (the scan is still delivered). Free doors: /manual (the framework as data) and /honeypot (a test page that should score ~100). New paid scans and audit requests are retired; scanning requires no payment signature.",
     },
     servers: [{ url: "https://api.fomoengine.io" }],
     paths: {
@@ -43,9 +38,6 @@ export function openapiDocument() {
           },
           responses: {
             "200": { description: "Staged diagnosis with receipts", content: { "application/json": {} } },
-            ...(x402.enabled
-              ? { "402": { description: "x402 payment required (challenge in PAYMENT-REQUIRED header)" } }
-              : {}),
             "400": { description: "missing/invalid input — never charged" },
             "413": { description: "JSON request body exceeds 2,000,000 bytes — never charged" },
           },
@@ -62,18 +54,18 @@ export function openapiDocument() {
       },
       "/audit": {
         get: {
-          summary: "Static $99 Copy Pressure Audit design-partner offer",
+          summary: "Self-guided pressure review; paid audit retired",
           description: "Accessible HTML with no tracking, form, data capture, external asset, or client-side script.",
           responses: {
             "200": {
-              description: "Bounded offer and mailto request path",
+              description: "Self-guided checker links and existing-request support",
               content: { "text/html": {} },
             },
           },
         },
       },
       "/": {
-        get: { summary: "Service index incl. live x402 pricing", responses: { "200": { description: "index" } } },
+        get: { summary: "Service index and retired purchase policy", responses: { "200": { description: "index" } } },
       },
     },
   };

@@ -1,0 +1,13 @@
+# Local verification artifacts and private environment files are never deploy inputs.
+test-results
+playwright-report
+coverage
+*.tsbuildinfo
+.env
+.env.*
+.claude
+.heartbeat
+.nlp-bridge
+
+# This service has its own Fly build and release path.
+fly-api

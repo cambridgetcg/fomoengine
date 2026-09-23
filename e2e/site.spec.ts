@@ -124,3 +124,18 @@ test("mobile pages fit the viewport and reduced-motion users can navigate", asyn
   await page.keyboard.press("Tab");
   await expect(page.getByRole("link", { name: /skip/i })).toBeFocused();
 });
+
+
+test("retired audit has self-guided exits and no new sales intake", async ({ page }, testInfo) => {
+  await page.goto("/audit");
+  await expect(page.locator("main")).toContainText("The paid audit offer is retired");
+  await expect(page.locator("main form, main input, main textarea")).toHaveCount(0);
+  await expect(page.locator('main a[href^="mailto:"], main a[href*="checkout"]')).toHaveCount(0);
+  await expect(page.locator("main")).not.toContainText("$99");
+  await expect(page.locator("main")).toContainText("Existing paid-review questions");
+  await expect(page.locator('main a[href="/check"]')).toBeVisible();
+  await page.screenshot({ path: testInfo.outputPath("audit-retired-desktop.png"), fullPage: true });
+  await page.setViewportSize({ width: 390, height: 844 });
+  expect(await page.evaluate(() => document.documentElement.scrollWidth > window.innerWidth + 1)).toBe(false);
+  await page.screenshot({ path: testInfo.outputPath("audit-retired-mobile.png"), fullPage: true });
+});

@@ -1,6 +1,6 @@
 import { afterEach, beforeEach, describe, expect, test } from "bun:test";
 import { handle } from "./server.ts";
-import { publicRequestUrl } from "./payment.ts";
+import { publicRequestUrl, x402Config } from "./payment.ts";
 
 const priorPayTo = process.env.X402_PAYTO;
 const priorPaymentEnabled = process.env.X402_ENABLED;
@@ -42,18 +42,16 @@ describe("public service contract", () => {
     expect(response.headers.get("content-security-policy")).toContain("default-src 'none'");
 
     const body = await response.text();
-    expect(body).toContain("$99 USD");
-    expect(body).toContain("Up to 3 surfaces total and 5,000 words combined.");
-    expect(body).toContain("What the dated report includes");
-    expect(body).toContain("One correction/challenge pass.");
-    expect(body).toContain("within 14 days");
-    expect(body).toContain("Manual design-partner offer");
+    expect(body).toContain("The paid audit offer is retired");
+    expect(body).toContain("no new service request, checkout or delivery promise");
+    expect(body).toContain("Existing requests");
+    expect(body).toContain("Existing correspondence, agreements and payment records are unchanged");
     expect(body).toContain("not legal advice, legal certification, regulatory certification");
     expect(body).toContain("No tracking or data capture");
-    expect(body).toContain("mailto:contact@cambridgetcg.com");
-    expect(body).toContain("Operator: Yu");
-    expect(body).toContain("Cambridge, UK");
+    expect(body).toContain("contact@cambridgetcg.com");
     expect(body).toContain('href="https://fomoengine.io/check"');
+    expect(body).not.toContain("$99");
+    expect(body).not.toContain("mailto:");
     expect(body).not.toContain("<script");
     expect(body).not.toContain("<form");
     expect(body).not.toContain("<img");
@@ -63,7 +61,9 @@ describe("public service contract", () => {
   test("documents the audit fallback in the index and OpenAPI", async () => {
     const indexResponse = await handle(new Request("http://localhost/"));
     const index = await indexResponse.json();
-    expect(index.endpoints["GET /audit"]).toContain("$99 Copy Pressure Audit");
+    expect(index.endpoints["GET /audit"]).toContain("paid audit offer is retired");
+    expect(index.pricing.purchases).toBe("retired");
+    expect(index.pricing.paid).toEqual([]);
 
     const openapiResponse = await handle(new Request("http://localhost/openapi.json"));
     const document = await openapiResponse.json();
@@ -161,6 +161,41 @@ describe("public service contract", () => {
     expect(scanPath.get.deprecated).toBe(true);
     expect(scanPath.post.requestBody.content["application/json"].schema.properties.url).toBeUndefined();
     expect(scanPath.post.responses["402"]).toBeUndefined();
+  });
+});
+
+describe("purchase retirement", () => {
+  test("legacy enable flags and payment signatures cannot trigger verification or settlement", async () => {
+    process.env.X402_PAYTO = "configured-receiver";
+    process.env.X402_ENABLED = "true";
+    const priorFetch = globalThis.fetch;
+    let outboundCalls = 0;
+    globalThis.fetch = (() => {
+      outboundCalls += 1;
+      throw new Error("No facilitator call is allowed after purchase retirement");
+    }) as typeof fetch;
+    try {
+      expect(x402Config().enabled).toBe(false);
+      expect(x402Config().retired).toBe(true);
+      for (const signature of [undefined, "synthetic-stale-payment-signature"]) {
+        const response = await handle(new Request("http://localhost/scan", {
+          method: "POST",
+          headers: { "content-type": "application/json", ...(signature ? { "PAYMENT-SIGNATURE": signature } : {}) },
+          body: JSON.stringify({ text: "Only 2 left. Act now." }),
+        }));
+        expect(response.status).toBe(200);
+        expect((await response.json()).rulesFired).toBeGreaterThan(0);
+        for (const header of ["payment-required", "payment-response", "payment-settlement"]) {
+          expect(response.headers.has(header)).toBe(false);
+        }
+      }
+      const document = await (await handle(new Request("http://localhost/openapi.json"))).json();
+      expect(document.paths["/scan"].post.responses["402"]).toBeUndefined();
+      expect(document.info.description).toContain("New paid scans and audit requests are retired");
+      expect(outboundCalls).toBe(0);
+    } finally {
+      globalThis.fetch = priorFetch;
+    }
   });
 });
 
