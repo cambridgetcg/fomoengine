@@ -53,7 +53,7 @@ export default function Home() {
         <section className="attention-section" aria-labelledby="mechanisms-title">
           <div className="attention-section-heading">
             <div><p className="attention-kicker">Inside the atlas</p><h2 id="mechanisms-title">Name the pull.<br /><em>Question the promise.</em></h2></div>
-            <div className="attention-section-intro"><p>Six starting points for reading attention. Not six proven growth levers. Every entry keeps its evidence and uncertainty attached.</p><Link className="attention-text-link" href="/atlas">Browse the complete atlas <span aria-hidden="true">↗</span></Link></div>
+            <div className="attention-section-intro"><p>Six starting points for reading attention, each with its evidence and uncertainty.</p><Link className="attention-text-link" href="/atlas">Browse the complete atlas <span aria-hidden="true">↗</span></Link></div>
           </div>
           <div className="attention-home-index">
             {MECHANISMS.map((mechanism, index) => <article className="attention-home-index-row" key={mechanism.id}><span className="attention-kicker">{String(index + 1).padStart(2, "0")}</span><h3><Link href={`/atlas/${mechanism.id}`}>{mechanism.name}<span aria-hidden="true">↗</span></Link></h3><p>{mechanism.summary}</p><EvidenceLabel kind={mechanism.claims[0].kind} /></article>)}

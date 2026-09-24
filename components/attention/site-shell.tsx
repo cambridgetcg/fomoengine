@@ -47,7 +47,7 @@ export function SiteShell({ children }: { children: ReactNode }) {
               <Link href="/" className="attention-footer-brand">FOMOengine</Link>
               <p>Understand the mechanism.<br />Keep the freedom to choose.</p>
             </div>
-            <p className="attention-footer-pledge">Research, not secret algorithms.<br />Useful experiments, not guaranteed growth.<br />A free checker. No account needed.</p>
+            <p className="attention-footer-pledge">Research, experiments and a free checker.<br />No account needed.</p>
             <nav aria-label="Research and policies" className="attention-footer-links">
               <Link href="/methodology">Methodology</Link>
               <Link href="/sources">Sources</Link>
@@ -56,7 +56,7 @@ export function SiteShell({ children }: { children: ReactNode }) {
             </nav>
           </div>
           <div className="attention-footer-bottom attention-kicker">
-            <span>An open notebook, not a growth promise.</span>
+            <span>An open notebook for studying attention.</span>
             <a href="https://github.com/cambridgetcg/fomoengine/blob/main/PLEDGE.md" target="_blank" rel="noopener noreferrer">Read the project pledge <span aria-hidden="true">↗</span><span className="sr-only"> (opens in a new tab)</span></a>
           </div>
         </div>
