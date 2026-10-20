@@ -25,7 +25,29 @@ describe("public service contract", () => {
       ok: true,
       service: "fomoengine",
       version: "0.3.1",
+      rhetoric: {
+        engine: "@rhetorlint/core@0.1.2",
+        rules: "@rhetorlint/rules-en@0.1.2",
+      },
     });
+  });
+
+  test("says which RhetorLint engine and rules made each scan's marks", async () => {
+    const response = await handle(
+      new Request("http://localhost/scan", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ text: "Mistakes were made. Act now." }),
+      }),
+    );
+    expect(response.status).toBe(200);
+    const { rhetoric } = await response.json();
+    expect(rhetoric.engine).toEqual({
+      name: "@rhetorlint/core",
+      version: "0.1.2",
+      rules: "@rhetorlint/rules-en@0.1.2",
+    });
+    expect(rhetoric.tells).toBeGreaterThan(0);
   });
 
   test("keeps the manual public", async () => {

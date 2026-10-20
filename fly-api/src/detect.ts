@@ -1,5 +1,5 @@
 import { RULES, STAGE_NAMES, type Rule } from "./rules.ts";
-import { analyze, SPEC_VERSION, type RhetorLintRulePack } from "@rhetorlint/core";
+import { analyze, SPEC_VERSION, type RhetorLintEngine, type RhetorLintRulePack } from "@rhetorlint/core";
 import rhetoricRulesEn from "@rhetorlint/rules-en" with { type: "json" };
 
 export interface Receipt {
@@ -37,6 +37,7 @@ export interface RhetoricBlock {
   analyzedChars: number; // rhetoric lens reads at most RHETORIC_MAX_CHARS; truncation is declared, never silent
   truncated: boolean;
   spec: string;
+  engine: RhetorLintEngine | null; // which core and rule pack made these marks, as the engine reports itself
   method: string;
 }
 
@@ -91,6 +92,7 @@ function rhetoricFor(text: string): RhetoricBlock | null {
       analyzedChars: sample.length,
       truncated,
       spec: `rhetorlint/${SPEC_VERSION}`,
+      engine: r.engine ?? null,
       method: "rhetorical tells in the words; reads the language, never the person; never moves the FOMO score",
     };
   } catch (e) {
@@ -98,6 +100,17 @@ function rhetoricFor(text: string): RhetoricBlock | null {
     return null;
   }
 }
+
+/** The RhetorLint core and rule pack this process runs, as the engine reports
+ *  itself: the same value every scan's rhetoric block carries. Null if
+ *  analyze() throws here. */
+export const RHETORIC_ENGINE: RhetorLintEngine | null = (() => {
+  try {
+    return analyze("", { rules: rhetoricRulesEn as RhetorLintRulePack }).engine ?? null;
+  } catch {
+    return null;
+  }
+})();
 
 function verdictFor(score: number): string {
   if (score >= 70) return "FULL FOMOENGINE — the loop is running at you, on purpose";
