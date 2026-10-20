@@ -1,4 +1,4 @@
-import { scan } from "./detect.ts";
+import { RHETORIC_ENGINE, scan } from "./detect.ts";
 import { MANUAL } from "./manual.ts";
 import { HONEYPOT_HTML } from "./honeypot.ts";
 import { gateScan } from "./payment.ts";
@@ -154,7 +154,15 @@ export async function handle(req: Request): Promise<Response> {
   }
 
   if (pathname === "/health") {
-    return json({ ok: true, service: "fomoengine", version: "0.3.1" });
+    return json({
+      ok: true,
+      service: "fomoengine",
+      version: "0.3.1",
+      rhetoric: {
+        engine: RHETORIC_ENGINE?.name && RHETORIC_ENGINE.version ? `${RHETORIC_ENGINE.name}@${RHETORIC_ENGINE.version}` : null,
+        rules: RHETORIC_ENGINE?.rules ?? null,
+      },
+    });
   }
 
   if (pathname === "/manual") return json(MANUAL);
