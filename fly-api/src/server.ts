@@ -153,6 +153,12 @@ export async function handle(req: Request): Promise<Response> {
     });
   }
 
+  // robots.txt: a plain allow-all, nothing else (Quiet Doors, 2026-10)
+  if (pathname === "/robots.txt")
+    return new Response("User-agent: *\nAllow: /\n", {
+      headers: { "content-type": "text/plain; charset=utf-8", "access-control-allow-origin": "*" },
+    });
+
   if (pathname === "/health") {
     return json({
       ok: true,
