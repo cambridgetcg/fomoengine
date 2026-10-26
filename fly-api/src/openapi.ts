@@ -1,6 +1,8 @@
 /** openapi.ts — the machine-readable door plan, served at /openapi.json.
  *  Kept by hand and deliberately small; the truth is the handler in server.ts. */
 
+import { SPECIMEN_LABEL } from "./honeypot.ts";
+
 export function openapiDocument() {
   return {
     openapi: "3.0.3",
@@ -50,7 +52,15 @@ export function openapiDocument() {
         get: { summary: "Liveness check", responses: { "200": { description: "process is serving requests" } } },
       },
       "/honeypot": {
-        get: { summary: "A deliberately dark-patterned test page (free forever)", responses: { "200": { description: "should score ~100" } } },
+        get: {
+          summary: "A deliberately dark-patterned test page (free forever)",
+          responses: {
+            "200": {
+              description: "should score ~100; the page and its X-Specimen header say it is a specimen",
+              headers: { "X-Specimen": { schema: { type: "string", enum: [SPECIMEN_LABEL] } } },
+            },
+          },
+        },
       },
       "/audit": {
         get: {

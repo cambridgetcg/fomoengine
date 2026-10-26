@@ -266,3 +266,46 @@ describe("x402 public resource URL", () => {
     }
   });
 });
+
+describe("honeypot specimen label", () => {
+  const LABEL = "Dark-pattern specimen for testing detectors. Every claim on this page is invented.";
+  const LABEL_LINE = `  <p role="note" data-specimen>${LABEL}</p>\n`;
+  // sha256 of the unlabelled page served live on 2026-10-23 (source 47ef088).
+  const PATTERN_SHA256 = "a4702976d7cf429d06731a9939261f6e28ac2d1432ed134758fd144087825904";
+
+  test("says on its face and in a header that it is an invented specimen", async () => {
+    const response = await handle(new Request("http://localhost/honeypot"));
+    expect(response.status).toBe(200);
+    expect(response.headers.get("content-type")).toBe("text/html; charset=utf-8");
+    expect(response.headers.get("x-specimen")).toBe(LABEL);
+    const html = await response.text();
+    expect(html).toContain(`<body>\n${LABEL_LINE}  <h1>`);
+  });
+
+  test("keeps the dark pattern byte for byte apart from the one label line", async () => {
+    const html = await (await handle(new Request("http://localhost/honeypot"))).text();
+    const unlabelled = html.replace(LABEL_LINE, "");
+    const digest = new Bun.CryptoHasher("sha256").update(unlabelled).digest("hex");
+    expect(digest).toBe(PATTERN_SHA256);
+  });
+
+  test("still scores at the top for FOMO detectors", async () => {
+    const page = await (await handle(new Request("http://localhost/honeypot"))).text();
+    const response = await handle(
+      new Request("http://localhost/scan", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ html: page }),
+      }),
+    );
+    const body = await response.json();
+    expect(body.score).toBe(100);
+    expect(body.rulesFired).toBe(11);
+  });
+
+  test("documents the label header in OpenAPI", async () => {
+    const doc = await (await handle(new Request("http://localhost/openapi.json"))).json();
+    const ok = doc.paths["/honeypot"].get.responses["200"];
+    expect(ok.headers["X-Specimen"].schema.enum).toEqual([LABEL]);
+  });
+});

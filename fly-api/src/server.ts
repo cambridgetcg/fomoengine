@@ -1,6 +1,6 @@
 import { RHETORIC_ENGINE, scan } from "./detect.ts";
 import { MANUAL } from "./manual.ts";
-import { HONEYPOT_HTML } from "./honeypot.ts";
+import { HONEYPOT_HTML, SPECIMEN_LABEL } from "./honeypot.ts";
 import { gateScan } from "./payment.ts";
 import { auditPage } from "./audit.ts";
 
@@ -178,7 +178,9 @@ export async function handle(req: Request): Promise<Response> {
   }
 
   if (pathname === "/honeypot")
-    return new Response(HONEYPOT_HTML, { headers: { "content-type": "text/html; charset=utf-8" } });
+    return new Response(HONEYPOT_HTML, {
+      headers: { "content-type": "text/html; charset=utf-8", "x-specimen": SPECIMEN_LABEL },
+    });
 
   if (pathname === "/scan") {
     if (req.method !== "GET" && req.method !== "POST")

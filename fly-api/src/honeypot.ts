@@ -1,7 +1,12 @@
 // A deliberately dark-patterned demo page: every specimen from the FTC taxonomy
 // in one place. Used as a test fixture and served at /honeypot for live demos.
+// The page and its X-Specimen header say plainly that it is a specimen.
+export const SPECIMEN_LABEL =
+  "Dark-pattern specimen for testing detectors. Every claim on this page is invented.";
+
 export const HONEYPOT_HTML = `<!doctype html>
 <html><head><title>MEGA DEAL ZONE</title></head><body>
+  <p role="note" data-specimen>${SPECIMEN_LABEL}</p>
   <h1>⚡ FLASH SALE — Last chance! Don't miss out!</h1>
   <p>Offer ends in <span data-countdown="599">09:59</span> — act now!</p>
   <p>Only 2 left in stock — selling fast, while supplies last!</p>
