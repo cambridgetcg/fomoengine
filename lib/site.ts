@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { SHARE_CARD } from "./share-card";
 
 export const SITE_URL = "https://fomoengine.io";
 export const SITE_NAME = "FOMOengine";
@@ -14,6 +15,7 @@ export function pageMetadata(title: string, description: string, path: string): 
       title,
       description,
       url: path,
+      images: [SHARE_CARD],
     },
     twitter: { card: "summary_large_image", title, description },
   };

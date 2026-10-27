@@ -1,9 +1,10 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { DM_Sans, Fraunces } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
 import { SiteShell } from "@/components/attention/site-shell";
 import { WorkspaceProvider } from "@/components/attention/workspace-provider";
+import { SHARE_CARD } from "@/lib/share-card";
 import { SITE_URL } from "@/lib/site";
 
 const dmsans = DM_Sans({ subsets: ["latin"], variable: "--font-body" });
@@ -18,15 +19,28 @@ export const metadata: Metadata = {
   applicationName: "FOMOengine",
   authors: [{ name: "Cambridge TCG" }],
   creator: "Cambridge TCG",
+  // Served from public/, byte copies of brand/kit/web (lib/brand-kit.sync.test.ts).
+  icons: {
+    icon: [
+      { url: "/favicon.ico", sizes: "32x32" },
+      { url: "/favicon.svg", type: "image/svg+xml" },
+    ],
+    apple: "/apple-touch-icon.png",
+  },
+  manifest: "/site.webmanifest",
   openGraph: {
     type: "website",
     siteName: "FOMOengine",
     title: "FOMOengine — The Attention Lab",
     description: DESCRIPTION,
+    images: [SHARE_CARD],
   },
   twitter: { card: "summary_large_image", title: "FOMOengine — The Attention Lab", description: DESCRIPTION },
   robots: { index: true, follow: true },
 };
+
+// The pages are light only (app/globals.css), so the kit writes one theme-color.
+export const viewport: Viewport = { themeColor: "#F4F0E8", colorScheme: "only light" };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
