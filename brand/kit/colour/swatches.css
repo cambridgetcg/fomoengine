@@ -1,0 +1,33 @@
+/* FOMOengine */
+:root {
+  /* fomoengine brand */
+  --fomoengine-primary: #b93622;
+  --fomoengine-neutral: #65665c;
+  /* fomoengine ground */
+  --fomoengine-ground-light: #f4f0e8;
+  --fomoengine-ground-dark: #1f231f;
+  /* fomoengine primary scale */
+  --fomoengine-primary-50: #fff4f2;
+  --fomoengine-primary-100: #ffe4df;
+  --fomoengine-primary-200: #ffcbc0;
+  --fomoengine-primary-300: #ffa695;
+  --fomoengine-primary-400: #f27863;
+  --fomoengine-primary-500: #d9553f;
+  --fomoengine-primary-600: #b93622;
+  --fomoengine-primary-700: #992311;
+  --fomoengine-primary-800: #7b1708;
+  --fomoengine-primary-900: #5c0f04;
+  --fomoengine-primary-950: #3c0501;
+  /* fomoengine neutral scale */
+  --fomoengine-neutral-50: #f7f7f5;
+  --fomoengine-neutral-100: #ebebe8;
+  --fomoengine-neutral-200: #d9dad4;
+  --fomoengine-neutral-300: #c1c2ba;
+  --fomoengine-neutral-400: #a1a299;
+  --fomoengine-neutral-500: #86877d;
+  --fomoengine-neutral-600: #65665c;
+  --fomoengine-neutral-700: #55564d;
+  --fomoengine-neutral-800: #42433c;
+  --fomoengine-neutral-900: #30312b;
+  --fomoengine-neutral-950: #1d1d19;
+}

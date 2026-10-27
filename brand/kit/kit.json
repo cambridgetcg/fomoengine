@@ -1,0 +1,929 @@
+{
+ "generator": "artcraft-brand brandkit.py 1.8",
+ "tools": {
+  "vectorcraft-cli": "vectorcraft-cli 0.17.0"
+ },
+ "source_date_epoch": 1793094185,
+ "spec": {
+  "name": "FOMOengine",
+  "short_name": "FOMOengine",
+  "slug": "fomoengine",
+  "lang": "en",
+  "lang_given": true,
+  "url": "https://fomoengine.io",
+  "description": "Understand how emotion, platform signals and creative choices shape attention. Explore the research, decode pressure tactics and design your own honest experiments.",
+  "colours": {
+   "primary": "#B93622",
+   "neutral": "#65665C"
+  },
+  "ground": {
+   "light": "#F4F0E8",
+   "dark": "#1F231F"
+  },
+  "wordmark": {
+   "text": "FOMOengine",
+   "font": "Fraunces",
+   "style": "Regular",
+   "tracking": -45,
+   "colour": "#1F231F",
+   "colour_dark": "#F4F0E8"
+  },
+  "mark": {
+   "kind": "svg",
+   "path": null,
+   "source": "source/mark-source.svg",
+   "recolour": false,
+   "small_path": null,
+   "small": "source/mark-small.svg",
+   "dark": {
+    "*": "#D4B3A4"
+   }
+  },
+  "icon": {
+   "tile": "none",
+   "ink": "original",
+   "padding": 0.18,
+   "radius": 0.22,
+   "ink_given": false,
+   "radius_given": false
+  },
+  "og": {
+   "title": "Understand the pull. Design with care.",
+   "subtitle": "Explore the mechanisms of attention. Turn a claim into an honest experiment.",
+   "theme": "light",
+   "alt": "FOMOengine — The Attention Lab. Understand the pull. Design with care. Research, not a growth promise."
+  },
+  "app": {
+   "display": "browser",
+   "theme": "light",
+   "color_scheme": "only light"
+  },
+  "pages": []
+ },
+ "colours": {
+  "primary": "#B93622",
+  "on_primary": "#FFFFFF",
+  "monogram_solo": "#B93622"
+ },
+ "facts": {
+  "schemes": {
+   "mark": {
+    "mode": "original",
+    "ground": null,
+    "colours": {},
+    "lifted": {},
+    "knockouts": [],
+    "gaps": []
+   },
+   "mark-mono-black": {
+    "mode": "mono",
+    "ground": null,
+    "colours": {},
+    "lifted": {},
+    "knockouts": [],
+    "gaps": []
+   },
+   "mark-mono-white": {
+    "mode": "mono",
+    "ground": null,
+    "colours": {},
+    "lifted": {},
+    "knockouts": [],
+    "gaps": []
+   },
+   "lockup-horizontal": {
+    "mode": "original",
+    "ground": null,
+    "colours": {},
+    "lifted": {},
+    "knockouts": [],
+    "gaps": []
+   },
+   "lockup-horizontal-reversed": {
+    "mode": "mapped",
+    "ground": "#1F231F",
+    "colours": {
+     "#B93622": "#D4B3A4"
+    },
+    "lifted": {
+     "#B93622": {
+      "to": "#D4B3A4",
+      "step": "mark.dark in brand.json",
+      "ratio": 8.18,
+      "apca": -62.6,
+      "letters": null,
+      "knockout": false,
+      "letter_ink": null,
+      "ui": false,
+      "chosen": true
+     }
+    },
+    "knockouts": [],
+    "gaps": []
+   },
+   "lockup-stacked": {
+    "mode": "original",
+    "ground": null,
+    "colours": {},
+    "lifted": {},
+    "knockouts": [],
+    "gaps": []
+   },
+   "lockup-stacked-reversed": {
+    "mode": "mapped",
+    "ground": "#1F231F",
+    "colours": {
+     "#B93622": "#D4B3A4"
+    },
+    "lifted": {
+     "#B93622": {
+      "to": "#D4B3A4",
+      "step": "mark.dark in brand.json",
+      "ratio": 8.18,
+      "apca": -62.6,
+      "letters": null,
+      "knockout": false,
+      "letter_ink": null,
+      "ui": false,
+      "chosen": true
+     }
+    },
+    "knockouts": [],
+    "gaps": []
+   },
+   "tile": {
+    "mode": "mapped",
+    "ground": "#F4F0E8",
+    "colours": {},
+    "lifted": {},
+    "knockouts": [],
+    "gaps": []
+   },
+   "og": {
+    "mode": "original",
+    "ground": null,
+    "colours": {},
+    "lifted": {},
+    "knockouts": [],
+    "gaps": []
+   }
+  },
+  "mark": {
+   "size": [
+    256,
+    256
+   ]
+  },
+  "wordmark": {
+   "size": [
+    526,
+    89
+   ],
+   "cap": 64,
+   "colour": "#1F231F",
+   "colour_dark": "#F4F0E8"
+  },
+  "lockup-horizontal": {
+   "size": [
+    519,
+    96
+   ],
+   "mark_height": 96,
+   "cap_height": 48.0,
+   "gap": 28.8,
+   "clear_space": 48.0,
+   "shared_baseline": false
+  },
+  "lockup-stacked": {
+   "size": [
+    337,
+    211
+   ],
+   "mark_height": 128,
+   "cap_height": 40.96,
+   "gap": 26.88,
+   "clear_space": 40.96,
+   "shared_baseline": false
+  },
+  "on_ground": {
+   "light": "#F4F0E8",
+   "dark": "#1F231F",
+   "scale": 2,
+   "boards": {
+    "light/lockup-horizontal": {
+     "size": [
+      615,
+      192
+     ],
+     "clear_space": 48
+    },
+    "light/lockup-stacked": {
+     "size": [
+      419,
+      293
+     ],
+     "clear_space": 41
+    },
+    "light/wordmark": {
+     "size": [
+      654,
+      217
+     ],
+     "clear_space": 64
+    },
+    "light/mark": {
+     "size": [
+      384,
+      384
+     ],
+     "clear_space": 64
+    },
+    "dark/lockup-horizontal": {
+     "size": [
+      615,
+      192
+     ],
+     "clear_space": 48
+    },
+    "dark/lockup-stacked": {
+     "size": [
+      419,
+      293
+     ],
+     "clear_space": 41
+    },
+    "dark/wordmark": {
+     "size": [
+      654,
+      217
+     ],
+     "clear_space": 64
+    },
+    "dark/mark": {
+     "size": [
+      384,
+      384
+     ],
+     "clear_space": 64
+    }
+   }
+  },
+  "app": {
+   "tile": "#F4F0E8",
+   "ink": null,
+   "ink_mode": "original",
+   "ink_brand": false,
+   "ink_default": true,
+   "subset": "all",
+   "remapped": {},
+   "mark_extent": 0.7
+  },
+  "maskable": {
+   "tile": "#F4F0E8",
+   "predicted_radius": 176.1,
+   "safe_radius": 204.8,
+   "mark_extent": 0.679
+  },
+  "favicon": {
+   "small_mark": true,
+   "dark_plan": {
+    "#B93622": "#D4B3A4"
+   },
+   "merged": [],
+   "tile": null,
+   "radius": 0.22,
+   "radius_reason": "",
+   "ink": null,
+   "ink_mode": "original",
+   "colours": [
+    "#B93622"
+   ],
+   "outer_colours": [
+    "#B93622"
+   ],
+   "ground_colours": [],
+   "cuts": {
+    "32": {
+     "label": "small mark",
+     "size": 32,
+     "longest": 32,
+     "box": [
+      0,
+      0,
+      32,
+      32
+     ],
+     "centre": "box",
+     "margins": [
+      0,
+      0,
+      0,
+      0
+     ],
+     "centred": true,
+     "centred_alternative": null,
+     "clear_of_corners": true,
+     "letter_px": null,
+     "letter_basis": null,
+     "letter_min": null,
+     "predicted": {
+      "ink_pixels": 400,
+      "clean_pixels": 284,
+      "crisp": 0.71
+     },
+     "fidelity": {
+      "strokes": 10,
+      "lost_strokes": 0,
+      "collapsed": 0,
+      "where": [],
+      "welded_points": 0,
+      "pockets_filled": [],
+      "specks": []
+     },
+     "reference": {
+      "d": [
+       "M 0 16 C 0 7.16 7.16 0 16 0 C 24.84 0 32 7.16 32 16 C 32 24.84 24.84 32 16 32 C 7.16 32 0 24.84 0 16 Z M 16 2.29 C 8.43 2.29 2.29 8.43 2.29 16 C 2.29 23.57 8.43 29.71 16 29.71 C 23.57 29.71 29.71 23.57 29.71 16 C 29.71 8.43 23.57 2.29 16 2.29 Z",
+       "M 14.86 14.86 L 14.86 1.14 L 17.14 1.14 L 17.14 14.86 L 30.86 14.86 L 30.86 17.14 L 17.14 17.14 L 17.14 30.86 L 14.86 30.86 L 14.86 17.14 L 1.14 17.14 L 1.14 14.86 Z",
+       "M 21.14 16 C 21.14 18.84 18.84 21.14 16 21.14 C 13.16 21.14 10.86 18.84 10.86 16 C 10.86 13.16 13.16 10.86 16 10.86 C 18.84 10.86 21.14 13.16 21.14 16 Z"
+      ],
+      "rules": [
+       "nonzero",
+       "nonzero",
+       "nonzero"
+      ]
+     },
+     "seam": {
+      "d": [
+       "M 0 16 C 0 7.16 7.16 0 16 0 C 24.84 0 32 7.16 32 16 C 32 24.84 24.84 32 16 32 C 7.16 32 0 24.84 0 16 Z M 16 2.29 C 8.43 2.29 2.29 8.43 2.29 16 C 2.29 23.57 8.43 29.71 16 29.71 C 23.57 29.71 29.71 23.57 29.71 16 C 29.71 8.43 23.57 2.29 16 2.29 Z",
+       "M 14.86 14.86 L 14.86 1.14 L 17.14 1.14 L 17.14 14.86 L 30.86 14.86 L 30.86 17.14 L 17.14 17.14 L 17.14 30.86 L 14.86 30.86 L 14.86 17.14 L 1.14 17.14 L 1.14 14.86 Z",
+       "M 21.14 16 C 21.14 18.84 18.84 21.14 16 21.14 C 13.16 21.14 10.86 18.84 10.86 16 C 10.86 13.16 13.16 10.86 16 10.86 C 18.84 10.86 21.14 13.16 21.14 16 Z"
+      ],
+      "rules": [
+       "nonzero",
+       "nonzero",
+       "nonzero"
+      ],
+      "knocked": [],
+      "gap_fronts": []
+     },
+     "extent": 1.0,
+     "considered": [
+      {
+       "label": "small mark",
+       "letter_px": null,
+       "crisp": 0.71,
+       "faithful": true
+      }
+     ],
+     "full": true
+    },
+    "48": {
+     "label": "small mark",
+     "size": 48,
+     "longest": 48,
+     "box": [
+      0,
+      0,
+      48,
+      48
+     ],
+     "centre": "box",
+     "margins": [
+      0,
+      0,
+      0,
+      0
+     ],
+     "centred": true,
+     "centred_alternative": null,
+     "clear_of_corners": true,
+     "letter_px": null,
+     "letter_basis": null,
+     "letter_min": null,
+     "predicted": {
+      "ink_pixels": 912,
+      "clean_pixels": 760,
+      "crisp": 0.833
+     },
+     "fidelity": {
+      "strokes": 10,
+      "lost_strokes": 0,
+      "collapsed": 0,
+      "where": [],
+      "welded_points": 0,
+      "pockets_filled": [],
+      "specks": []
+     },
+     "reference": {
+      "d": [
+       "M 0 24 C 0 10.75 10.75 0 24 0 C 37.25 0 48 10.75 48 24 C 48 37.25 37.25 48 24 48 C 10.75 48 0 37.25 0 24 Z M 24 3.43 C 12.64 3.43 3.43 12.64 3.43 24 C 3.43 35.36 12.64 44.57 24 44.57 C 35.36 44.57 44.57 35.36 44.57 24 C 44.57 12.64 35.36 3.43 24 3.43 Z",
+       "M 22.29 22.29 L 22.29 1.71 L 25.71 1.71 L 25.71 22.29 L 46.29 22.29 L 46.29 25.71 L 25.71 25.71 L 25.71 46.29 L 22.29 46.29 L 22.29 25.71 L 1.71 25.71 L 1.71 22.29 Z",
+       "M 31.71 24 C 31.71 28.26 28.26 31.71 24 31.71 C 19.74 31.71 16.29 28.26 16.29 24 C 16.29 19.74 19.74 16.29 24 16.29 C 28.26 16.29 31.71 19.74 31.71 24 Z"
+      ],
+      "rules": [
+       "nonzero",
+       "nonzero",
+       "nonzero"
+      ]
+     },
+     "seam": {
+      "d": [
+       "M 0 24 C 0 10.75 10.75 0 24 0 C 37.25 0 48 10.75 48 24 C 48 37.25 37.25 48 24 48 C 10.75 48 0 37.25 0 24 Z M 24 3.43 C 12.64 3.43 3.43 12.64 3.43 24 C 3.43 35.36 12.64 44.57 24 44.57 C 35.36 44.57 44.57 35.36 44.57 24 C 44.57 12.64 35.36 3.43 24 3.43 Z",
+       "M 22.29 22.29 L 22.29 1.71 L 25.71 1.71 L 25.71 22.29 L 46.29 22.29 L 46.29 25.71 L 25.71 25.71 L 25.71 46.29 L 22.29 46.29 L 22.29 25.71 L 1.71 25.71 L 1.71 22.29 Z",
+       "M 31.71 24 C 31.71 28.26 28.26 31.71 24 31.71 C 19.74 31.71 16.29 28.26 16.29 24 C 16.29 19.74 19.74 16.29 24 16.29 C 28.26 16.29 31.71 19.74 31.71 24 Z"
+      ],
+      "rules": [
+       "nonzero",
+       "nonzero",
+       "nonzero"
+      ],
+      "knocked": [],
+      "gap_fronts": []
+     },
+     "extent": 1.0,
+     "considered": [
+      {
+       "label": "small mark",
+       "letter_px": null,
+       "crisp": 0.833,
+       "faithful": true
+      }
+     ],
+     "full": true
+    },
+    "16": {
+     "label": "small mark",
+     "size": 16,
+     "longest": 16,
+     "box": [
+      0,
+      0,
+      16,
+      16
+     ],
+     "centre": "box",
+     "margins": [
+      0,
+      0,
+      0,
+      0
+     ],
+     "centred": true,
+     "centred_alternative": null,
+     "clear_of_corners": true,
+     "letter_px": null,
+     "letter_basis": null,
+     "letter_min": null,
+     "predicted": {
+      "ink_pixels": 132,
+      "clean_pixels": 84,
+      "crisp": 0.636
+     },
+     "fidelity": {
+      "strokes": 8,
+      "lost_strokes": 0,
+      "collapsed": 0,
+      "where": [],
+      "welded_points": 0,
+      "pockets_filled": [],
+      "specks": []
+     },
+     "reference": {
+      "d": [
+       "M 0 8 C 0 3.58 3.58 0 8 0 C 12.42 0 16 3.58 16 8 C 16 12.42 12.42 16 8 16 C 3.58 16 0 12.42 0 8 Z M 8 1.14 C 4.21 1.14 1.14 4.21 1.14 8 C 1.14 11.79 4.21 14.86 8 14.86 C 11.79 14.86 14.86 11.79 14.86 8 C 14.86 4.21 11.79 1.14 8 1.14 Z",
+       "M 7.43 7.43 L 7.43 0.57 L 8.57 0.57 L 8.57 7.43 L 15.43 7.43 L 15.43 8.57 L 8.57 8.57 L 8.57 15.43 L 7.43 15.43 L 7.43 8.57 L 0.57 8.57 L 0.57 7.43 Z",
+       "M 10.57 8 C 10.57 9.42 9.42 10.57 8 10.57 C 6.58 10.57 5.43 9.42 5.43 8 C 5.43 6.58 6.58 5.43 8 5.43 C 9.42 5.43 10.57 6.58 10.57 8 Z"
+      ],
+      "rules": [
+       "nonzero",
+       "nonzero",
+       "nonzero"
+      ]
+     },
+     "seam": {
+      "d": [
+       "M 0 8 C 0 3.58 3.58 0 8 0 C 12.42 0 16 3.58 16 8 C 16 12.42 12.42 16 8 16 C 3.58 16 0 12.42 0 8 Z M 8 1.14 C 4.21 1.14 1.14 4.21 1.14 8 C 1.14 11.79 4.21 14.86 8 14.86 C 11.79 14.86 14.86 11.79 14.86 8 C 14.86 4.21 11.79 1.14 8 1.14 Z",
+       "M 7.43 7.43 L 7.43 0.57 L 8.57 0.57 L 8.57 7.43 L 15.43 7.43 L 15.43 8.57 L 8.57 8.57 L 8.57 15.43 L 7.43 15.43 L 7.43 8.57 L 0.57 8.57 L 0.57 7.43 Z",
+       "M 10.57 8 C 10.57 9.42 9.42 10.57 8 10.57 C 6.58 10.57 5.43 9.42 5.43 8 C 5.43 6.58 6.58 5.43 8 5.43 C 9.42 5.43 10.57 6.58 10.57 8 Z"
+      ],
+      "rules": [
+       "nonzero",
+       "nonzero",
+       "nonzero"
+      ],
+      "knocked": [],
+      "gap_fronts": []
+     },
+     "extent": 1.0,
+     "considered": [
+      {
+       "label": "small mark",
+       "letter_px": null,
+       "crisp": 0.636,
+       "faithful": true
+      }
+     ],
+     "full": true
+    }
+   },
+   "dark_mapping": {
+    "#B93622": "#D4B3A4"
+   }
+  },
+  "og": {
+   "theme": "light",
+   "bg": "#F4F0E8",
+   "fg": "#1D1D19",
+   "muted": "#65665C",
+   "title_size": 60,
+   "wordmark": false,
+   "title_lines": [
+    "Understand the pull.",
+    "Design with care."
+   ],
+   "subtitle_lines": [
+    "Explore the mechanisms of attention.",
+    "Turn a claim into an honest experiment."
+   ],
+   "title_cut": false,
+   "subtitle_cut": false,
+   "contrast_title": 14.88,
+   "contrast_subtitle": 5.12,
+   "mark_colours": [
+    "#B93622"
+   ],
+   "badge": null,
+   "column": [
+    88,
+    612
+   ],
+   "rule_top": 154,
+   "lines": [
+    {
+     "role": "title",
+     "text": "Understand the pull.",
+     "width": 577.4,
+     "x": 88,
+     "baseline": 244.0,
+     "size": 60
+    },
+    {
+     "role": "title",
+     "text": "Design with care.",
+     "width": 486.1,
+     "x": 88,
+     "baseline": 310.0,
+     "size": 60
+    },
+    {
+     "role": "subtitle",
+     "text": "Explore the mechanisms of attention.",
+     "width": 508.1,
+     "x": 88,
+     "baseline": 379.0,
+     "size": 30
+    },
+    {
+     "role": "subtitle",
+     "text": "Turn a claim into an honest experiment.",
+     "width": 543.9,
+     "x": 88,
+     "baseline": 421.0,
+     "size": 30
+    }
+   ],
+   "floor": 524.0,
+   "footer": {
+    "text": "FOMOengine  ·  fomoengine.io",
+    "width": 331.7,
+    "x": 88,
+    "baseline": 566,
+    "size": 24
+   },
+   "mark_box": [
+    772.0,
+    145.0,
+    1112.0,
+    485.0
+   ]
+  },
+  "og_pages": {},
+  "colour_sheet": {
+   "size": [
+    1200,
+    844
+   ]
+  },
+  "cmyk": {
+   "#B93622": {
+    "cmyk": [
+     18,
+     86,
+     100,
+     9
+    ],
+    "out_of_gamut": false
+   },
+   "#65665C": {
+    "cmyk": [
+     43,
+     28,
+     42,
+     39
+    ],
+    "out_of_gamut": false
+   },
+   "#F4F0E8": {
+    "cmyk": [
+     5,
+     4,
+     8,
+     0
+    ],
+    "out_of_gamut": false
+   },
+   "#1F231F": {
+    "cmyk": [
+     31,
+     14,
+     30,
+     94
+    ],
+    "out_of_gamut": false
+   }
+  },
+  "ground_light": "#F4F0E8",
+  "ground_dark": "#1F231F",
+  "measured": {
+   "maskable_radius": 174.2,
+   "maskable_extent": 0.68,
+   "app_extent": 0.703,
+   "favicon": {
+    "16": {
+     "left": 0,
+     "top": 0,
+     "right": 0,
+     "bottom": 0
+    },
+    "32": {
+     "left": 0,
+     "top": 0,
+     "right": 0,
+     "bottom": 0
+    },
+    "48": {
+     "left": 0,
+     "top": 0,
+     "right": 0,
+     "bottom": 0
+    }
+   }
+  }
+ },
+ "fonts": {
+  "wordmark": [
+   "Fraunces",
+   "Regular"
+  ],
+  "mark": null,
+  "mark_bold_cut": null,
+  "labels": [
+   "JetBrains Mono",
+   "Regular"
+  ],
+  "og": {
+   "title": [
+    "Fraunces",
+    "Regular"
+   ],
+   "subtitle": [
+    "Fraunces",
+    "Light"
+   ]
+  },
+  "cap_height_em": 0.7,
+  "also_installed": [],
+  "stacks": {
+   "display": [
+    "Fraunces",
+    "system-ui",
+    "sans-serif"
+   ],
+   "body": [
+    "Fraunces",
+    "system-ui",
+    "sans-serif"
+   ],
+   "mono": [
+    "JetBrains Mono",
+    "ui-monospace",
+    "Menlo",
+    "monospace"
+   ]
+  }
+ },
+ "mark": {
+  "kind": "svg",
+  "shapes": 3,
+  "names": [
+   "ring",
+   "spokes",
+   "hub"
+  ],
+  "colours": [
+   "#B93622"
+  ],
+  "outer_colours": [
+   "#B93622"
+  ],
+  "coverage": 0.264,
+  "knockouts": {},
+  "shape_colours": [
+   "#B93622",
+   "#B93622",
+   "#B93622"
+  ]
+ },
+ "swatches": [
+  [
+   "fomoengine primary",
+   "#B93622"
+  ],
+  [
+   "fomoengine neutral",
+   "#65665C"
+  ],
+  [
+   "fomoengine ground light",
+   "#F4F0E8"
+  ],
+  [
+   "fomoengine ground dark",
+   "#1F231F"
+  ],
+  [
+   "fomoengine primary 50",
+   "#FFF4F2"
+  ],
+  [
+   "fomoengine primary 100",
+   "#FFE4DF"
+  ],
+  [
+   "fomoengine primary 200",
+   "#FFCBC0"
+  ],
+  [
+   "fomoengine primary 300",
+   "#FFA695"
+  ],
+  [
+   "fomoengine primary 400",
+   "#F27863"
+  ],
+  [
+   "fomoengine primary 500",
+   "#D9553F"
+  ],
+  [
+   "fomoengine primary 600",
+   "#B93622"
+  ],
+  [
+   "fomoengine primary 700",
+   "#992311"
+  ],
+  [
+   "fomoengine primary 800",
+   "#7B1708"
+  ],
+  [
+   "fomoengine primary 900",
+   "#5C0F04"
+  ],
+  [
+   "fomoengine primary 950",
+   "#3C0501"
+  ],
+  [
+   "fomoengine neutral 50",
+   "#F7F7F5"
+  ],
+  [
+   "fomoengine neutral 100",
+   "#EBEBE8"
+  ],
+  [
+   "fomoengine neutral 200",
+   "#D9DAD4"
+  ],
+  [
+   "fomoengine neutral 300",
+   "#C1C2BA"
+  ],
+  [
+   "fomoengine neutral 400",
+   "#A1A299"
+  ],
+  [
+   "fomoengine neutral 500",
+   "#86877D"
+  ],
+  [
+   "fomoengine neutral 600",
+   "#65665C"
+  ],
+  [
+   "fomoengine neutral 700",
+   "#55564D"
+  ],
+  [
+   "fomoengine neutral 800",
+   "#42433C"
+  ],
+  [
+   "fomoengine neutral 900",
+   "#30312B"
+  ],
+  [
+   "fomoengine neutral 950",
+   "#1D1D19"
+  ]
+ ],
+ "motion": false,
+ "files": [
+  "brand.vectorcraft",
+  "BRAND.md",
+  "index.html",
+  "kit.json",
+  "source/brand.json",
+  "source/mark-source.svg",
+  "source/mark-small.svg",
+  "logo/mark.svg",
+  "logo/mark.png",
+  "logo/mark@2x.png",
+  "logo/mark-mono-black.svg",
+  "logo/mark-mono-black.png",
+  "logo/mark-mono-black@2x.png",
+  "logo/mark-mono-white.svg",
+  "logo/mark-mono-white.png",
+  "logo/mark-mono-white@2x.png",
+  "logo/wordmark.svg",
+  "logo/wordmark.png",
+  "logo/wordmark@2x.png",
+  "logo/wordmark-reversed.svg",
+  "logo/wordmark-reversed.png",
+  "logo/wordmark-reversed@2x.png",
+  "logo/lockup-horizontal.svg",
+  "logo/lockup-horizontal.png",
+  "logo/lockup-horizontal@2x.png",
+  "logo/lockup-horizontal-reversed.svg",
+  "logo/lockup-horizontal-reversed.png",
+  "logo/lockup-horizontal-reversed@2x.png",
+  "logo/lockup-stacked.svg",
+  "logo/lockup-stacked.png",
+  "logo/lockup-stacked@2x.png",
+  "logo/lockup-stacked-reversed.svg",
+  "logo/lockup-stacked-reversed.png",
+  "logo/lockup-stacked-reversed@2x.png",
+  "logo/mark.pdf",
+  "logo/lockup-horizontal.pdf",
+  "logo/on-light/lockup-horizontal@2x.png",
+  "logo/on-light/lockup-stacked@2x.png",
+  "logo/on-light/wordmark@2x.png",
+  "logo/on-light/mark@2x.png",
+  "logo/on-dark/lockup-horizontal@2x.png",
+  "logo/on-dark/lockup-stacked@2x.png",
+  "logo/on-dark/wordmark@2x.png",
+  "logo/on-dark/mark@2x.png",
+  "web/favicon.ico",
+  "web/favicon.svg",
+  "web/favicon-16.png",
+  "web/favicon-32.png",
+  "web/apple-touch-icon.png",
+  "web/icon-192.png",
+  "web/icon-512.png",
+  "web/icon-maskable-512.png",
+  "web/site.webmanifest",
+  "web/head-snippet.html",
+  "web/head-home.html",
+  "web/og.jpg",
+  "web/og.png",
+  "social/avatar-1024.png",
+  "social/avatar-400.png",
+  "colour/palette.json",
+  "colour/tokens.json",
+  "colour/tokens.css",
+  "colour/tailwind.theme.css",
+  "colour/tailwind.colors.js",
+  "colour/contrast.md",
+  "colour/swatches.ase",
+  "colour/swatches.gpl",
+  "colour/swatches.css",
+  "colour/colour-sheet.svg",
+  "colour/colour-sheet.png",
+  "colour/colour-sheet@2x.png"
+ ],
+ "og_alt": "FOMOengine — The Attention Lab. Understand the pull. Design with care. Research, not a growth promise.",
+ "page_alts": {}
+}

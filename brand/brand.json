@@ -1,0 +1,43 @@
+{
+  "name": "FOMOengine",
+  "short_name": "FOMOengine",
+  "slug": "fomoengine",
+  "url": "https://fomoengine.io",
+  "description": "Understand how emotion, platform signals and creative choices shape attention. Explore the research, decode pressure tactics and design your own honest experiments.",
+  "lang": "en",
+  "colours": {
+    "primary": "#B93622",
+    "neutral": "#65665C"
+  },
+  "ground": {
+    "light": "#F4F0E8",
+    "dark": "#1F231F"
+  },
+  "mark": {
+    "svg": "mark.svg",
+    "small": "mark-small.svg",
+    "dark": "#D4B3A4"
+  },
+  "wordmark": {
+    "text": "FOMOengine",
+    "font": "Fraunces",
+    "style": "Regular",
+    "tracking": -45,
+    "colour": "#1F231F",
+    "colour_dark": "#F4F0E8"
+  },
+  "icon": {
+    "tile": "none"
+  },
+  "og": {
+    "title": "Understand the pull. Design with care.",
+    "subtitle": "Explore the mechanisms of attention. Turn a claim into an honest experiment.",
+    "theme": "light",
+    "alt": "FOMOengine — The Attention Lab. Understand the pull. Design with care. Research, not a growth promise."
+  },
+  "app": {
+    "display": "browser",
+    "theme": "light",
+    "color_scheme": "only light"
+  }
+}
