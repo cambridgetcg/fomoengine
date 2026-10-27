@@ -11,3 +11,6 @@ coverage
 
 # This service has its own Fly build and release path.
 fly-api
+
+# Brand kit sources and builds; the served copies are in public/.
+brand

@@ -1,0 +1,64 @@
+{
+  "name": "FOMOengine",
+  "palette": {
+    "primary": {
+      "base": "#B93622",
+      "base_step": 600,
+      "50": "#FFF4F2",
+      "100": "#FFE4DF",
+      "200": "#FFCBC0",
+      "300": "#FFA695",
+      "400": "#F27863",
+      "500": "#D9553F",
+      "600": "#B93622",
+      "700": "#992311",
+      "800": "#7B1708",
+      "900": "#5C0F04",
+      "950": "#3C0501"
+    },
+    "neutral": {
+      "base": "#65665C",
+      "base_step": 600,
+      "50": "#F7F7F5",
+      "100": "#EBEBE8",
+      "200": "#D9DAD4",
+      "300": "#C1C2BA",
+      "400": "#A1A299",
+      "500": "#86877D",
+      "600": "#65665C",
+      "700": "#55564D",
+      "800": "#42433C",
+      "900": "#30312B",
+      "950": "#1D1D19"
+    }
+  },
+  "roles": {
+    "light": {
+      "bg": "#F4F0E8",
+      "surface": "#E0DCD4",
+      "border": "#CECAC3",
+      "text": "#1D1D19",
+      "text-muted": "#65665C",
+      "primary": "#B93622",
+      "on-primary": "#FFFFFF",
+      "primary-text": "#B93622",
+      "primary-ui": "#B93622",
+      "focus": "#B93622"
+    },
+    "dark": {
+      "bg": "#1F231F",
+      "surface": "#353630",
+      "border": "#484941",
+      "text": "#F7F7F5",
+      "text-muted": "#A1A299",
+      "primary": "#B93622",
+      "on-primary": "#FFFFFF",
+      "primary-text": "#F27863",
+      "primary-ui": "#D9553F",
+      "focus": "#D9553F"
+    }
+  },
+  "lifted": {
+    "dark": {}
+  }
+}

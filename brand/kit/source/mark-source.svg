@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32">
+  <!-- FOMOengine header mark, from components/attention/site-shell.tsx lines 24-28 at origin/main ee69ef2.
+       Same geometry; currentColor written as #B93622 (the lab-accent colour, app/globals.css lines 135 and 171);
+       the SVG default stroke-width 1 written out. -->
+  <circle id="ring" cx="16" cy="16" r="13.5" fill="none" stroke="#B93622" stroke-width="1"/>
+  <path id="spokes" d="M16 3v26M3 16h26M7 7l18 18M7 25 25 7" fill="none" stroke="#B93622" stroke-width="1"/>
+  <circle id="hub" cx="16" cy="16" r="4" fill="#B93622"/>
+</svg>

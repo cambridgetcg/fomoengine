@@ -1,0 +1,30 @@
+{
+  "id": "/",
+  "name": "FOMOengine",
+  "short_name": "FOMOengine",
+  "description": "Understand how emotion, platform signals and creative choices shape attention. Explore the research, decode pressure tactics and design your own honest experiments.",
+  "lang": "en",
+  "start_url": "/",
+  "scope": "/",
+  "display": "browser",
+  "background_color": "#F4F0E8",
+  "theme_color": "#F4F0E8",
+  "icons": [
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon-maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

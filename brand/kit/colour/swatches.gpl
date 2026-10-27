@@ -1,0 +1,34 @@
+GIMP Palette
+Name: FOMOengine
+Columns: 0
+#
+# Group: fomoengine brand
+185  54  34	fomoengine primary
+101 102  92	fomoengine neutral
+# Group: fomoengine ground
+244 240 232	fomoengine ground light
+ 31  35  31	fomoengine ground dark
+# Group: fomoengine primary scale
+255 244 242	fomoengine primary 50
+255 228 223	fomoengine primary 100
+255 203 192	fomoengine primary 200
+255 166 149	fomoengine primary 300
+242 120  99	fomoengine primary 400
+217  85  63	fomoengine primary 500
+185  54  34	fomoengine primary 600
+153  35  17	fomoengine primary 700
+123  23   8	fomoengine primary 800
+ 92  15   4	fomoengine primary 900
+ 60   5   1	fomoengine primary 950
+# Group: fomoengine neutral scale
+247 247 245	fomoengine neutral 50
+235 235 232	fomoengine neutral 100
+217 218 212	fomoengine neutral 200
+193 194 186	fomoengine neutral 300
+161 162 153	fomoengine neutral 400
+134 135 125	fomoengine neutral 500
+101 102  92	fomoengine neutral 600
+ 85  86  77	fomoengine neutral 700
+ 66  67  60	fomoengine neutral 800
+ 48  49  43	fomoengine neutral 900
+ 29  29  25	fomoengine neutral 950

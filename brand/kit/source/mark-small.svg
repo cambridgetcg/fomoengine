@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32">
+  <!-- Favicon cut (16 to 48 px) of the FOMOengine header mark (components/attention/site-shell.tsx lines 24-28):
+       the same ring, horizontal and vertical spokes and hub, with the two diagonal spokes left out and the
+       strokes drawn at 2 units instead of 1 so they hold a pixel at tab size. Colour #B93622 as the header. -->
+  <circle id="ring" cx="16" cy="16" r="13" fill="none" stroke="#B93622" stroke-width="2"/>
+  <path id="spokes" d="M16 3v26M3 16h26" fill="none" stroke="#B93622" stroke-width="2"/>
+  <circle id="hub" cx="16" cy="16" r="4.5" fill="#B93622"/>
+</svg>
