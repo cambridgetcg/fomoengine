@@ -1,0 +1,109 @@
+{
+  "format": "brandkit.project/1",
+  "name": "FOMOengine",
+  "kind": "generated",
+  "owner": "the fomoengine lane (repository cambridgetcg/fomoengine)",
+  "decided": [
+    {
+      "part": "the mark",
+      "status": "not-recorded",
+      "what": "the header's ring-and-spokes mark in brick #B93622 (components/attention/site-shell.tsx)",
+      "record": "CREDITS.md: drawn by an agent in commit a3a8f44 (\"feat: build research-informed Attention Lab\", 2026-09-08, git name \"Nuance\", with a Claude co-author trailer); who chose it is not recorded beyond that commit"
+    },
+    {
+      "part": "the kit",
+      "by": "agent (Claude Code session dd025d89)",
+      "under": "Yu's delegation of 2026-10-20; Yu's word of 2026-10-27, \"yes, go ahead and wire the kits into the sites\", approved wiring kits into the sites, not this look",
+      "date": "2026-10-27",
+      "what": "the site's existing look as an agent read it: the header mark in brick #B93622 on paper #F4F0E8, a Fraunces wordmark, light only, with the site's own /opengraph-image as its share card",
+      "record": "fomoengine PR #4 (merge 449ebde), section 'Look decisions'; ledger artcraft-estate-wiring"
+    }
+  ],
+  "spec": "brand.json",
+  "kit": "kit",
+  "site": {
+    "urls": [
+      "https://fomoengine.io"
+    ],
+    "framework": "next-app-router",
+    "layout": "../app/layout.tsx"
+  },
+  "serve": {
+    "to": "../public",
+    "files": [
+      "favicon.ico",
+      "favicon.svg",
+      "apple-touch-icon.png",
+      "icon-192.png",
+      "icon-512.png",
+      "icon-maskable-512.png",
+      "site.webmanifest"
+    ],
+    "omit": [
+      {
+        "file": "og.jpg",
+        "why": "the site draws its own share card (app/opengraph-image.tsx, under media); /og.jpg answers 404 by design (checked 2026-11-05)"
+      },
+      {
+        "file": "og.png",
+        "why": "the same kit card as og.jpg, not served for the same reason"
+      }
+    ]
+  },
+  "build": {
+    "command": "python3 <artcraft-brand>/scripts/brandkit.py brand.json --out kit --rebuild-check",
+    "cwd": ".",
+    "fonts": [
+      {
+        "family": "Fraunces (variable; the Regular and Light instances)",
+        "file": "Fraunces[SOFT,WONK,opsz,wght].ttf",
+        "licence": "SIL Open Font License 1.1 (name ID 13; Copyright 2020 The Fraunces Project Authors)",
+        "source": "google/fonts ofl/fraunces, upstream github.com/undercasetype/Fraunces; installed in ~/Library/Fonts on the Studio on 2026-10-27",
+        "sha256": "177ff6c0f14e5550a3c624247cd1189611d4eb65d000b14944c63d967958abbb"
+      }
+    ],
+    "tools": [
+      {
+        "name": "vectorcraft-cli",
+        "version": "0.17.0"
+      }
+    ]
+  },
+  "guards": [
+    {
+      "path": "check.mjs",
+      "runs": "../lib/brand-folder.test.ts"
+    },
+    {
+      "path": "../lib/brand-folder.test.ts",
+      "runs": "/package.json",
+      "match": "lib/**/*.test.ts"
+    },
+    {
+      "path": "../lib/brand-kit.sync.test.ts",
+      "runs": "/package.json",
+      "match": "lib/**/*.test.ts"
+    }
+  ],
+  "deploy": {
+    "on_merge": "Vercel's Git integration builds main and deploys production at https://fomoengine.io (also served at www.fomoengine.io and fomoengine-cambridgetcgs-projects.vercel.app). .vercelignore leaves brand/ out of the upload; public/ holds the served copies",
+    "after_deploy": "Vercel answers public, max-age=0, must-revalidate and its edge cache is per deployment, so no purge (measured 2026-11-05). Then check per wiring.md §7: /favicon.ico, /favicon.svg, /apple-touch-icon.png, /icon-*.png and /site.webmanifest answer 200 with their types and the kit's bytes, /opengraph-image answers 200 image/png, and og:image sits in <head> for the crawler user agents",
+    "rules": "/AGENTS.md: no KPIs, revenue or growth targets, paid enrolment, checkout or launch obligations. /PLEDGE.md: the free path is never gated or degraded (free-tier.guardrail.test.ts in CI). A merge to main deploys production, so it needs Yu's word, or the repository owner's, for that merge; agents open PRs, the cambridgetcg account merges"
+  },
+  "media": [
+    {
+      "name": "share card (the site's own, not the kit's og.jpg)",
+      "recipe": "../app/opengraph-image.tsx",
+      "outputs": [],
+      "goes_to": "rendered by next/og at /opengraph-image (1200x630 PNG) on each request; every openGraph block names it through lib/share-card.ts SHARE_CARD. Hand-written JSX, not a Craft piece; its 'evidence.Keep' typo is review-2026-11-02 item A1",
+      "source": "agents: first made in c77a161 (2026-06-09, git name \"Asha Veridian\"), redrawn in a3a8f44 (2026-09-08, git name \"Nuance\"); both commits carry a Claude co-author trailer"
+    }
+  ],
+  "notes": [
+    "The three guards run in CI through npm test (tsx --test \"lib/**/*.test.ts\" in package.json), which .github/workflows/shield-guardrail.yml runs on every push to main and every pull request. Neither file names the two tests: the glob picks them up. lib/brand-folder.test.ts runs brand/check.mjs; lib/brand-kit.sync.test.ts holds public/ to kit/web and the layout's head (icons, one theme-color, colorScheme only light, SHARE_CARD on every openGraph block).",
+    "kit/source/mark-small.svg, which draws the 16-48 px favicons, drops the two diagonal spokes and thickens the strokes; its comment calls it 'the same ring and hub', which isn't exact, and it stays as written because the kit holds a byte copy (PR #4).",
+    "kit/BRAND.md says Fraunces' licence 'was not checked': the font's name table says SIL OFL 1.1, and BRAND.md stays as generated. JetBrains Mono (colour-sheet labels) is bundled with vectorcraft-cli, so it has no file to list.",
+    "The site loads Fraunces and DM Sans itself through next/font/google; CREDITS.md lists them.",
+    "public/logo.svg ('eunoia-logo'), next.svg and vercel.svg are template leftovers, not kit files."
+  ]
+}
