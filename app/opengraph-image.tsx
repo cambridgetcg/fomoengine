@@ -21,7 +21,7 @@ export default function Image() {
         <div style={{ display: "flex", flexDirection: "column", width: 276, background: "#eae5da", border: "1px solid #b8b6a9", padding: "28px 24px", transform: "rotate(-3deg)" }}>
           <span style={{ fontSize: 11, letterSpacing: "1px", color: "#65665c", marginBottom: 25 }}>FIELD NOTES / NOT A FORMULA</span>
           {["01  Understand", "02  Decode", "03  Apply & test"].map((label) => <span key={label} style={{ display: "flex", fontSize: 23, padding: "17px 0", borderBottom: "1px solid #cecac0" }}>{label}</span>)}
-          <span style={{ fontSize: 14, lineHeight: 1.6, marginTop: 22, color: "#b93622" }}>Keep the evidence.<br />Keep the uncertainty.</span>
+          <span style={{ display: "flex", flexDirection: "column", fontSize: 14, lineHeight: 1.6, marginTop: 22, color: "#b93622" }}><span>Keep the evidence.</span><span>Keep the uncertainty.</span></span>
         </div>
       </div>
       <div style={{ display: "flex", justifyContent: "space-between", borderTop: "1px solid #cecac0", paddingTop: 22, color: "#65665c", fontSize: 13 }}><span>ATLAS · PLATFORMS · LAB · TRENDS · FREE CHECKER</span><span>fomoengine.io</span></div>
