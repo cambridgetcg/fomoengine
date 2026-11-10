@@ -95,7 +95,7 @@
       "name": "share card (the site's own, not the kit's og.jpg)",
       "recipe": "../app/opengraph-image.tsx",
       "outputs": [],
-      "goes_to": "rendered by next/og at /opengraph-image (1200x630 PNG) on each request; every openGraph block names it through lib/share-card.ts SHARE_CARD. Hand-written JSX, not a Craft piece; its 'evidence.Keep' typo is review-2026-11-02 item A1",
+      "goes_to": "rendered by next/og at /opengraph-image (1200x630 PNG) on each request; every openGraph block names it through lib/share-card.ts SHARE_CARD. Hand-written JSX, not a Craft piece; its 'evidence.Keep' run-on (review-2026-11-02 item A1) was set as two lines on 2026-11-10",
       "source": "agents: first made in c77a161 (2026-06-09, git name \"Asha Veridian\"), redrawn in a3a8f44 (2026-09-08, git name \"Nuance\"); both commits carry a Claude co-author trailer"
     }
   ],
