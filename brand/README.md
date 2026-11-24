@@ -9,9 +9,8 @@ them.
 The site's existing look, as an agent read it on 2026-10-27: the header's ring-and-spokes mark in brick #B93622 on
 paper #F4F0E8, a Fraunces wordmark, and light pages only. The share card stays the site's own `/opengraph-image`.
 The agent was Claude Code session dd025d89, working under Yu's delegation of 2026-10-20. Yu's word of 2026-10-27
-("yes, go ahead and wire the kits into the sites") approved wiring the kits into the sites; it did not choose this
-look. The record is fomoengine PR #4 (merge 449ebde), section "Look decisions", and the decisions ledger item
-`artcraft-estate-wiring`.
+covered adding the kits to the sites; it did not choose this look. The record is fomoengine PR #4 (merge 449ebde),
+section "Look decisions", and the decisions ledger item `artcraft-estate-wiring`.
 
 Don't change the identity without its owner's word. Every asset here records who made it in `CREDITS.md`.
 
